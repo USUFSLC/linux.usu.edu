@@ -1,0 +1,61 @@
+@import url('./theme.css');
+@import url('./sidebar.css');
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('/fonts/DMMono-Light.ttf');
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'DM Mono', monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  display: inline;
+}
+
+li {
+  margin-left: 2em;
+}
+
+.main {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: 90%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
+.header {
+  margin-top: 1rem;
+}
+
+.container {
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer {
+  margin-bottom: 1rem;
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.title {
+  text-decoration: none;
+}
+.title:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

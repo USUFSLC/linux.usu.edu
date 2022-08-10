@@ -1,0 +1,62 @@
+@import url('./colors.css');
+
+.light {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+.dark {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+.light .primary {
+  color: var(--aqua-light);
+}
+.dark .primary {
+  color: var(--aqua-dark);
+}
+.light .secondary {
+  color: var(--blue-light);
+}
+.dark .secondary {
+  color: var(--blue-dark);
+}
+.light .tertiary {
+  color: var(--purple-light);
+}
+.dark .tertiary {
+  color: var(--purple-dark);
+}
+.light .warning {
+  color: var(--yellow-light);
+}
+.dark .warning {
+  color: var(--yellow-dark);
+}
+.light .error {
+  color: var(--red-light);
+}
+.dark .error {
+  color: var(--red-dark);
+}
+
+.light a {
+  color: var(--blue-light);
+}
+.dark a {
+  color: var(--blue-dark);
+}
+.light a:visited {
+  color: var(--purple-light);
+}
+.dark a:visited {
+  color: var(--purple-dark);
+}
+
+.dark .container {
+  border-top: 1px solid var(--yellow-dark);
+  border-bottom: 1px solid var(--yellow-dark);
+}
+.light .container {
+  border-top: 1px solid var(--yellow-light);
+  border-bottom: 1px solid var(--yellow-light);
+}

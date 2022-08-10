@@ -1,0 +1,52 @@
+(lambda
+  (&key
+    (title "USU FSLC")
+    (motd "welcome to our small corner of the internet")
+    (page-title nil)
+    (sidebar nil)
+    (content nil))
+
+  <html>
+    <head>
+      <title>{title}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="/css/style.css" />
+      <script src="/js/main.js" defer />
+    </head>
+    <body>
+      <div id="sidebar">
+        <div class="sidebar-container">
+          <a id="theme-switcher"><img id="theme-icon" src="/images/sun.svg" alt="Theme picker"></a>
+          <hr>
+          {sidebar}
+        </div>
+      </div>
+      <div id="content" class="main">
+        <div class="header">
+          <a id="sidebar-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+
+          <a href="/" class="title"><h1 class="primary">USU Free Software & Linux Club</h1></a>
+          <br />
+          <p class="secondary"><em>{motd}</em></p>
+        </div>
+        <div class="container">
+          <div style="text-align:center">
+            <h2 class="primary">{page-title}</h2>
+            <br />
+          </div>
+          {content}
+        </div>
+        <div class="footer">
+          <a href="/conduct">Code of Conduct</a>
+          <a href="/license">License</a>
+          <a href="/credits">Credits</a>
+        </div>
+      </div>
+    </body>
+  </html>
+
+)

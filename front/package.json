@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "package-lock.json": "^1.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.49",
+    "nodemon": "^2.0.19"
+  },
+  "scripts": {
+    "watch": "nodemon -e js,css -w src -x ./build.js"
+  }
+}

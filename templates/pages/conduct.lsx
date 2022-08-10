@@ -1,0 +1,26 @@
+(lambda ()
+  <div>
+    <h3 class="secondary">The Do's</h3>
+    <ol>
+      <li>Be friendly and welcoming to all users.</li>
+      <li>Attempt to use correct grammar, spelling, and punctuation to the best of your ability.</li>
+      <li>Stimulate discussion about Free Software.</li>
+      <li>Acknowledge everyone has a right to their own opinions.</li>
+      <li>Stay on topic where encouraged.</li>
+    </ol>
+    <br />
+    <h3 class="warning">The Dont's</h3>
+    <ol>
+      <li>Don't ask to ask, just ask!</li>
+      <li>Use unnecessary amounts of swearing, or any amount of slurs.</li>
+      <li>Create racist, hateful, sexist, violent, pornographic, or otherwise offensive, or illegal, content - this is your grandma's Linux Club!</li>
+      <li>Share personal identifying information of other users without permission.</li>
+      <li>Solicit.</li>
+      <li>Engage in political discussion where inappropriate to do so.</li>
+    </ol>
+    <br />
+    <p class="error">
+      Failure to abide by these guidelines may result in a ban at the administrators' discretion in any FSLC communication channel.
+    </p>
+  </div>
+)
