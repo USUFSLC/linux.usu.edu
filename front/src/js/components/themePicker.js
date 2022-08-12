@@ -7,11 +7,11 @@ const themePickerSources = {
 const setTheme = (theme) => {
   $('#theme-icon').attr('src', themePickerSources[theme]);
 
-  $('#wrapper').attr('class', theme);
+  $(document.documentElement).attr('data-theme', theme);
   localStorage.setItem('theme', theme);
 };
 
-$('#theme-switcher').on('click', _ => setTheme(flipFlopTheme($('#wrapper').attr('class'))));
+$('#theme-switcher').on('click', _ => setTheme(flipFlopTheme($(document.documentElement).attr('data-theme'))));
 
-setTheme(localStorage.getItem('theme') || 'dark');
+setTheme(localStorage.getItem('theme'));
 

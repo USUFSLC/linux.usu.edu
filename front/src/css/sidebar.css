@@ -8,17 +8,11 @@
   left: -260px;
   transition: left 0.20s ease;
   border-radius: 0px 8px 0px 8px;
-  border-right: 3px solid var(--green-dark);
+  border-right: 3px solid var(--green);
+  background: var(--bg);
 }
 #sidebar.active {
   left: 0px;
-  transition: left 0.20s ease;
-}
-.dark #sidebar {
-  background-color: var(--bg-dark);
-}
-.light #sidebar {
-  background-color: var(--bg-light);
 }
 
 .sidebar-container {
@@ -60,11 +54,8 @@
   transition: .25s ease-in-out;
 }
 
-.dark #sidebar-toggle span {
-  background: var(--purple-dark);
-}
-.light #sidebar-toggle span {
-  background: var(--purple-light);
+#sidebar-toggle span {
+  background: var(--purple);
 }
 
 #sidebar-toggle span:nth-child(1) {

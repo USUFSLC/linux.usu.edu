@@ -3,6 +3,10 @@
 const esbuild = require("esbuild");
 [
   {
+    entryPoints: ["src/js/util/setThemeBeforeRender.js"],
+    outfile: "dist/js/util/setThemeBeforeRender.js",
+  },
+  {
     entryPoints: ["src/js/app.js"],
     outfile: "dist/js/main.js",
   },

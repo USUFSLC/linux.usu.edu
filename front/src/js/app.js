@@ -3,4 +3,4 @@ window.$ = $;
 window.jQuery = $;
 
 require('./components/sidebar');
-require('./components/theme-picker');
+require('./components/themePicker');

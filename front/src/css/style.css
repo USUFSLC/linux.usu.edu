@@ -10,6 +10,7 @@
   padding: 0;
   margin: 0;
   font-family: 'DM Mono', monospace;
+  transition: background 0.2s ease-in-out;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -50,12 +51,4 @@ pre {
   overflow-x: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
-}
-
-.title {
-  text-decoration: none;
-}
-.title:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }

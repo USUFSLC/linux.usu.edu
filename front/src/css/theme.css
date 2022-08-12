@@ -1,62 +1,41 @@
 @import url('./colors.css');
 
-.light {
-  background-color: var(--bg-light);
-  color: var(--text-light);
+body {
+  background-color: var(--bg);
+  color: var(--text);
 }
-.dark {
-  background-color: var(--bg-dark);
-  color: var(--text-dark);
+.primary {
+  color: var(--aqua);
 }
-.light .primary {
-  color: var(--aqua-light);
+.secondary {
+  color: var(--blue);
 }
-.dark .primary {
-  color: var(--aqua-dark);
+.tertiary {
+  color: var(--purple);
 }
-.light .secondary {
-  color: var(--blue-light);
+.warning {
+  color: var(--yellow);
 }
-.dark .secondary {
-  color: var(--blue-dark);
-}
-.light .tertiary {
-  color: var(--purple-light);
-}
-.dark .tertiary {
-  color: var(--purple-dark);
-}
-.light .warning {
-  color: var(--yellow-light);
-}
-.dark .warning {
-  color: var(--yellow-dark);
-}
-.light .error {
-  color: var(--red-light);
-}
-.dark .error {
-  color: var(--red-dark);
+.error {
+  color: var(--red);
 }
 
-.light a {
-  color: var(--blue-light);
+a {
+  color: var(--blue);
 }
-.dark a {
-  color: var(--blue-dark);
-}
-.light a:visited {
-  color: var(--purple-light);
-}
-.dark a:visited {
-  color: var(--purple-dark);
+a:visited {
+  color: var(--purple);
 }
 
-.dark .container {
-  border-top: 1px solid var(--yellow-dark);
-  border-bottom: 1px solid var(--yellow-dark);
+.title {
+  text-decoration: none;
 }
-.light .container {
-  border-top: 1px solid var(--yellow-light);
-  border-bottom: 1px solid var(--yellow-light);
+.title:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.container {
+  border-top: 1px solid var(--yellow);
+  border-bottom: 1px solid var(--yellow);
 }
