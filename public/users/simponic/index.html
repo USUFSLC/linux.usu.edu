@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Page Of simponic</title>
+    <link rel='stylesheet' href='style.css' />
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+  </head>
+  <body>
+    <div class="container">
+      <div class="scene">
+        <div id="cube">
+          <div class="cube__face cube__face--front">Hello, my name is Simponic.</div>
+          <div class="cube__face cube__face--back"><mark><a target="_blank" href="https://github.com/Simponic">My GitHub</a></mark></div>
+          <div class="cube__face cube__face--right">
+            <div style="text-align:center">
+            <pre>|  ||
+
+|| |_
+</pre>
+            <p>I'm losing my mind.</p>
+            </div>
+          </div>
+          <div class="cube__face cube__face--left"><p>This cube is inspired by <a target="_blank" href="https://3dtransforms.desandro.com/"> David DeSandro</a>.</p></div>
+          <div class="cube__face cube__face--top">sussy</div>
+          <div class="cube__face cube__face--bottom"></div>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="slide(-1)">Prev</button>
+      <button onclick="slide(1)">Next</button>
+    </div>
+  </body>
+  <script>
+    const rots = ['show-front', 'show-back', 'show-right', 'show-left', 'show-top', 'show-bottom'];
+
+    const slide = (n) => {
+      const cube = document.getElementById('cube');
+      const current = rots.indexOf(cube.className);
+      const next = (current + n) % rots.length;
+      cube.className = rots[next];
+    };
+
+    slide(1);
+  </script>
+</html>
+

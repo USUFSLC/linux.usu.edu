@@ -1,0 +1,102 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --n: calc(min(80vw, 80vh));
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 3rem;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: calc(min(5vw, 5vh));
+}
+button {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.scene {
+  width: var(--n);
+  height: var(--n);
+  perspective: calc(3 * var(--n));
+}
+
+#cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(-1 * var(--n) / 3));
+  transition: transform 1s;
+}
+
+.cube__face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #000;
+  position: absolute;
+  width: var(--n);
+  height: var(--n);
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 90%;
+
+  transition: ease-in 1s;
+
+  font-size: 32px;
+}
+
+.cube__face--front { 
+  transform: rotateY(  0deg) translateZ(calc(var(--n) / 2));
+  background: white;
+}
+.cube__face--right {
+  transform: rotateY( 90deg) translateZ(calc(var(--n) / 2)); 
+  background: black;
+  color: white;
+}
+.cube__face--back { 
+  transform: rotateY(180deg) translateZ(calc(var(--n) / 2));
+  background-image: url("img/profile.jpg"); 
+}
+.cube__face--left { 
+  transform: rotateY(-90deg) translateZ(calc(var(--n) / 2));
+  background: yellow;
+}
+.cube__face--top { 
+  transform: rotateX( 90deg) translateZ(calc(var(--n) / 2));
+  background-image: url("img/among-us-twerk.gif");
+}
+.cube__face--bottom{ 
+  transform: rotateX(-90deg) translateZ(calc(var(--n) / 2));
+}
+
+#cube.show-front  { 
+  transform: translateZ(calc(var(--n) / -2)) rotateY(   0deg);
+}
+#cube.show-right  { 
+  transform: translateZ(calc(var(--n) / -2)) rotateY( -90deg);
+}
+#cube.show-back   { 
+  transform: translateZ(calc(var(--n) / -2)) rotateY(-180deg);
+}
+#cube.show-left   { 
+  transform: translateZ(calc(var(--n) / -2)) rotateY(  90deg);
+}
+#cube.show-top    { 
+  transform: translateZ(calc(var(--n) / -2)) rotateX( -90deg);
+}
+#cube.show-bottom { 
+  transform: translateZ(calc(var(--n) / -2)) rotateX(  90deg);
+}

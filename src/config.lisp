@@ -21,7 +21,7 @@
 (defparameter *template-root*      "root.lsx")
 
 (defparameter *static-paths*       '(("^(?:/css/|/js/)" . #P"front/dist/")
-                                     ("^(?:/images/|/fonts/|/robot\\.txt$|/favicon.ico$)" . #P"public/")))
+                                     ("^(?:/users/|/images/|/fonts/|/robot\\.txt$|/favicon.ico$)" . #P"public/")))
 
 (defconfig :common
   `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
