@@ -36,9 +36,8 @@
           <p class="secondary"><em>{motd}</em></p>
         </div>
         <div class="container">
-          <div style="text-align:center">
+          <div class="page-title">
             <h2 class="primary">{page-title}</h2>
-            <br />
           </div>
           {content}
         </div>

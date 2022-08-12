@@ -52,3 +52,8 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
+.page-title {
+  text-align: center;
+  margin-bottom: 1em;
+}
