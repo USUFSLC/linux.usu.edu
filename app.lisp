@@ -16,7 +16,7 @@
                 :*application-root*))
 (in-package :usufslc.app)
 
-;; Path-expressions is an a-list with (regular-expression-matching-path . path-to-file) pairs.
+;; Path-expressions is an a-list with (regular-expression-matching-path . path-to-directory) pairs.
 (defmacro with-static-handlers (&rest body)
   `(builder
     ,@(mapcar (lambda (path-expression)

@@ -1,0 +1,9 @@
+(lambda
+  (&key
+    (redirect-url ""))
+  
+  <div>
+    <a href={redirect-url}>Log in with discord</a>
+  </div>
+
+)
