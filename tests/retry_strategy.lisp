@@ -16,6 +16,7 @@
 
 (sb-ext:unlock-package "COMMON-LISP") ;; Unlock package to stub the "random" function
 
+(defparameter *max-retries* 3)
 (defparameter *iteration-amount-range* '(:min 1 :max 15)) ;; Number of retries
 (defparameter *jitter-ms-range* '(:min 1000 :max 5000))
 (defparameter *exponential-backoff-thousandths-range* '(:min 1000 :max 2000))
@@ -52,3 +53,13 @@
                              (let ((sleep-amount-sec (apply 'sleep-amount args)))
                                (and (>= sleep-amount-sec (/ amount-no-jitter-ms 1000))
                                     (<= sleep-amount-sec (/ amount-max-jitter-ms 1000)))))))))
+
+(defun dummy (x) nil)
+(test failed-validation-function-retried-with-exponential-sleep
+  :description "A validation function which always returns nil will have its retry strategy retried max-retry times"
+  (with-stubs ((dummy nil))
+    (is (equal
+         nil
+         (with-exponential-retry (:max-retries *max-retries*)
+           (dummy))))
+    (is (= (call-times-for 'dummy) *max-retries*))))
