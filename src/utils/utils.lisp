@@ -1,9 +1,4 @@
-(in-package :cl-user)
-(defpackage usufslc/tests.utils
-  (:use :cl
-        :usufslc/tests)
-  (:export :random-in-range))
-(in-package :usufslc/tests.utils)
+(in-package :usufslc.utils)
 
 ;; Generate random integers between 0 <= min <= n <= max as determined by
 ;; :min and :max in a plist

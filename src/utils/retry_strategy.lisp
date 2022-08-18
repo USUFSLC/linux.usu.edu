@@ -1,17 +1,12 @@
-(in-package :cl-user)
-(defpackage usufslc.retry
-  (:use :cl
-        :usufslc.config)
-  (:export :sleep-amount
-           :with-exponential-retry))
-(in-package :usufslc.retry)
+(in-package :usufslc.utils)
 
+;; TODO : parse-number from config 
 (defparameter *jitter-ms*           1000)
 (defparameter *max-retries*         3)
 (defparameter *retry-period-ms*     1500)
 (defparameter *exponential-backoff* 1.3)
 
-(defun sleep-amount (iteration &key (jitter-ms *jitter-ms*)
+(defun sleep-exponential-amount (iteration &key (jitter-ms *jitter-ms*)
                                  (retry-period-ms *retry-period-ms*)
                                  (exponential-backoff *exponential-backoff*))
   (let ((base-sleep (* (expt exponential-backoff (1- iteration)) retry-period-ms))
@@ -33,4 +28,4 @@
                                       (values nil exception)))))
               (if (funcall ,validator current-result)
                   (return (values current-result retry))
-                  (sleep (apply 'sleep-amount (cons retry ,sleep-plist-args)))))))
+                  (sleep (apply 'sleep-exponential-amount (cons retry ,sleep-plist-args)))))))

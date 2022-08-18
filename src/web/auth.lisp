@@ -1,12 +1,4 @@
-(in-package :cl-user)
-(defpackage usufslc.auth
-  (:use :cl
-        :usufslc.config
-        :usufslc.db
-        :drakma
-        :cl-json)
-  (:export :))
-(in-package :usufslc.auth)
+(in-package :usufslc.web)
 
 (defun retrieve-discord-oauth (oauth-code)
   (decode-json 

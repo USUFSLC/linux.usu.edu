@@ -10,34 +10,29 @@
   (:import-from :usufslc.web
                 :*web*)
   (:import-from :usufslc.config
-                :config
-                :productionp
+                :get-config-value
+                :prod-p
                 :*static-paths*
                 :*application-root*))
 (in-package :usufslc.app)
 
 ;; Path-expressions is an a-list with (regular-expression-matching-path . path-to-directory) pairs.
-(defmacro with-static-handlers (&rest body)
+(defmacro with-static-handlers (() &body body)
   `(builder
     ,@(mapcar (lambda (path-expression)
                 `(:static :path (lambda (path)
                                   (if (scan ,(car path-expression) path)
-                                      path
-                                      nil))
+                                      path))
                           :root (merge-pathnames ,(cdr path-expression) *application-root*)))
               *static-paths*)
     ,@body))
 
-(with-static-handlers
- (unless (productionp) :accesslog)
- (if (getf (config) :error-log)
-     `(:backtrace
-       :output ,(getf (config) :error-log))
-     nil)
- :session
- (unless (productionp)
-  (lambda (app)
-        (lambda (env)
-          (let ((datafly:*trace-sql* t))
-            (funcall app env)))))
- *web*)
+(with-static-handlers ()
+  (if (get-config-value :|app-log| :|access-log|)
+      :accesslog)
+  (let ((error-log-path (get-config-value :|app-log| :|error-log|)))
+    (if error-log-path
+        `(:backtrace
+          :output ,(pathname error-log-path))))
+  :session
+  *web*)

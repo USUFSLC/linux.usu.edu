@@ -1,0 +1,34 @@
+# This is a comment
+[discord]
+  :auth-url https://discord.com/api/oauth2/authorize # And so is this
+  :token-url https://discord.com/api/oauth2/token
+  :identity-url https://discord.com/api/users/@me
+  :scope identify email
+  :client-id <CLIENT_ID_HERE>
+  :secret <CLIENT_SECRET_HERE>
+
+[retry]
+  :max-retries 3
+  :retry-period-ms 1500
+  :jitter-ms 1000
+  :exponential-retry 1.3
+
+[database]
+  :name usufslc
+  :user postgres
+  :password postgres
+  :host localhost
+  :port 5432
+
+[app]
+  :protocol http
+  :port 8080
+  :host localhost
+
+[app-render]
+  :template-directory templates/
+  :template-root root.lsx
+
+[app-log]
+  :access-log t
+  :error-log /tmp/error.log # This could be nil for production
