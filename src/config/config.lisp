@@ -20,8 +20,7 @@
   (let ((section (gethash section-keyword config-map)))
     (if section 
         (let ((property (gethash property-keyword section)))
-          (if (equal property "nil")
-              nil
+          (unless (equal property "nil")
               property)))))
 
 (defun prod-p ()
