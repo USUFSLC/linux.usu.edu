@@ -5,4 +5,5 @@
 (defun random-in-range (range)
   (let ((min (getf range :min))
         (max (getf range :max)))
-    (+ min (random (1+ (- max min))))))
+    (+ min (random (1+ (- max min)))))) 
+  

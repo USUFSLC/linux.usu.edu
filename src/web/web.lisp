@@ -10,6 +10,16 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
+(defun format-app-route (path &key (usufslc-protocol (get-config-value :|app-route| :|protocol|))
+                                (usufslc-port (get-config-value :|app-route| :|port|))
+                                (usufslc-host (get-config-value :|app-route| :|host|)))
+  (render-uri
+   (make-uri
+    :scheme usufslc-protocol
+    :port usufslc-port
+    :host usufslc-host
+    :path path)))
+
 ;;
 ;; Routing rules
 @route GET "/"
@@ -28,23 +38,19 @@
 (defun show-license ()
   (render-with-root #P"pages/license.lsx" :root-env '(:page-title "License")))
 
-;;(defparameter *oauth-path* (format nil "~a~a" (config :app-uri) "/oauth"))
-;;@route GET "/oauth" 
+@route GET "/test"
+(defun test ()
+  (format nil "~a" *request*))
+
+;;@route GET "/oauth/discord" 
 ;;(defun receive-discord-oauth (&key |code|)
   
-;;@route GET "/login"
+;;@route GET "/login/discord"
 ;;(defun login ()
 ;;  (flet ((encode (string) (url-encode string *drakma-default-external-format*)))
 ;;    (render-with-root #P"auth/log_in.lsx"
 ;;                      :root-env '(:page-title "Log In")
-;;                      :env `(:redirect-url 
-;;                             ,(format nil 
-;;                                      "~a?client_id=~a&redirect_uri=~a&scope=~a&response_type=code"
-;;                                      (config :discord-oauth-auth-url)
-;;                                      (encode (config :discord-client-id))
-;;                                      (encode *oauth-path*)
-;;                                      (encode (config :discord-scope))
-;;                                      )))))
+;;                      :env `(:redirect-url (make-discord-redirect-url 
 
 ;;
 ;; Error pages

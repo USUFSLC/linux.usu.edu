@@ -1,11 +1,17 @@
 (in-package :cl-user)
 (defpackage usufslc.web
   (:use :cl
-        :caveman2
-        :usufslc.config
         :lsx
-        :drakma
-        :cl-json)
+        :caveman2
+        :usufslc.config)
+  (:import-from :quri
+                :make-uri
+                :render-uri
+                :url-encode)
+  (:import-from :cl-json
+                :decode-json)
+  (:import-from :drakma
+                :http-request)
   (:export :*web*
            :render
            :render-with-root))

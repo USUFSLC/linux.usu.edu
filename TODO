@@ -1,0 +1,9 @@
+* Go through all packages and only import necessary symbols - it's a mess rn
+* Create user models with automatic migration using Mito
+  [ ] Make auth its own module under web?
+  [ ] Finish discord oauth integration - extend for further oauth providers?
+     + Update user model after each oauth login
+* Create web integration tests
+  [ ] Test user model created with correct data
+  [ ] Use sqlite memory in test environment?
+* Create socket with hunchensocket & benchmark - determine if it's a good idea to use

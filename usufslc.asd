@@ -7,10 +7,13 @@
                :caveman2
 
                ;; utilities
+               :uiop
                :cl-ppcre
                :alexandria
-               :uiop
                :parse-number
+
+               ;; URI parsing / decoding
+               :quri
                
                ;; templates
                :lsx
@@ -18,7 +21,7 @@
                ;; @route annotation
                :cl-syntax-annot
                
-               ;; for http requests
+               ;; http requests
                :drakma
                
                ;; JSON
@@ -29,7 +32,8 @@
 
                 ((:module "web"
                   :components 
-                  ((:file "web" :depends-on ("view" "package"))
+                  ((:file "auth" :depends-on ("package"))
+                   (:file "web" :depends-on ("auth" "view" "package"))
                    (:file "view" :depends-on ("package"))
                    (:file "package"))
                   :depends-on ("config"))
@@ -62,11 +66,12 @@
   :author "Simponic"
   :license "MIT"
   :depends-on (:fiveam
-               :mockingbird
+               :cl-mock
                :usufslc)
   :components ((:module "tests"
                 :components
-                ((:file "config" :depends-on ("suite"))
+                ((:file "web" :depends-on ("suite"))
+                 (:file "config" :depends-on ("suite"))
                  (:file "utils" :depends-on ("suite"))
                  (:file "suite"))))
   :description "A test suite for USUFSLC"

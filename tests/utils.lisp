@@ -2,7 +2,7 @@
 (defpackage usufslc/tests.utils
   (:use :cl
         :fiveam
-        :mockingbird
+        :cl-mock
         :usufslc.utils
         :usufslc/tests)
   (:export :utils-suite))
@@ -55,9 +55,11 @@
 (test retry-sleep-amount
   :description "Retry sleep amount can be minimum or maximum"
   (with-random-sleep-amount-args ()
-    (with-dynamic-stubs ((random 0))
+    (with-mocks ()
+      (answer random 0)
       (is (= (apply 'usufslc.utils::sleep-exponential-amount args) (/ amount-no-jitter-ms 1000))))
-    (with-dynamic-stubs ((random jitter-ms))
+    (with-mocks ()
+      (answer random jitter-ms)
       (is (= (apply 'usufslc.utils::sleep-exponential-amount args) (/ amount-max-jitter-ms 1000))))))
 
 (test retry-sleep-amount-range
@@ -70,10 +72,10 @@
                                (and (>= sleep-amount-sec (/ amount-no-jitter-ms 1000))
                                     (<= sleep-amount-sec (/ amount-max-jitter-ms 1000)))))))))
 
-(defun dummy (x) nil)
 (test failed-validation-function-retried-with-exponential-sleep
-  :description "A validation function which always returns nil will have its retry strategy retried max-retry times"
-  (with-stubs ((dummy nil))
-    (is (null (with-exponential-retry (:max-retries *max-retries*)
-                (dummy))))
-    (is (= (call-times-for 'dummy) *max-retries*))))
+  :description "A validation function which always returns nil will have its retry strategy retried max-retry"
+  (let ((tries 0))
+    (is (null (with-exponential-retry (:sleep-plist-args '(:jitter-ms 10 :retry-period-ms 20 :exponential-backoff 1.1) :max-retries *max-retries*)
+                (incf tries)
+                nil)))
+    (is (= tries *max-retries*)))) 

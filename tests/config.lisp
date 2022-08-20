@@ -2,7 +2,6 @@
 (defpackage usufslc/tests.config
   (:use :cl
         :fiveam
-        :mockingbird
         :usufslc.config
         :usufslc/tests)
   (:export :config-suite))
@@ -20,16 +19,14 @@
              '("wow" "wow" "wow"))))
 
 (test build-sections
-  :description "Test that parser builds sections from lines of config file correctly"
+  :description "Test that parser builds sections from a list of lines, with the sections not necessarily in order, but the properties are"
   (is (equal (usufslc.config::sections '("[section]" "asdf"))
-             '(("section" ("asdf")))))
-  (flet ((is-section (section-name)
-           (lambda (section) (equal (car section) section-name))))
-    (let* ((sections (usufslc.config::sections '("[section]" "asdf" "fdsa" "[section2]" "asdf2")))
-           (section (find-if (is-section "section") sections))
-           (section2 (find-if (is-section "section2") sections)))
-      (is (equal section '("section" ("asdf" "fdsa"))))
-      (is (equal section2 '("section2" ("asdf2")))))))
+             '(("section" . ("asdf")))))
+  (let* ((sections (usufslc.config::sections '("[section]" "asdf" "fdsa" "asdf" "[section2]" "asdf2")))
+         (section (assoc "section" sections :test 'equal))
+         (section2 (assoc "section2" sections :test 'equal)))
+      (is (equal section '("section" . ("asdf" "fdsa" "asdf"))))
+      (is (equal section2 '("section2" . ("asdf2"))))))
 
 (test property-map-builder
   :description "Test that parser builds property map correctly from lines of property-strings"
