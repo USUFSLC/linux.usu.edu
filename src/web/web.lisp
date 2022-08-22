@@ -10,16 +10,6 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
-(defun format-app-route (path &key (usufslc-protocol (get-config-value :|app-route| :|protocol|))
-                                (usufslc-port (get-config-value :|app-route| :|port|))
-                                (usufslc-host (get-config-value :|app-route| :|host|)))
-  (render-uri
-   (make-uri
-    :scheme usufslc-protocol
-    :port usufslc-port
-    :host usufslc-host
-    :path path)))
-
 ;;
 ;; Routing rules
 @route GET "/"

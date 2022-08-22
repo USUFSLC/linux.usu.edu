@@ -12,6 +12,10 @@
                :alexandria
                :parse-number
 
+               ;; DB
+               :mito
+               :dbi
+
                ;; URI parsing / decoding
                :quri
                

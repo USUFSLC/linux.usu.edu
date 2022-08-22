@@ -1,7 +1,9 @@
 (in-package :cl-user)
 (defpackage usufslc.utils
-  (:use :cl
-        :parse-number
-        :usufslc.config)
+  (:use :cl)
+  (:import-from :parse-number
+                :parse-number)
+  (:import-from :usufslc.config
+                :get-config)
   (:export :random-in-range
            :with-exponential-retry))

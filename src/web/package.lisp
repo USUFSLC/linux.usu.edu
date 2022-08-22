@@ -1,9 +1,13 @@
 (in-package :cl-user)
 (defpackage usufslc.web
   (:use :cl
-        :lsx
-        :caveman2
-        :usufslc.config)
+        :caveman2)
+  (:import-from :usufslc.config
+                :*application-root*
+                :get-config)
+  (:import-from :lsx
+                :render-object
+                :read-lsx-file)
   (:import-from :quri
                 :make-uri
                 :render-uri

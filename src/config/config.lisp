@@ -16,12 +16,14 @@
 (defparameter *static-paths* '(("^(?:/css/|/js/)" . #P"front/dist/")
                                ("^(?:/users/|/images/|/fonts/|/robot\\.txt$|/favicon.ico$)" . #P"public/")))
 
-(defun get-config-value (section-keyword property-keyword &optional (config-map *config*))
-  (let ((section (gethash section-keyword config-map)))
-    (if section 
-        (let ((property (gethash property-keyword section)))
+;; Use nil as property to return entire section
+(defun get-config (&key section property (config-map *config*))
+  (let ((section (gethash section config-map)))
+    (if (and section property)
+        (let ((property (gethash property section)))
           (unless (equal property "nil")
-              property)))))
+            property))
+        section)))
 
 (defun prod-p ()
   (equal *environment* "production"))

@@ -10,7 +10,7 @@
   (:import-from :usufslc.web
                 :*web*)
   (:import-from :usufslc.config
-                :get-config-value
+                :get-config
                 :prod-p
                 :*static-paths*
                 :*application-root*))
@@ -28,9 +28,9 @@
     ,@body))
 
 (with-static-handlers ()
-  (if (get-config-value :|app-log| :|access-log|)
+  (if (get-config :section :|app-log| :property :|access-log|)
       :accesslog)
-  (let ((error-log-path (get-config-value :|app-log| :|error-log|)))
+  (let ((error-log-path (get-config :section :|app-log| :property :|error-log|)))
     (if error-log-path
         `(:backtrace
           :output ,(pathname error-log-path))))

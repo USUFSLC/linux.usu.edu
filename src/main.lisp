@@ -13,9 +13,9 @@
         (stop))))
   (setf *handler*
         (apply #'clackup *appfile-path* (append
-                                         `(:port ,(parse-number (get-config-value :|app| :|port|))
-                                           :address ,(get-config-value :|app| :|address|)
-                                           :debug ,(get-config-value :|app| :|debug|)
+                                         `(:port ,(parse-number (get-config :section :|app| :property :|port|))
+                                           :address ,(get-config :section :|app| :property :|address|)
+                                           :debug ,(get-config :section :|app| :property :|debug|)
                                            :server :hunchentoot)
                                          args))))
 

@@ -11,7 +11,7 @@
                 :make-keyword)
   (:import-from :asdf
                 :system-source-directory)
-  (:export :get-config-value
+  (:export :get-config
            :prod-p
            :*application-root*
            :*static-paths*))

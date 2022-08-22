@@ -2,9 +2,9 @@
 
 (defun make-discord-redirect-url (usufslc-redirect-path
                                   &key
-                                    (discord-oauth-url (get-config-value :|discord| :|auth-url|))
-                                    (client-id (get-config-value :|discord| :|client-id|))
-                                    (scope (get-config-value :|discord| :|scope|)))
+                                    (discord-oauth-url (get-config :section :|discord| :property :|auth-url|))
+                                    (client-id (get-config :section :|discord| :property :|client-id|))
+                                    (scope (get-config :section :|discord| :property :|scope|)))
   (render-uri
    (make-uri :defaults discord-oauth-url
              :query `(("client_id" . ,client-id)
@@ -31,7 +31,7 @@
 ;;
 ;;(defun retrieve-discord-user-details (bearer-token)
 ;;  (decode-json
-;;   (http-request (get-config-value :|discord| :|identity-url|)
+;;   (http-request (get-config :|discord| :|identity-url|)
 ;;                 :method :get
 ;;                 :additional-headers `(("authorization" . ,bearer-token))
 ;;                 :want-stream t)))

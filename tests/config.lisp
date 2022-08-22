@@ -39,7 +39,7 @@
     (is (equal (gethash :|property1| property-map) "leopard bear"))
     (is (equal (gethash :|bruh-moment| property-map) "bruh"))))
 
-(test get-config-value
+(test get-config
   :description "Test that parser gets config value correctly"
   (let ((config-map (let ((config (make-hash-table)))
                       (setf (gethash :|section| config)
@@ -51,10 +51,22 @@
                             (gethash :|section2| config)
                             (make-hash-table))
                       config)))
-    (is (equal (get-config-value :|section| :|property1| config-map) "value1"))
-    (is (not (get-config-value :|section| :|property2| config-map)))
-    (is (not (get-config-value :|section| :|property3| config-map)))
-    (is (not (get-config-value :|nonexistantsection| :|property1| config-map)))))
+    (is (equal (gethash :|property1| (get-config :section :|section|
+                                                 :config-map config-map))
+               "value1"))
+    (is (equal (get-config :section :|section|
+                           :property :|property1|
+                           :config-map config-map)
+               "value1"))
+    (is (not (get-config :section :|section|
+                         :property :|property2|
+                         :config-map config-map)))
+    (is (not (get-config :section :|section|
+                         :property :|property3|
+                         :config-map config-map)))
+    (is (not (get-config :section :|nonexistantsection|
+                         :property :|property1|
+                         :config-map config-map)))))
                                    
 (test config-file-parse
   :description "Test that parser parses config file correctly; the ultimate test"
@@ -70,11 +82,28 @@
              "#[commented-section]"
              "  :property3 leopard bear"))
           (config-map (usufslc.config::parse-config config-file-contents)))
-    (is (equal (get-config-value :|section| :|property1| config-map) "leopard bear"))
-    (is (not (get-config-value :|section| :|property2| config-map)))
-    (is (equal (get-config-value :|section| :|bruh-moment| config-map) "bruh"))
-    (is (equal (get-config-value :|section2| :|property2| config-map) "leopard bear"))
-    (is (equal (get-config-value :|section2| :|property3| config-map) "leopard bear"))
-    (is (not (get-config-value :|section2| :|bruh-moment| config-map)))
-    (is (not (get-config-value :|commented-section| :|property3| config-map)))))
-    
+    (is (equal (get-config :section :|section|
+                           :property :|property1|
+                           :config-map config-map)
+               "leopard bear"))
+    (is (not (get-config :section :|section|
+                         :property :|property2|
+                         :config-map config-map)))
+    (is (equal (get-config :section :|section|
+                           :property :|bruh-moment|
+                           :config-map config-map)
+               "bruh"))
+    (is (equal (get-config :section :|section2|
+                           :property :|property2|
+                           :config-map config-map)
+               "leopard bear"))
+    (is (equal (get-config :section :|section2|
+                           :property :|property3|
+                           :config-map config-map) "leopard bear"))
+    (is (not (get-config :section :|section2|
+                         :property :|bruh-moment|
+                         :config-map config-map)))
+    (is (not (get-config :section :|commented-section|
+                         :property :|property3|
+                         :config-map config-map)))))
+

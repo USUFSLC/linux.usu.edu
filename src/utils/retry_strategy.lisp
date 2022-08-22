@@ -1,8 +1,8 @@
 (in-package :usufslc.utils)
 
-(defun sleep-exponential-amount (iteration &key (jitter-ms (parse-number (get-config-value :|retry| :|jitter-ms|)))
-                                             (retry-period-ms (parse-number (get-config-value :|retry| :|period-ms|)))
-                                             (exponential-backoff (parse-number (get-config-value :|retry| :|exponential|))))
+(defun sleep-exponential-amount (iteration &key (jitter-ms (parse-number (get-config :section :|retry| :property :|jitter-ms|)))
+                                             (retry-period-ms (parse-number (get-config :section :|retry| :property :|period-ms|)))
+                                             (exponential-backoff (parse-number (get-config :section :|retry| :property :|exponential|))))
   (let ((base-sleep (* (expt exponential-backoff (1- iteration)) retry-period-ms))
         (jitter (random jitter-ms)))
     (/ (+ base-sleep jitter) 1000)))
@@ -14,7 +14,7 @@
 (defmacro with-exponential-retry ((&key
                                      sleep-plist-args
                                      (validator #'identity)
-                                     (max-retries (parse-number (get-config-value :|retry| :|max-retries|))))
+                                     (max-retries (parse-number (get-config :section :|retry| :property :|max-retries|))))
                                   &body body)
   `(loop for retry from 1 to ,max-retries
          do (let ((current-result (handler-case (progn ,@body)

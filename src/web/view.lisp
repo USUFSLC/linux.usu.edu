@@ -3,7 +3,9 @@
 ;; A hash table containing template path => template function
 (defparameter *template-registry* (make-hash-table :test 'equal))
 
-(defparameter *template-directory* (merge-pathnames (pathname (get-config-value :|app-render| :|template-directory|)) *application-root*))
+(defparameter *template-directory* (merge-pathnames
+                                    (pathname (get-config :section :|app-render| :property :|template-directory|))
+                                    *application-root*))
 
 ;; Renders a template given path data, its environment p-list, and whether to return the raw
 ;; LSX template, or to render it to a string (render-lsx == t ? string : lsx-object).
@@ -18,9 +20,19 @@
           object))))
 
 (defun render-with-root (template-path &key root-env env)
-  (render (get-config-value :|app-render| :|template-root|) 
+  (render (get-config :section :|app-render| :property :|template-root|) 
           :env (concatenate 'list
                             `(:content ,(render template-path
                                                 :env env
                                                 :render-lsx nil))
                             root-env)))
+
+(defun format-app-route (path &key (usufslc-protocol (get-config :section :|app-route| :property :|protocol|))
+                                (usufslc-port (get-config :section :|app-route| :property :|port|))
+                                (usufslc-host (get-config :section :|app-route| :property :|host|)))
+  (render-uri
+   (make-uri
+    :scheme usufslc-protocol
+    :port usufslc-port
+    :host usufslc-host
+    :path path)))
