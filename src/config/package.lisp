@@ -13,5 +13,6 @@
                 :system-source-directory)
   (:export :get-config
            :prod-p
+           :dev-p
            :*application-root*
            :*static-paths*))

@@ -14,6 +14,7 @@
 
                ;; DB
                :mito
+               :sxql
                :dbi
 
                ;; URI parsing / decoding

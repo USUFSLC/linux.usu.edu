@@ -1,0 +1,5 @@
+(deftable user ()
+  ((name :col-type (:varchar 32))
+   (discord-tag :col-type (:varchar 8))
+   (discord-id :col-type (:varchar 128)))
+  (:unique-keys discord-id))

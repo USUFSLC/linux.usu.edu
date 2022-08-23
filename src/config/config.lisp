@@ -25,5 +25,8 @@
             property))
         section)))
 
+(defun dev-p ()
+  (equal *environment* "development"))
+
 (defun prod-p ()
   (equal *environment* "production"))
