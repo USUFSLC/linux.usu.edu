@@ -28,19 +28,18 @@
 (defun show-license ()
   (render-with-root #P"pages/license.lsx" :root-env '(:page-title "License")))
 
-@route GET "/test"
-(defun test ()
-  (format nil "~a" *request*))
+@route GET "/oauth/discord" 
+(defun receive-discord-oauth (&key |code|)
+  (format nil "~a" 
+          (retrieve-discord-user-details
+           (format-bearer-token-header
+            (retrieve-discord-oauth-response |code| (format-app-route (request-path-info *request*)))))))
 
-;;@route GET "/oauth/discord" 
-;;(defun receive-discord-oauth (&key |code|)
-  
-;;@route GET "/login/discord"
-;;(defun login ()
-;;  (flet ((encode (string) (url-encode string *drakma-default-external-format*)))
-;;    (render-with-root #P"auth/log_in.lsx"
-;;                      :root-env '(:page-title "Log In")
-;;                      :env `(:redirect-url (make-discord-redirect-url 
+@route GET "/login/discord"
+(defun login ()
+  (render-with-root #P"auth/discord_oauth.lsx"
+                    :root-env '(:page-title "Log in with Discord")
+                    :env `(:redirect-url ,(make-discord-redirect-url (format-app-route "/oauth/discord")))))
 
 ;;
 ;; Error pages

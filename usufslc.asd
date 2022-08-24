@@ -37,15 +37,21 @@
 
                 ((:module "web"
                   :components 
-                  ((:file "auth" :depends-on ("package"))
-                   (:file "web" :depends-on ("auth" "view" "package"))
+                  ((:file "web" :depends-on ("auth" "view" "package"))
+                   (:file "auth" :depends-on ("package"))
                    (:file "view" :depends-on ("package"))
                    (:file "package"))
                   :depends-on ("config"))
 
                  (:module "db"
                   :components
-                  ((:file "db" :depends-on ("package"))
+                  ((:module "models"
+                    :depends-on ("db" "package")
+                    :components
+                    ((:file "context" :depends-on ("user" "package"))
+                     (:file "user" :depends-on ("package"))
+                     (:file "package")))
+                   (:file "db" :depends-on ("package"))
                    (:file "package"))
                   :depends-on ("config"))
 

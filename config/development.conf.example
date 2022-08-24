@@ -39,4 +39,5 @@
 
 [app-log]
   :access-log t
+  :sql-info t
   :error-log /tmp/error.log # This could be nil for production

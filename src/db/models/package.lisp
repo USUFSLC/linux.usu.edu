@@ -1,6 +1,8 @@
+(in-package :cl-user)
 (defpackage usufslc.db.models
-  (:use :cl-user
-        :usufslc.db)
-  (:import-from :mito
-                :deftable))
-
+  (:use :cl
+        :mito)
+  (:import-from :usufslc.db
+                :with-db)
+  (:export :user
+           :context))

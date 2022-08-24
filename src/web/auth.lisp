@@ -12,26 +12,27 @@
                       ("response_type" . "code")
                       ("scope" . ,scope)))))
 
-;;(defun retrieve-discord-oauth-token (oauth-code)
-;;  (decode-json 
-;;   (http-request (config :discord-token-url)
-;;                 :method :post
-;;                 :parameters `(("client_id" . ,(config :discord-client-id))
-;;                               ("scope" . ,(config :discord-scope))
-;;                               ("redirect_uri" . ,(format-app-route "/"))
-;;                               ("client_secret" . ,(config :discord-client-secret))
-;;                               ("grant_type" . "authorization_code")
-;;                               ("code" . ,oauth-code))
-;;                 :want-stream t)))
-;;
-;;(defun format-bearer-token-header (discord-oauth-response-alist)
-;;  (let ((token-type (cdr (assoc :TOKEN--TYPE discord-oauth-response-alist)))
-;;        (access-token (cdr (assoc :ACCESS--TOKEN discord-oauth-response-alist))))
-;;    (format nil "~a ~a" token-type access-token)))
-;;
-;;(defun retrieve-discord-user-details (bearer-token)
-;;  (decode-json
-;;   (http-request (get-config :|discord| :|identity-url|)
-;;                 :method :get
-;;                 :additional-headers `(("authorization" . ,bearer-token))
-;;                 :want-stream t)))
+(defun retrieve-discord-oauth-response (oauth-code redirect-uri)
+  (decode-json 
+   (http-request (get-config :section :|discord| :property :|token-url|)
+                 :method :post
+                 :parameters `(("client_id" . ,(get-config :section :|discord| :property :|client-id|))
+                               ("scope" . ,(get-config :section :|discord| :property :|scope|))
+                               ("redirect_uri" . ,redirect-uri)
+                               ("client_secret" . ,(get-config :section :|discord| :property :|secret|))
+                               ("grant_type" . "authorization_code")
+                               ("code" . ,oauth-code))
+                 :additional-headers '(("Content-Type" . "application/x-www-form-urlencoded"))
+                 :want-stream t)))
+
+(defun format-bearer-token-header (discord-oauth-response-alist)
+  (let ((token-type (cdr (assoc :TOKEN--TYPE discord-oauth-response-alist)))
+        (access-token (cdr (assoc :ACCESS--TOKEN discord-oauth-response-alist))))
+    (format nil "~a ~a" token-type access-token)))
+
+(defun retrieve-discord-user-details (bearer-token)
+  (decode-json
+   (http-request (get-config :section :|discord| :property :|identity-url|)
+                 :method :get
+                 :additional-headers `(("authorization" . ,bearer-token))
+                 :want-stream t)))
