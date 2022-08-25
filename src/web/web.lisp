@@ -29,11 +29,15 @@
   (render-with-root #P"pages/license.lsx" :root-env '(:page-title "License")))
 
 @route GET "/oauth/discord" 
-(defun receive-discord-oauth (&key |code|)
-  (format nil "~a" 
-          (retrieve-discord-user-details
-           (format-bearer-token-header
-            (retrieve-discord-oauth-response |code| (format-app-route (request-path-info *request*)))))))
+(defun save-user-from-discord (&key |code|)
+  (if |code|
+      (let ((user-dao 
+              (create-or-update-user-from-discord
+               (retrieve-discord-user-details
+                (format-bearer-token-header
+                 (retrieve-discord-oauth-response |code|
+                                                  (format-app-route (request-path-info *request*))))))))
+        (format nil "~a" user-dao))))
 
 @route GET "/login/discord"
 (defun login ()

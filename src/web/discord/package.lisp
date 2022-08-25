@@ -1,13 +1,9 @@
 (in-package :cl-user)
-(defpackage usufslc.web
+(defpackage usufslc.web.discord
   (:use :cl
         :caveman2)
   (:import-from :usufslc.config
-                :*application-root*
                 :get-config)
-  (:import-from :lsx
-                :render-object
-                :read-lsx-file)
   (:import-from :quri
                 :make-uri
                 :render-uri
@@ -16,10 +12,7 @@
                 :decode-json)
   (:import-from :drakma
                 :http-request)
-  (:import-from :usufslc.db
-                :with-db)
-  (:import-from :usufslc.db.user
-                :user)
-  (:export :*web*
-           :render
-           :render-with-root))
+  (:export :format-bearer-token-header
+           :retrieve-discord-token-oauth-response
+           :make-discord-redirect-url
+           :retrieve-discord-user-details))

@@ -1,4 +1,4 @@
-(in-package :usufslc.web)
+(in-package :usufslc.web.discord)
 
 (defun make-discord-redirect-url (usufslc-redirect-path
                                   &key
@@ -12,7 +12,7 @@
                       ("response_type" . "code")
                       ("scope" . ,scope)))))
 
-(defun retrieve-discord-oauth-response (oauth-code redirect-uri)
+(defun retrieve-discord-token-oauth-response (oauth-code redirect-uri)
   (decode-json 
    (http-request (get-config :section :|discord| :property :|token-url|)
                  :method :post

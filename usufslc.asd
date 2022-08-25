@@ -37,23 +37,35 @@
 
                 ((:module "web"
                   :components 
-                  ((:file "web" :depends-on ("auth" "view" "package"))
-                   (:file "auth" :depends-on ("package"))
+                  ((:file "web" :depends-on ("discord" "view" "package"))
+                   (:module "discord"
+                    :depends-on ("package")
+                    :components
+                    ((:file "auth" :depends-on ("package"))
+                     (:file "package")))
                    (:file "view" :depends-on ("package"))
                    (:file "package"))
-                  :depends-on ("config"))
+                  :depends-on ("config" "db"))
 
                  (:module "db"
                   :components
                   ((:module "models"
                     :depends-on ("db" "package")
                     :components
-                    ((:file "context" :depends-on ("user" "package"))
-                     (:file "user" :depends-on ("package"))
-                     (:file "package")))
-                   (:file "db" :depends-on ("package"))
-                   (:file "package"))
-                  :depends-on ("config"))
+                    ((:module "user"
+                      :depends-on ("context")
+                      :components
+                      ((:file "extern" :depends-on ("models" "package"))
+                       (:file "models" :depends-on ("package"))
+                       (:file "package")))
+                     (:module "context"
+                      :components
+                      ((:file "extern" :depends-on ("models" "package"))
+                       (:file "models" :depends-on ("package"))
+                       (:file "package")))))
+                    (:file "db" :depends-on ("package"))
+                    (:file "package"))
+                   :depends-on ("config"))
 
                  (:module "utils"
                   :components
@@ -81,7 +93,10 @@
                :usufslc)
   :components ((:module "tests"
                 :components
-                ((:file "web" :depends-on ("suite"))
+                ((:file "db_integ" :depends-on ("suite"))
+
+                 (:file "web" :depends-on ("suite"))
+                 (:file "discord" :depends-on ("suite"))
                  (:file "config" :depends-on ("suite"))
                  (:file "utils" :depends-on ("suite"))
                  (:file "suite"))))
