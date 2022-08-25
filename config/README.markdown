@@ -14,3 +14,19 @@ If any value or section is missing from the configuration, which the application
 implementation guarantees it will be `nil`. E.g., removing the `:error-log` property in `[app-log]` will
 treat the value for `:error-log` as `nil` (with the side effect that errors are not logged by lack).
 This can also be replicated by setting the property to the value "nil" in the config.
+
+"Formal" grammar:
+```
+Config  => ε
+        => section\nConfig
+section => HEADER
+        => HEADER\nprop*
+HEADER  => [NAME]
+NAME    => \wNAME 
+        => -NAME
+        => ε
+prop    => :NAME VALUE
+VALUE   => [^#]* (anything besides # - anything after that is a comment)
+```
+
+Not sure how accurate this^ is as a grammar. Just look at the examples lmao.
