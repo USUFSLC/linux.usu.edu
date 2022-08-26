@@ -58,7 +58,7 @@
                                  :discord-id "1123581321345589")))
         (is (equal user-id (mito:object-id user)))
         (mito:delete-dao user)))))
-
+;;
 ;;(test user-with-role-in-context-can-perform-action
 ;;  :description "Test that a user with a role in the context can perform an action"
 ;;  (with-db ()
@@ -72,7 +72,7 @@
 ;;
 ;;      (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-write-context-operation)
 ;;      (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-read-context-operation)
-;;      
+    
       
       
 

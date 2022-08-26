@@ -17,11 +17,13 @@
                 :accessor context-role-operation-operation)
      (context :col-type context
               :accessor context-role-operation-context))
-    (:metaclass mito:dao-table-class))
+    (:metaclass mito:dao-table-class)
+    (:unique-keys (operation context-id)))
 
   (defclass context-role-operation ()
     ((context-role :col-type context-role
                    :accessor context-role-operation-context-role)
      (context-operation :col-type context-operation
                         :accessor context-role-operation-context-operation))
-    (:metaclass mito:dao-table-class)))
+    (:metaclass mito:dao-table-class)
+    (:unique-keys (context-role-id context-operation-id))))

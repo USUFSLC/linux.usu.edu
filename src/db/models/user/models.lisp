@@ -21,7 +21,8 @@
   (defclass user-context-role ()
     ((user-context :col-type user-context
                    :accessor user-context-role-user-context)
-     (role :col-type context-role 
-           :accessor user-context-role-role))
-    (:metaclass mito:dao-table-class)))
+     (context-role :col-type context-role
+                   :accessor user-context-role-context-role))
+    (:metaclass mito:dao-table-class)
+    (:unique-keys (user-context-id context-role-id))))
 

@@ -13,3 +13,6 @@
                   (user-discord-tag user) discord-tag)
             (mito:save-dao user)
             user)))))
+
+(defun can (user operation context)
+  t)

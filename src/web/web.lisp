@@ -30,16 +30,19 @@
 
 @route GET "/oauth/discord" 
 (defun save-user-from-discord (&key |code|)
-  (if |code|
+  (if (scan (get-config :section :|discord| :property :|code-validation-regex|) |code|)
       (let ((user-dao 
               (create-or-update-user-from-discord
                (retrieve-discord-user-details
                 (format-bearer-token-header
-                 (retrieve-discord-oauth-response |code|
-                                                  (format-app-route (request-path-info *request*))))))))
-        (format nil "~a" user-dao))))
+                 (retrieve-discord-token-oauth-response |code|
+                                                        (format-app-route (request-path-info *request*))))))))
+        (format t "~a" user-dao)
+        "Hello")))
 
-@route GET "/login/discord"
+
+
+@route GET "/login"
 (defun login ()
   (render-with-root #P"auth/discord_oauth.lsx"
                     :root-env '(:page-title "Log in with Discord")

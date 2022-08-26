@@ -34,54 +34,52 @@
 
   :components ((:module "src"
                 :components
-
                 ((:module "web"
                   :components 
                   ((:file "web" :depends-on ("discord" "view" "package"))
+                   (:file "view" :depends-on ("package"))
+                   (:file "package" :depends-on ("discord"))
                    (:module "discord"
-                    :depends-on ("package")
                     :components
                     ((:file "auth" :depends-on ("package"))
-                     (:file "package")))
-                   (:file "view" :depends-on ("package"))
-                   (:file "package"))
+                     (:file "package"))))
                   :depends-on ("config" "db"))
 
-                 (:module "db"
-                  :components
-                  ((:module "models"
-                    :depends-on ("db" "package")
-                    :components
-                    ((:module "user"
-                      :depends-on ("context")
-                      :components
-                      ((:file "extern" :depends-on ("models" "package"))
-                       (:file "models" :depends-on ("package"))
-                       (:file "package")))
-                     (:module "context"
-                      :components
-                      ((:file "extern" :depends-on ("models" "package"))
-                       (:file "models" :depends-on ("package"))
-                       (:file "package")))))
-                    (:file "db" :depends-on ("package"))
+                  (:module "db"
+                   :components
+                   ((:module "models"
+                     :depends-on ("db" "package")
+                     :components
+                     ((:module "user"
+                       :depends-on ("context")
+                       :components
+                       ((:file "extern" :depends-on ("models" "package"))
+                        (:file "models" :depends-on ("package"))
+                        (:file "package")))
+                      (:module "context"
+                       :components
+                       ((:file "extern" :depends-on ("models" "package"))
+                        (:file "models" :depends-on ("package"))
+                        (:file "package")))))
+                     (:file "db" :depends-on ("package"))
+                     (:file "package"))
+                    :depends-on ("config"))
+
+                  (:module "utils"
+                   :components
+                   ((:file "retry_strategy" :depends-on ("package"))
+                    (:file "utils" :depends-on ("package"))
                     (:file "package"))
                    :depends-on ("config"))
 
-                 (:module "utils"
-                  :components
-                  ((:file "retry_strategy" :depends-on ("package"))
-                   (:file "utils" :depends-on ("package"))
-                   (:file "package"))
-                  :depends-on ("config"))
+                  (:module "config"
+                   :components
+                   ((:file "config" :depends-on ("parser" "package"))
+                    (:file "parser" :depends-on ("package"))
+                    (:file "package")))
 
-                 (:module "config"
-                  :components
-                  ((:file "config" :depends-on ("parser" "package"))
-                   (:file "parser" :depends-on ("package"))
-                   (:file "package")))
-
-                 (:file "main" :depends-on ("package" "utils" "config" "db" "web"))
-                 (:file "package"))))
+                  (:file "main" :depends-on ("package" "utils" "config" "db" "web"))
+                  (:file "package"))))
   :description "A website for the USU Free Software and Linux Club"
   :in-order-to ((test-op (test-op "usufslc/tests"))))
 
