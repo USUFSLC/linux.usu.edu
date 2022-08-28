@@ -1,0 +1,13 @@
+(lambda ()
+  <div class="terminal-container">
+    <div id="terminal-history">
+      <p>> Welcome!</p>
+    </div>
+    <div class="terminal-input">
+      <form class="terminal-entry" id="shell-input">
+        <span id="prompt"></span>
+        <input type="text" id="shell-command">
+      </form> 
+    </div>
+  </div>
+)

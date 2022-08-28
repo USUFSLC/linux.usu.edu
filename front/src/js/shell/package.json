@@ -1,0 +1,12 @@
+{
+  "name": "shell",
+  "version": "1.0.0",
+  "description": "JS \"shell\" for USUFSLC",
+  "main": "main.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Simponic",
+  "license": "MIT",
+  "type": "module"
+}

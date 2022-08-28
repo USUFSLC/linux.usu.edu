@@ -1,5 +1,7 @@
 window.$ = require('jquery');
-window.jQuery = window.$;
+
+window.shell = require('./shell/main').shell;
 
 require('./components/sidebar');
 require('./components/themePicker');
+require('./components/shellInteractor');

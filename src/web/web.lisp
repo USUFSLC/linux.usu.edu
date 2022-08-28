@@ -14,7 +14,7 @@
 ;; Routing rules
 @route GET "/"
 (defun show-root ()
-  (render #P"root.lsx"))
+  (render-with-root #P"pages/home.lsx" ))
 
 @route GET "/conduct"
 (defun show-conduct ()

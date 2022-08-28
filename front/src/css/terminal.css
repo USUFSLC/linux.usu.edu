@@ -1,0 +1,15 @@
+@import url('./colors.css');
+
+.terminal-container {
+}
+
+.terminal-entry {
+  padding-top: 1rem;
+}
+
+#terminal-history {
+  overflow: auto;
+}
+
+.terminal-input {
+}
