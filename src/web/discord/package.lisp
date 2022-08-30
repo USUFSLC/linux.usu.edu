@@ -4,6 +4,8 @@
         :caveman2)
   (:import-from :usufslc.config
                 :get-config)
+  (:import-from :usufslc.utils
+                :with-exponential-retry)
   (:import-from :quri
                 :make-uri
                 :render-uri

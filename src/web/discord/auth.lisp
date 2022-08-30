@@ -13,17 +13,19 @@
                       ("scope" . ,scope)))))
 
 (defun retrieve-discord-token-oauth-response (oauth-code redirect-uri)
-  (decode-json 
-   (http-request (get-config :section :|discord| :property :|token-url|)
-                 :method :post
-                 :parameters `(("client_id" . ,(get-config :section :|discord| :property :|client-id|))
-                               ("scope" . ,(get-config :section :|discord| :property :|scope|))
-                               ("redirect_uri" . ,redirect-uri)
-                               ("client_secret" . ,(get-config :section :|discord| :property :|secret|))
-                               ("grant_type" . "authorization_code")
-                               ("code" . ,oauth-code))
-                 :additional-headers '(("Content-Type" . "application/x-www-form-urlencoded"))
-                 :want-stream t)))
+  (with-exponential-retry (:validator (lambda (json) (and (cdr (assoc :ACCESS--TOKEN json)) 
+                                                          (cdr (assoc :TOKEN--TYPE json)))))
+    (decode-json 
+      (http-request (get-config :section :|discord| :property :|token-url|)
+                    :method :post
+                    :parameters `(("client_id" . ,(get-config :section :|discord| :property :|client-id|))
+                                  ("scope" . ,(get-config :section :|discord| :property :|scope|))
+                                  ("redirect_uri" . ,redirect-uri)
+                                  ("client_secret" . ,(get-config :section :|discord| :property :|secret|))
+                                  ("grant_type" . "authorization_code")
+                                  ("code" . ,oauth-code))
+                    :additional-headers '(("Content-Type" . "application/x-www-form-urlencoded"))
+                    :want-stream t))))
 
 (defun format-bearer-token-header (discord-oauth-response-alist)
   (let ((token-type (cdr (assoc :TOKEN--TYPE discord-oauth-response-alist)))
@@ -31,8 +33,11 @@
     (format nil "~a ~a" token-type access-token)))
 
 (defun retrieve-discord-user-details (bearer-token)
-  (decode-json
-   (http-request (get-config :section :|discord| :property :|identity-url|)
-                 :method :get
-                 :additional-headers `(("authorization" . ,bearer-token))
-                 :want-stream t)))
+  (with-exponential-retry (:validator (lambda (json) (and (cdr (assoc :ID json)) 
+                                                          (cdr (assoc :USERNAME json)) 
+                                                          (cdr (assoc :DISCRIMINATOR json)))))
+    (decode-json
+      (http-request (get-config :section :|discord| :property :|identity-url|)
+                    :method :get
+                    :additional-headers `(("authorization" . ,bearer-token))
+                    :want-stream t))))

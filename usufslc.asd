@@ -43,7 +43,7 @@
                     :components
                     ((:file "auth" :depends-on ("package"))
                      (:file "package"))))
-                  :depends-on ("config" "db"))
+                  :depends-on ("config" "db" "utils"))
 
                   (:module "db"
                    :components

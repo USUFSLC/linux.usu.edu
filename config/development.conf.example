@@ -10,8 +10,8 @@
 
 [retry]
   :max-retries 3
-  :period-ms 1500
-  :jitter-ms 1000
+  :period-ms 500
+  :jitter-ms 200
   :exponential 1.3
 
 [db]
