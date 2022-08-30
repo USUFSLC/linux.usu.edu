@@ -8,9 +8,10 @@ export class FileSystemNode {
 
   getFullPath() {
     if (this.parent) {
-      return `${this.parent.getFullPath()}/${this.name}`;
+      const parentPath = this.parent.getFullPath();
+      return `${parentPath + (!this.parent?.parent ? "" : "/")}${this.name}`;
     }
-    return ""; // No need for a trailing slash on the root node
+    return "/";
   }
 
   delete() {
@@ -46,10 +47,6 @@ export class FileSystem {
       }
     }
     constructFs(filesystemRepresentation);
-  }
-
-  reducePath(fsNode) {
-    return fsNode.getFullPath();
   }
 
   absolutePath(currentWorkingDirectory, path) {
@@ -93,7 +90,7 @@ export class FileSystem {
     } 
     const result = {
       type: node.fileContents !== null ? "file" : "directory",
-      path: this.reducePath(node),
+      path: node.getFullPath(),
       node,
     };
     if (type && result.type !== type) {

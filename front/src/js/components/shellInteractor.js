@@ -4,13 +4,13 @@ $("#shell-input").on('submit', function (e) {
   $("#shell-command").val("");
 
   const oldPrompt = shell.buildPrompt();
-  const newEnv = shell.run(command);
+  const result = shell.run(command);
   $("#terminal-history").append(`<div class="terminal-entry">
                                   <p>${oldPrompt} <span class="green">${command}</span></p>
-                                  <pre class="red">${newEnv.stderr}</pre>
-                                  <pre>${newEnv.stdout}</pre>
+                                  <pre class="red">${result.streams.stderr}</pre>
+                                  <pre>${result.streams.stdout}</pre>
                                 </div>`);
 
   $("#prompt").html(shell.buildPrompt());
-})
+});
 $("#prompt").html(shell.buildPrompt());

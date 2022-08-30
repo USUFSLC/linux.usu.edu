@@ -30,22 +30,28 @@ const testFs = {
         "f" : "This is a file",
         "yes" : (env, fs, ...args) => {
           return {
-            stdout: Array(parseInt(args[0])).fill("yes").join(" ")
-          }
+            streams: {
+              stdout: Array(parseInt(args[0])).fill("yes").join(" ")
+            }
+          };
         }
       },
       "echo" : (env, fs, ...args) => {
         return {
-          stdout: args.join(" ")
-        }
+          streams: {
+            stdout: args.join(" ")
+          }
+        };
       }
     }
   },
   "g" : {
     "h" : () => {
       return {
-        stdout: "Hello, world"
-      }
+        streams: {
+          stdout: "Hello, world"
+        }
+      };
     }
   }
 };
@@ -93,6 +99,9 @@ export const runTests = () => {
     assert(fs.getNode("/..") === root, "Getting parent on root returns root");
     const a = root.children.a;
     assert(fs.getNode("/a/../a/./") === a, "Using . and .. returns correct path");
+
+    assert(fs.getNode("/a/../a/./").getFullPath() === "/a", "getFullPath reduces path");
+    assert(fs.getNode("/a/../a/./../..").getFullPath() === "/", "getFullPath reduces path on recursive parent root node");
   });
 
   it('returns the correct status of a dir/file', () => {
@@ -131,14 +140,14 @@ export const runTests = () => {
         return false;
       }
       return a.every((item, index) => item === b[index]);
-    }
+    };
     assert(arrayEqual(Shell.parseCommand('ls /'), ["ls", "/"]), "Parses ls command correctly");
     assert(
       arrayEqual(
         Shell.parseCommand('  /asdf/fdsa "Is a gaming   moment " and   stuff '), 
         ["/asdf/fdsa", "Is a gaming   moment ", "and", "stuff"]
       ), "Parses whitespace correctly");
-  })  
+  });  
 
   it('initializes environment', () => {
     const shell = new Shell(new FileSystem(testFs), {
@@ -147,19 +156,19 @@ export const runTests = () => {
     });
     assert(shell.getEnv("PWD") === "/a/b", "PWD is correct");
     assert(shell.getEnv("PATH") === "/g", "PATH is correct");
-  })
+  });
 
   it('executes commands in path and PWD', () => {
     const shell = new Shell(new FileSystem(testFs), {
       PWD: "/",
       PATH: "/g:/a/b"
     });
-    assert(shell.run("h").stdout === "Hello, world", "'h' program executed from PATH");
-    assert(shell.run("echo Hello, world").stdout === "Hello, world", "'echo Hello, world' program executed from PATH");
+    assert(shell.run("h").streams.stdout === "Hello, world", "'h' program executed from PATH");
+    assert(shell.run("echo Hello, world").streams.stdout === "Hello, world", "'echo Hello, world' program executed from PATH");
     shell.setEnv("PWD", "/a/b/e");
-    assert(shell.run("./yes 5").stdout === "yes yes yes yes yes", "'./yes 5' executed from PWD");
+    assert(shell.run("./yes 5").streams.stdout === "yes yes yes yes yes", "'./yes 5' executed from PWD");
     shell.setEnv("PWD", "/");
-    assert(shell.run("/a/b/e/yes 5").stdout === "yes yes yes yes yes", "'/a/b/e/yes 5' execute from absolute path");
+    assert(shell.run("/a/b/e/yes 5").streams.stdout === "yes yes yes yes yes", "'/a/b/e/yes 5' execute from absolute path");
   });
 
   it('replaces environment variables in command', () => {
@@ -167,7 +176,7 @@ export const runTests = () => {
       PWD: "/",
       PATH: "/g:/a/b"
     });
-    assert(shell.run("echo $PWD").stdout === "/", "PWD env var is correct");
+    assert(shell.run("echo $PWD").streams.stdout === "/", "PWD env var is correct");
   });
 
   it('prints to stderr on error', () => {
@@ -175,8 +184,8 @@ export const runTests = () => {
       PWD: "/",
       PATH: "/g:/a/b"
     });
-    assert(shell.run("bruhMoment").stderr === "bruhMoment: command not found", "Prints command not found to stderr");
-    assert(shell.run("/a").stderr === "/a is not executable", "Prints that a is not executable to stderr");
+    assert(shell.run("bruhMoment").streams.stderr === "bruhMoment: command not found", "Prints command not found to stderr");
+    assert(shell.run("/a").streams.stderr === "/a is not executable", "Prints that a is not executable to stderr");
   });
 
   it('builds classed prompts', () => {

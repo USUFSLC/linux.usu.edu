@@ -8,9 +8,11 @@ export class Shell {
       HOSTNAME: "localhost",
       PWD: "/",
       PATH: "",
+      ...env
+    };
+    this.streams = {
       stdout: "", // Hacky stdout/stderr for now, maybe move to a "file" later?
       stderr: "",
-      ...env
     };
   }
 
@@ -51,7 +53,9 @@ export class Shell {
 
     if (binaryStatus.error) {
       return {
-        stderr: `${name}: command not found`
+        streams: {
+          stderr: `${name}: command not found`
+        }
       };
     }
 
@@ -60,29 +64,42 @@ export class Shell {
         return binaryStatus.node.fileContents(this.env, this.fs, ...args);
       } catch (e) {
         return {
-          stderr: e.message
+          streams: {
+            stderr: e.message
+          }
         }
       }
     } else if (binaryStatus) {
       return {
-        stderr: `${name} is not executable`
+        streams: {
+          stderr: `${name} is not executable`
+        }
       }
     }
   }
 
   run(command) {
+    this.streams.stdout = "";
+    this.streams.stderr = "";
+
     if (command) {
       this.history.push(command);
 
       const [name, ...args] = Shell.parseCommand(command.replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match));
+      const result = this.execute(name, ...args);
       this.env = {
         ...this.env,
-        stdout: "",
-        stderr: "",
-        ...this.execute(name, ...args)
+        ...result.env
+      };
+      this.streams = {
+        ...this.streams,
+        ...result.streams
       };
     }
 
-    return this.env;
+    return {
+      env: this.env,
+      streams: this.streams,
+    };
   }
 }

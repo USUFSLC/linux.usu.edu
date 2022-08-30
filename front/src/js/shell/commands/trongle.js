@@ -1,4 +1,4 @@
-const randUpTo = (max) => Math.random() * max
+const randUpTo = (max) => Math.random() * max;
 class Trongle {
   constructor(element) {
     this.element = element;
@@ -12,8 +12,8 @@ class Trongle {
   }
 
   update(elapsedTime) {
-    this.x += (this.dx*elapsedTime)
-    this.y += (this.dy*elapsedTime)
+    this.x += (this.dx*elapsedTime);
+    this.y += (this.dy*elapsedTime);
 
     this.dx *= this.x + this.width >= window.innerWidth || this.x <= 0 ? -1 : 1;
     this.dy *= this.y + this.height >= window.innerHeight || this.y <= 0 ? -1 : 1;
@@ -46,7 +46,7 @@ const makeTrongleElement = (src) => {
   trongleImage.style.left = `-200px`;
   trongleImage.style.top = `-200px`;
   return trongleImage;
-}
+};
 
 const makeTrongles = (n, trongleSrcs, wrapperElement) => {
   const trongles = Array(n).fill(0).map(() => {
@@ -57,7 +57,7 @@ const makeTrongles = (n, trongleSrcs, wrapperElement) => {
   });
 
   requestAnimationFrame((t) => trongles.map((trongle) => trongle.loop(t)));
-}
+};
 
 const TRONGLE_PATHS = [
   "cubeongle.png", "doritongle.png", "pentongle.png", "quadrongle.png", "trapezongle.png",
@@ -74,6 +74,8 @@ export const trongle = (env, fs, ...args) => {
   makeTrongles(numTrongles, TRONGLE_PATHS, document.body);
 
   return {
-    stdout: `Instantiated ${numTrongles} trongles. Gaming!`,
+    streams: {
+      stdout: `Instantiated ${numTrongles} trongles. Gaming!`,
+    }
   };
-}
+};

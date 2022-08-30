@@ -70,3 +70,18 @@ pre {
   text-align: center;
   margin-bottom: 1em;
 }
+
+input[type=text], input[type=password], input[type=number], input[type=email], textarea, select, option {
+  color: var(--text);
+  border-bottom: 1px solid var(--green);
+  border-style: none none solid none;
+  background-color: var(--bg);
+  font-size: 1em;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
