@@ -1,6 +1,7 @@
 (in-package :cl-user)
 (defpackage usufslc.db.user
   (:use :cl
+        :sxql
         :mito)
   (:import-from :usufslc.db.context
                 :context-role

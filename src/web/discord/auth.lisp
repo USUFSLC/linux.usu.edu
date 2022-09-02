@@ -13,8 +13,7 @@
                       ("scope" . ,scope)))))
 
 (defun retrieve-discord-token-oauth-response (oauth-code redirect-uri)
-  (with-exponential-retry (:validator (lambda (json) (and (cdr (assoc :ACCESS--TOKEN json)) 
-                                                          (cdr (assoc :TOKEN--TYPE json)))))
+  (with-exponential-retry (:validator (lambda (resp) (every (lambda (field) (cdr (assoc field resp))) '(:ACCESS--TOKEN :TOKEN--TYPE))))
     (decode-json 
       (http-request (get-config :section :|discord| :property :|token-url|)
                     :method :post
@@ -33,9 +32,7 @@
     (format nil "~a ~a" token-type access-token)))
 
 (defun retrieve-discord-user-details (bearer-token)
-  (with-exponential-retry (:validator (lambda (json) (and (cdr (assoc :ID json)) 
-                                                          (cdr (assoc :USERNAME json)) 
-                                                          (cdr (assoc :DISCRIMINATOR json)))))
+  (with-exponential-retry (:validator (lambda (resp) (every (lambda (field) (cdr (assoc field resp))) '(:ID :USERNAME :DISCRIMINATOR))))
     (decode-json
       (http-request (get-config :section :|discord| :property :|identity-url|)
                     :method :get

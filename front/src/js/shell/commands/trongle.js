@@ -12,14 +12,16 @@ class Trongle {
   }
 
   update(elapsedTime) {
+    const dHeight = $(document).height();
+    const dWidth = $(document).width();
     this.x += (this.dx*elapsedTime);
     this.y += (this.dy*elapsedTime);
 
-    this.dx *= this.x + this.width >= window.innerWidth || this.x <= 0 ? -1 : 1;
-    this.dy *= this.y + this.height >= window.innerHeight || this.y <= 0 ? -1 : 1;
+    this.dx *= this.x + this.width >= dWidth || this.x <= 0 ? -1 : 1;
+    this.dy *= this.y + this.height >= dHeight || this.y <= 0 ? -1 : 1;
 
-    this.x = Math.max(0, Math.min(this.x, window.innerWidth-this.width));
-    this.y = Math.max(0, Math.min(this.y, window.innerHeight-this.height));
+    this.x = Math.max(0, Math.min(this.x, dWidth-this.width));
+    this.y = Math.max(0, Math.min(this.y, dHeight-this.height));
   }
 
   draw() {

@@ -2,6 +2,7 @@
 (defpackage usufslc.web
   (:use :cl
         :usufslc.web.discord
+        :usufslc.web.components
         :caveman2)
   (:import-from :usufslc.config
                 :*application-root*

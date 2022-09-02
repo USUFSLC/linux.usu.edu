@@ -13,14 +13,14 @@
            lines)))
 
 ;; Returns a-list of section names . property strings (in-order)
-(defun sections (lines)
+(defun sections (lines &optional (seperator-regex "^\\[[\\w-]+\\]$"))
   (let ((sections nil)
         (current-section nil)
         (current-section-prop-strings nil))
     (flet ((add-current-section ()
              (setf sections (cons `(,current-section . ,(reverse current-section-prop-strings)) sections))))
       (loop for line in lines
-            if (cl-ppcre:scan "^\\[[\\w-]+\\]$" line)
+            if (cl-ppcre:scan seperator-regex line)
               do
                  (let ((section (subseq line 1 (1- (length line)))))
                    (if current-section

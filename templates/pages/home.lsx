@@ -1,7 +1,7 @@
-(lambda ()
+(lambda (&key (user-name "guest"))
   <div class="terminal-container">
     <div id="terminal-history">
-      <p>> Welcome!</p>
+      <p>> Welcome, {user-name}!</p>
     </div>
     <div class="terminal-input">
       <form class="terminal-entry" id="shell-input">
