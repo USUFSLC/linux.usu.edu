@@ -16,6 +16,13 @@ export class Shell {
     };
   }
 
+  static parseCommand(command) {
+    return (command.trim()
+            .match(/(["'])(?:\\\1|.)*?\1|[^ "]+/g) || [])
+      .map(arg => arg.replace(/^["']|["']$/g, ""))
+      .filter(arg => arg !== "");
+  }
+
   getEnv(name) {
     return this.env[name];
   }
@@ -29,13 +36,6 @@ export class Shell {
                        .replaceAll(/<(\w+)>/g, (_, name) => `<span class="${name}">`)
                        .replaceAll(/<\/(\w+)>/g, "</span>")
                        .replaceAll(/\$\{(\w+)\}/g, (match, name) => this.env[name] || match);
-  }
-
-  static parseCommand(command) {
-    return command.trim()
-                  .match(/(["'])(?:\\\1|.)*?\1|[^ "]+/g)
-                  .map(arg => arg.replace(/^["']|["']$/g, ""))
-                  .filter(arg => arg !== "");
   }
 
   execute(name, ...args) {
@@ -67,14 +67,14 @@ export class Shell {
           streams: {
             stderr: e.message
           }
-        }
+        };
       }
     } else if (binaryStatus) {
       return {
         streams: {
           stderr: `${name} is not executable`
         }
-      }
+      };
     }
   }
 
@@ -85,16 +85,27 @@ export class Shell {
     if (command) {
       this.history.push(command);
 
-      const [name, ...args] = Shell.parseCommand(command.replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match));
-      const result = this.execute(name, ...args);
-      this.env = {
-        ...this.env,
-        ...result.env
-      };
-      this.streams = {
-        ...this.streams,
-        ...result.streams
-      };
+      const withEnvVars = command
+            .replaceAll(/(\w+)=("([^"]+)"|[^ ]+)/g, (match, name, value, inQuotes) => {
+              // Set environment variables from assignment
+              this.env[name] = inQuotes || value;
+              return "";
+            })
+            .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
+
+      const [name, ...args] = Shell.parseCommand(withEnvVars);
+
+      if (name) {
+        const result = this.execute(name, ...args);
+        this.env = {
+          ...this.env,
+          ...result.env
+        };
+        this.streams = {
+          ...this.streams,
+          ...result.streams
+        };
+      }
     }
 
     return {

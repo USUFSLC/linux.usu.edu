@@ -10,24 +10,22 @@ import { cd } from "./commands/cd";
 import { ls } from "./commands/ls";
 import { echo } from "./commands/echo";
 import { trongle } from "./commands/trongle";
+import { mkdir } from "./commands/mkdir";
+import { touch } from "./commands/touch";
+import { cat } from "./commands/cat";
+import { ed } from "./commands/ed";
 
 const FILES = {
-  "home" : {
-    "logan" : {
-      "Downloads" : {
-        "sayHello" : (env, fs, ...args) => {
-          return {
-            stdout: "Hello, world"
-          }
-        }
-      }
-    },
-  },
+  "home" : { },
   "usr" : {
     "bin" : {
       cd, // Traditionally cd and echo are shell-specific commands, but whatever
       echo,
       ls,
+      mkdir,
+      touch,
+      cat,
+      ed
     },
     "local" : {
       "bin" : {

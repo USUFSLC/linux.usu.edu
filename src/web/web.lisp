@@ -16,7 +16,10 @@
 (defun show-root ()
   (render-with-root #P"pages/home.lsx"
                     :root-env `(:sidebar ,(sidebar-component))
-                    :env `(:user-name ,(usufslc.db.user::user-name (gethash :user *session*)))))
+                    :env `(:user-name ,(let ((user-session (gethash :user *session*)))
+                                         (if user-session
+                                             (usufslc.db.user::user-name user-session)
+                                             "guest")))))
 
 @route GET "/conduct"
 (defun show-conduct ()

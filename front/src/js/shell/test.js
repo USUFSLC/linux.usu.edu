@@ -92,6 +92,18 @@ export const runTests = () => {
     assert(fs.absolutePath("/home/logan", "a/b/c") === "/home/logan/a/b/c", "/ + a/b/c ");
   });
 
+  it('inserts new nodes correctly', () => {
+    const fs = new FileSystem({ });
+    const home = fs.insertNewNodeAt("/home");
+    assert(!home.error, "creating home node doesn't fail");
+    const usr = fs.insertNewNodeAt("/usr");
+    assert(!usr.error, "creating usr node doesn't fail");
+    const home_bruh = fs.insertNewNodeAt("/home/bruh");
+    assert(!home_bruh.error, "creating home_bruh node doesn't fail");
+    const home_bruh_failure = fs.insertNewNodeAt("/home/bruh");
+    assert(home_bruh_failure.error, "Trying to insert a node at a conflicting path fails");
+  });
+
   it('returns correct nodes with paths', () => {
     const fs = new FileSystem(testFs);
     const root = fs.getNode("/");
@@ -178,6 +190,20 @@ export const runTests = () => {
     });
     assert(shell.run("echo $PWD").streams.stdout === "/", "PWD env var is correct");
   });
+
+
+  it('sets environment variables from command line', () => {
+    const shell = new Shell(new FileSystem(testFs), {
+      PWD: "/",
+      PATH: "/g:/a/b"
+    });
+    shell.run("PS1=asdf");
+    assert(shell.getEnv("PS1") === "asdf", "PS1 env var set correctly");
+
+    shell.run("PS1=\"asdf gaming moment\"");
+    assert(shell.getEnv("PS1") === "asdf gaming moment", "PS1 env var  with quotes set correctly");
+  });
+    
 
   it('prints to stderr on error', () => {
     const shell = new Shell(new FileSystem(testFs), {

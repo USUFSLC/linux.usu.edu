@@ -45,7 +45,7 @@ export class FileSystem {
           newNode.fileContents = obj[key];
         }
       }
-    }
+    };
     constructFs(filesystemRepresentation);
   }
 
@@ -81,6 +81,27 @@ export class FileSystem {
     }
 
     return fsNode.children[path];
+  }
+
+  insertNewNodeAt(absPath) {
+    if (this.getNode(absPath)) {
+      return {
+        error: `Something already exists at ${absPath}`
+      };
+    }
+
+    const path = absPath.split("/").filter(x => x);
+    const newDir = path.pop();
+    const parentNodeStatus = this.pathStatus(`/${path.join("/")}`, "directory");
+
+    if (parentNodeStatus.error) {
+      return parentNodeStatus;
+    }
+
+    const newChild = new FileSystemNode(newDir);
+    newChild.parent = parentNodeStatus.node;
+    newChild.parent.children[newDir] = newChild;
+    return newChild;
   }
 
   pathStatus(path, type, fsNode=this.root) {

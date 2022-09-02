@@ -1,10 +1,11 @@
-(lambda (&key (user-name "guest"))
+(lambda (&key user-name)
   <div class="terminal-container">
     <div id="terminal-history">
       <p>> Welcome, {user-name}!</p>
     </div>
     <div class="terminal-input">
       <form class="terminal-entry" id="shell-input">
+        <input type="hidden" id="user-name" value={user-name}>
         <span id="prompt"></span>
         <input type="text" id="shell-command">
       </form> 
