@@ -19,7 +19,7 @@ const esbuild = require("esbuild");
   esbuild.build({
     logLevel: "info",
     bundle: true,
-    minify: true,
+//    minify: true,
     ...x
   })
   .catch(() => process.exit(1))

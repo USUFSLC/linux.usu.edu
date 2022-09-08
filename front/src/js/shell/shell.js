@@ -69,13 +69,12 @@ export class Shell {
           }
         };
       }
-    } else if (binaryStatus) {
-      return {
-        streams: {
-          stderr: `${name} is not executable`
-        }
-      };
     }
+    return {
+      streams: {
+        stderr: `${name} is not executable`
+      }
+    };
   }
 
   run(command) {
@@ -92,8 +91,9 @@ export class Shell {
               return "";
             })
             .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
+      const withUserHome = withEnvVars.replaceAll(/\~/g, `/home/${this.env.USER}`);
 
-      const [name, ...args] = Shell.parseCommand(withEnvVars);
+      const [name, ...args] = Shell.parseCommand(withUserHome);
 
       if (name) {
         const result = this.execute(name, ...args);

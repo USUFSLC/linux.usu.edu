@@ -16,6 +16,8 @@
       <script src="/js/main.js" defer />
     </head>
     <body>
+      <div id="modal" class="modal"> </div>
+
       <div id="sidebar">
         <div class="sidebar-container">
           <a id="theme-switcher"><img id="theme-icon" src="/images/sun.svg" alt="Theme picker"></a>
@@ -23,6 +25,7 @@
           {sidebar}
         </div>
       </div>
+
       <div id="content" class="main">
         <div class="header">
           <a id="sidebar-toggle">
@@ -31,14 +34,16 @@
             <span></span>
           </a>
 
-          <a href="/" class="title"><h1 class="primary">USU Free Software & Linux Club</h1></a>
+          <a href="/" class="title"><h1 class="primary">USU FSLC</h1></a>
           <br />
           <p class="secondary"><em>{motd}</em></p>
         </div>
         <div class="container">
-          <div class="page-title">
-            <h2 class="primary">{page-title}</h2>
-          </div>
+          {(if page-title
+            <div class="page-title">
+              <h2 class="primary">{page-title}</h2>
+            </div>
+          )}
           {content}
         </div>
         <div class="footer">

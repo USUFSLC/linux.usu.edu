@@ -1,6 +1,7 @@
 @import url('./theme.css');
 @import url('./sidebar.css');
 @import url('./terminal.css');
+@import url('./modal.css');
 
 @font-face {
   font-family: 'DM Mono';

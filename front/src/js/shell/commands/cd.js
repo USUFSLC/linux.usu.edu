@@ -1,12 +1,5 @@
 export const cd = (env, fs, ...args) => {
-  const newDir = args[0];
-  if (!newDir) {
-    return {
-      streams: {
-        stderr: "No directory specified"
-      }
-    };
-  }
+  const newDir = args[0] || `/home/${env.USER}`;
 
   let PWD = fs.pathStatus(fs.absolutePath(env.PWD, newDir), "directory");
   if (PWD.error) {

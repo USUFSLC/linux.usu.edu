@@ -120,6 +120,7 @@ export const runTests = () => {
     const fs = new FileSystem(testFs);
     assert(fs.pathStatus("/a/b/c", "file").node.name === "c", "File status is correct");
     assert(fs.pathStatus("/a/b", "file").error, "Path is a dir, fails on file status");
+    assert(fs.pathStatus("/a/b", "file").node, "Path is a dir, fails on file status, still returns node");
     assert(fs.pathStatus("/g/h").type === "file", "When no type specified, returns node and file type");
     assert(fs.pathStatus("/asdfasdfasdfasdf").error, "Path does not exist, fails on status");
   });
@@ -204,6 +205,29 @@ export const runTests = () => {
     assert(shell.getEnv("PS1") === "asdf gaming moment", "PS1 env var  with quotes set correctly");
   });
     
+  it('replaces tilde with user home', () => {
+    const shell = new Shell(new FileSystem(testFs), {
+      USER: "bruh",
+      PWD: "/",
+      PATH: "/g:/a/b"
+    });
+
+    assert(shell.run("echo ~").streams.stdout === "/home/bruh");
+  });
+
+  it('keeps shell history', () => {
+    const shell = new Shell(new FileSystem(testFs), {
+      USER: "bruh",
+      PWD: "/",
+      PATH: "/g:/a/b"
+    });
+
+    shell.run("ls");
+    shell.run("echo bruh");
+    shell.run("echo moment");
+    assert(shell.history[0] === "ls", "First command in history");
+    assert(shell.history[1] === "echo bruh", "Second command in history");
+  });
 
   it('prints to stderr on error', () => {
     const shell = new Shell(new FileSystem(testFs), {

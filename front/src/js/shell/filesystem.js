@@ -115,7 +115,7 @@ export class FileSystem {
       node,
     };
     if (type && result.type !== type) {
-      return { error: `${path} is not a ${type}` };
+      return { error: `${path} is not a ${type}`, node };
     }
     return result;
   }

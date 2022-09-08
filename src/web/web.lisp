@@ -14,12 +14,13 @@
 ;; Routing rules
 @route GET "/"
 (defun show-root ()
-  (render-with-root #P"pages/home.lsx"
-                    :root-env `(:sidebar ,(sidebar-component))
-                    :env `(:user-name ,(let ((user-session (gethash :user *session*)))
-                                         (if user-session
-                                             (usufslc.db.user::user-name user-session)
-                                             "guest")))))
+  (let* ((user (gethash :user *session*))
+         (user-name (if user
+                        (usufslc.db.user::user-name user)
+                        "guest")))
+    (render-with-root #P"pages/home.lsx"
+                      :root-env `(:sidebar ,(sidebar-component))
+                      :env `(:user-name ,user-name))))
 
 @route GET "/conduct"
 (defun show-conduct ()

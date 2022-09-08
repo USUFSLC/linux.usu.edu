@@ -14,6 +14,9 @@ import { mkdir } from "./commands/mkdir";
 import { touch } from "./commands/touch";
 import { cat } from "./commands/cat";
 import { ed } from "./commands/ed";
+import { tree } from "./commands/tree";
+import { clear } from "./commands/clear";
+import { rm } from "./commands/rm";
 
 const FILES = {
   "home" : { },
@@ -25,11 +28,14 @@ const FILES = {
       mkdir,
       touch,
       cat,
-      ed
+      ed,
+      tree,
+      rm
     },
     "local" : {
       "bin" : {
-        trongle
+        trongle,
+        clear
       }
     }
   }
@@ -38,7 +44,6 @@ const FILES = {
 const fs = new FileSystem(FILES);
 export const shell = new Shell(fs, {
   PS1: "<blue>${USER}</blue><orange>@</orange><bold><purple>${HOSTNAME}</purple></bold>:<yellow>${PWD}</yellow> <orange>$</orange>",
-  USER: "guest",
   HOSTNAME: "usufslc.com",
   PWD: "/home",
   PATH: "/usr/bin:/usr/local/bin",
