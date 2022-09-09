@@ -107,7 +107,10 @@ export class FileSystem {
   pathStatus(path, type, fsNode=this.root) {
     const node = this.getNode(path, fsNode);
     if (!node) {
-      return { error: `No such ${type}: ${path}` };
+      if (type) {
+        return { error: `No such ${type}: ${path}` };
+      }
+      return { error: `${path} does not exist` };
     } 
     const result = {
       type: node.fileContents !== null ? "file" : "directory",

@@ -16,6 +16,7 @@
       <script src="/js/main.js" defer />
     </head>
     <body>
+      <noscript>You should have JavaScript enabled, man!</noscript>
       <div id="modal" class="modal"> </div>
 
       <div id="sidebar">

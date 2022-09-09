@@ -10,7 +10,7 @@ export const cat = (env, fs, ...args) => {
         }
       };
     }
-    result += nodeStatus.node.fileContents;
+    result += nodeStatus.node.fileContents + "\n";
   }
   return {
     streams: {

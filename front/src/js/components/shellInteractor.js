@@ -1,7 +1,30 @@
+const initialHomeFiles = [
+   {name: "when.txt", content: `When
+====
+Every Wednesday at 6:30 PM in room ESLC 053.
+`},
+   {name: "what.txt", content: `What
+====
+Utah State University Free Software and Linux Club.
+`},
+   {name: "who.txt", content: `Who
+===
+Anybody who wants to learn about free software, Linux, computers, and hang out with cool people!.
+`},
+   {name: "get_involved.txt", content: `Get Involved!
+=============
+We communicate and send announcements over Discord (https://discord.com/R6fEGUJan6), but you can also shoot an email over to usufslc@gmail.com.
+`}
+];
+
 const userName = $("#user-name").val();
 window.shell.setEnv("USER", userName);
 window.shell.fs.insertNewNodeAt(`/home/${userName}`);
 window.shell.setEnv("PWD", `/home/${userName}`);
+initialHomeFiles.map((x) => {
+  const f = window.shell.fs.insertNewNodeAt(`/home/${userName}/${x.name}`);
+  f.fileContents = x.content;
+});
 
 let state = {
   historyIndex: window.shell.history.length,
@@ -14,19 +37,18 @@ $("#shell-input").on("submit", function (e) {
   e.preventDefault();
   const command = $("#shell-command").val();
 
-  $("#shell-command").val("");
-
   const oldPrompt = window.shell.buildPrompt();
   const result = window.shell.run(command);
+  state.historyIndex = window.shell.history.length;
+
   $("#terminal-history").append(`<div class="terminal-entry">
-                                  <p>${oldPrompt} <span class="green">${command}</span></p>
+                                  <p>${oldPrompt} <span class="green">${magicTextToHtml(command)}</span></p>
                                   <pre class="red">${magicTextToHtml(result.streams.stderr)}</pre>
                                   <pre>${magicTextToHtml(result.streams.stdout)}</pre>
                                 </div>`);
 
   $("#prompt").html(window.shell.buildPrompt());
-
-  state.historyIndex = window.shell.history.length;
+  $("#shell-command").val("");
 });
 
 const goInHistoryOnKeyCode = (which, state, history) => {

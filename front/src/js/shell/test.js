@@ -238,6 +238,26 @@ export const runTests = () => {
     assert(shell.run("/a").streams.stderr === "/a is not executable", "Prints that a is not executable to stderr");
   });
 
+  it('replaces a wildcard', () => {
+    const shell = new Shell(new FileSystem(testFs), {
+      PWD: "/",
+      PATH: "/g:/a/b"
+    });
+    const rootChildren = ["/a", "/g"];
+    const rootReplacedResult = shell.run("echo /*").streams.stdout;
+    assert(rootChildren.reduce((a, x) => a && rootReplacedResult.match(x)?.length), "Has all root children");
+
+    const bChildren = ["/a/b/c", "/a/b/d", "/a/b/e", "/a/b/echo"];
+    let bReplacedResult = shell.run("echo /a/b/*").streams.stdout;
+    assert(bChildren.reduce((a, x) => a && bReplacedResult.match(x)?.length), "Has all of a/b's children");
+
+    const fChildren = ["/a/b/e/yes", "/a/b/e/f"];
+
+    shell.setEnv("PWD", "/a/b/e" );
+    let fReplacedResult = shell.run("echo *").streams.stdout;
+    assert(fChildren.reduce((a, x) => a && fReplacedResult.match(x)?.length), "Uses current working directory to traverse children");
+  });
+
   it('builds classed prompts', () => {
     const shell = new Shell(new FileSystem(testFs), {
       PWD: "/",

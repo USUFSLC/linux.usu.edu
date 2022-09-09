@@ -92,8 +92,17 @@ export class Shell {
             })
             .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
       const withUserHome = withEnvVars.replaceAll(/\~/g, `/home/${this.env.USER}`);
+      const withWildCard = withUserHome.replaceAll(/([/\w]+)?\*/g, (match, path) => {
+        path = this.fs.absolutePath(this.env.PWD, path || this.env.PWD);
+        const { node, error } = this.fs.pathStatus(path);
+        if (error) {
+          return "";
+        }
+        const resp = Object.keys(node.children).map((childName) => this.fs.absolutePath(path, childName)).join(" ");
+        return resp;
+      });
 
-      const [name, ...args] = Shell.parseCommand(withUserHome);
+      const [name, ...args] = Shell.parseCommand(withWildCard);
 
       if (name) {
         const result = this.execute(name, ...args);
