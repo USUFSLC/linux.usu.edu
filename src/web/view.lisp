@@ -18,7 +18,7 @@
 
 (defun render-with-root (template-path &key root-env env)
   (render (get-config :section :|app-render| :property :|template-root|) 
-          :env (concatenate 'list
+          :env (append
                             `(:content ,(render template-path
                                                 :env env
                                                 :render-lsx nil))

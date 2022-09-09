@@ -1,14 +1,17 @@
-const edWindow = (fileContents, saveCallback) => {
+const edWindow = (fileName, fileContents, saveCallback) => {
   const modal = $("#modal");
-    modal.html(`
+  modal.html(`
      <div class="modal-content">
        <form>
+         <strong><label id="file-name"></label></strong>
+         <hr>
          <textarea id="file-contents" class="ed-text" rows="20" name="file-contents"></textarea>
          <br>
          <button id="save-file">Save</button>
        </form>
      </div>
    </div>`);
+  $("#file-name").text(`${fileName}`);
   $("#file-contents").val(fileContents);
   $("#save-file").on("click", (e) => {
     e.preventDefault();
@@ -50,14 +53,14 @@ export const ed = (env, fs, ...args) => {
     };
   }
 
-  edWindow(node.fileContents, (fileContents) => node.fileContents = fileContents);
+  edWindow(node.name, node.fileContents, (fileContents) => node.fileContents = fileContents);
 
   $("#modal").show();
   $("#file-contents").focus();
 
   return {
     streams: {
-      stdout: `Editor opened, saving to ${path}`
+      stdout: `Now editing ${path}`
     }
   };
 };

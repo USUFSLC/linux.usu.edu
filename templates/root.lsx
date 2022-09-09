@@ -3,6 +3,9 @@
     (title "USU FSLC")
     (motd "welcome to our small corner of the internet")
     (page-title nil)
+    (info nil)
+    (error nil)
+
     (sidebar nil)
     (content nil))
 
@@ -21,8 +24,6 @@
 
       <div id="sidebar">
         <div class="sidebar-container">
-          <a id="theme-switcher"><img id="theme-icon" src="/images/sun.svg" alt="Theme picker"></a>
-          <hr>
           {sidebar}
         </div>
       </div>
@@ -45,6 +46,14 @@
               <h2 class="primary">{page-title}</h2>
             </div>
           )}
+
+          {(if info
+               <div class="alert info">{info}</div>
+           )}
+          {(if error
+               <div class="alert warn">{error}</div>
+           )}
+
           {content}
         </div>
         <div class="footer">
@@ -55,5 +64,4 @@
       </div>
     </body>
   </html>
-
 )

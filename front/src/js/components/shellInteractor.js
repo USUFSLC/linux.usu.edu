@@ -1,3 +1,4 @@
+const userName = $("#user-name").val();
 const initialHomeFiles = [
    {name: "when.txt", content: `When
 ====
@@ -16,8 +17,6 @@ Anybody who wants to learn about free software, Linux, computers, and hang out w
 We communicate and send announcements over Discord (https://discord.com/R6fEGUJan6), but you can also shoot an email over to usufslc@gmail.com.
 `}
 ];
-
-const userName = $("#user-name").val();
 window.shell.setEnv("USER", userName);
 window.shell.fs.insertNewNodeAt(`/home/${userName}`);
 window.shell.setEnv("PWD", `/home/${userName}`);

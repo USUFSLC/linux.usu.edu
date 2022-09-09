@@ -36,7 +36,7 @@
                 :components
                 ((:module "web"
                   :components 
-                  ((:file "web" :depends-on ("discord" "view" "package"))
+                  ((:file "web" :depends-on ("discord" "view"))
                    (:file "view" :depends-on ("package"))
                    (:file "package" :depends-on ("discord" "components"))
                    (:module "components"
@@ -52,17 +52,17 @@
                   (:module "db"
                    :components
                    ((:module "models"
-                     :depends-on ("db" "package")
+                     :depends-on ("db")
                      :components
                      ((:module "user"
                        :depends-on ("context")
                        :components
-                       ((:file "extern" :depends-on ("models" "package"))
+                       ((:file "extern" :depends-on ("models"))
                         (:file "models" :depends-on ("package"))
                         (:file "package")))
                       (:module "context"
                        :components
-                       ((:file "extern" :depends-on ("models" "package"))
+                       ((:file "extern" :depends-on ("models"))
                         (:file "models" :depends-on ("package"))
                         (:file "package")))))
                      (:file "db" :depends-on ("package"))
@@ -78,7 +78,7 @@
 
                   (:module "config"
                    :components
-                   ((:file "config" :depends-on ("parser" "package"))
+                   ((:file "config" :depends-on ("parser"))
                     (:file "parser" :depends-on ("package"))
                     (:file "package")))
 

@@ -11,7 +11,9 @@
 
   z-index: 1;
   border: 3px solid var(--red);
+  border-radius: 1rem;
   padding: 20px;
+  padding-bottom: 10px;
   background-color: var(--bg);
 
   width: 80vw;
