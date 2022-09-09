@@ -1,14 +1,4 @@
 export const tree = (env, fs, ...args) => {
-  const path = fs.absolutePath(env["PWD"], args[0] || ".");
-  const { error, node } = fs.pathStatus(path, "directory");
-  if (error) {
-    return {
-      streams: {
-        stderr: error
-      }
-    };
-  }
-
   let result = [];
   const traverseDir = (fs, depth=0) => {
     if (fs.children) {
@@ -19,7 +9,20 @@ export const tree = (env, fs, ...args) => {
     return (depth > 1 ? Array(depth-1).fill("    ").join("") : "") + `└── ${fs.name}`;
   };
 
-  traverseDir(node);
+  for (let dir of (args.length ? args : ["."])) {
+    const path = fs.absolutePath(env["PWD"], dir);
+
+    const { error, node } = fs.pathStatus(path, "directory");
+    if (error) {
+      return {
+        streams: {
+          stderr: error
+        }
+      };
+    }
+    traverseDir(node);
+    result.push(dir);
+  }
 
   return {
     streams: {

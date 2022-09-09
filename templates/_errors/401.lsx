@@ -1,0 +1,7 @@
+
+(lambda ()
+  <div>
+    <h1 class="error">401</h1>
+    <p>You sure you should have access to that?</p>
+  </div>
+)

@@ -1,19 +1,20 @@
 export const rm = (env, fs, ...args) => {
-  const path = args[0];
-  let { error, node } = fs.pathStatus(fs.absolutePath(env.PWD, path));
-  if (error) {
-    return {
-      streams: {
-        stderr: error
-      }
-    };
-  }
+  for (let path of args) {
+    let { error, node } = fs.pathStatus(fs.absolutePath(env.PWD, path));
+    if (error) {
+      return {
+        streams: {
+          stderr: error
+        }
+      };
+    }
 
-  node.delete();
+    node.delete();
+  }
 
   return {
     streams: {
-      stdout: `Recursively removed ${path}`
+      stdout: `Recursively removed ${args.join(", ")}`
     }
   };
 };

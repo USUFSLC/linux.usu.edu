@@ -209,7 +209,8 @@ export const runTests = () => {
     const shell = new Shell(new FileSystem(testFs), {
       USER: "bruh",
       PWD: "/",
-      PATH: "/g:/a/b"
+      PATH: "/g:/a/b",
+      HOME: "/home/bruh"
     });
 
     assert(shell.run("echo ~").streams.stdout === "/home/bruh");

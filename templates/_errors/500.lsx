@@ -1,0 +1,6 @@
+(lambda ()
+  <div>
+    <h1 class="error">500</h1>
+    <p>There was an error processing that request.</p>
+  </div>
+)

@@ -58,9 +58,13 @@
                                                         (format-app-route (request-path-info *request*)))))))
             (redirect-url (or (gethash :unauth-redirect *session*)
                               "/")))
-        (setf (gethash :user *session*) user-dao
-              (gethash :unauth-redirect *session*) nil)
-        (redirect redirect-url))))
+        (if user-dao
+            (progn
+              (setf (gethash :user *session*) user-dao
+                    (gethash :unauth-redirect *session*) nil)
+              (redirect redirect-url))
+            (throw-code 500)))
+      (throw-code 400)))
 
 @route GET "/login"
 (defun login ()
@@ -92,6 +96,8 @@
 ;;
 ;; Error pages
 
-(defmethod on-exception ((app <web>) (code (eql 404)))
-  (declare (ignore app))
-  (render-with-root #P"_errors/404.lsx"))
+(mapcar (lambda (error-code)
+          (defmethod on-exception ((app <web>) (code (eql error-code)))
+            (declare (ignore app))
+            (render-with-root (pathname (format nil "_errors/~a.lsx" error-code)))))
+        '(404 401 400 500))

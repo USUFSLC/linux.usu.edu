@@ -5,13 +5,14 @@ export class Shell {
     this.env = {
       PS1: "${PWD}>",
       USER: "guest",
+      HOME: "/",
       HOSTNAME: "localhost",
       PWD: "/",
       PATH: "",
       ...env
     };
     this.streams = {
-      stdout: "", // Hacky stdout/stderr for now, maybe move to a "file" later?
+      stdout: "",
       stderr: "",
     };
   }
@@ -91,7 +92,7 @@ export class Shell {
               return "";
             })
             .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
-      const withUserHome = withEnvVars.replaceAll(/\~/g, `/home/${this.env.USER}`);
+      const withUserHome = withEnvVars.replaceAll(/\~/g, this.env.HOME);
       const withWildCard = withUserHome.replaceAll(/([/\w]+)?\*/g, (match, path) => {
         path = this.fs.absolutePath(this.env.PWD, path || this.env.PWD);
         const { node, error } = this.fs.pathStatus(path);

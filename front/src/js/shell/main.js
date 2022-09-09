@@ -17,6 +17,7 @@ import { ed } from "./commands/ed";
 import { tree } from "./commands/tree";
 import { clear } from "./commands/clear";
 import { rm } from "./commands/rm";
+import { help } from "./commands/help";
 
 const FILES = {
   "home" : { },
@@ -30,7 +31,8 @@ const FILES = {
       cat,
       ed,
       tree,
-      rm
+      rm,
+      help
     },
     "local" : {
       "bin" : {

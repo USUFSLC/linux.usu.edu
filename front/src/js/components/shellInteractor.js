@@ -1,9 +1,5 @@
 const userName = $("#user-name").val();
 const initialHomeFiles = [
-   {name: "when.txt", content: `When
-====
-Every Wednesday at 6:30 PM in room ESLC 053.
-`},
    {name: "what.txt", content: `What
 ====
 Utah State University Free Software and Linux Club.
@@ -12,16 +8,22 @@ Utah State University Free Software and Linux Club.
 ===
 Anybody who wants to learn about free software, Linux, computers, and hang out with cool people!.
 `},
+   {name: "when.txt", content: `When
+====
+Every Wednesday at 6:30 PM in room ESLC 053.
+`},
    {name: "get_involved.txt", content: `Get Involved!
 =============
 We communicate and send announcements over Discord (https://discord.com/R6fEGUJan6), but you can also shoot an email over to usufslc@gmail.com.
-`}
+`},
 ];
 window.shell.setEnv("USER", userName);
-window.shell.fs.insertNewNodeAt(`/home/${userName}`);
-window.shell.setEnv("PWD", `/home/${userName}`);
+window.shell.setEnv("HOME", `/home/${userName}`);
+window.shell.fs.insertNewNodeAt(window.shell.getEnv("HOME"));
+window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usufslcinfo`);
+window.shell.setEnv("PWD", window.shell.getEnv("HOME"));
 initialHomeFiles.map((x) => {
-  const f = window.shell.fs.insertNewNodeAt(`/home/${userName}/${x.name}`);
+  const f = window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usufslcinfo/${x.name}`);
   f.fileContents = x.content;
 });
 
