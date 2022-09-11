@@ -38,11 +38,7 @@
                   :components 
                   ((:file "web" :depends-on ("discord" "view"))
                    (:file "view" :depends-on ("package"))
-                   (:file "package" :depends-on ("discord" "components"))
-                   (:module "components"
-                    :components
-                    ((:file "sidebar" :depends-on ("package"))
-                     (:file "package")))
+                   (:file "package" :depends-on ("discord"))
                    (:module "discord"
                     :components
                     ((:file "auth" :depends-on ("package"))

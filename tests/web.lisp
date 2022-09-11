@@ -40,13 +40,37 @@
     (is (equal (usufslc.web::format-app-route "/path") "https://usufslc.com:12345/path"))
     (is (equal (usufslc.web::format-app-route nil) "https://usufslc.com:12345"))))
 
+(test authentication-redirection
+  :description "Redirection and redirection in session set when user is nil - body executed when user is not nil"
+  (with-fake-config-mocks () 
+    (let ((caveman2::*session* (make-hash-table))
+          (caveman2::*request* (make-instance 'lack.request:request))
+          (redirects nil))
+      (answer (usufslc.web::format-app-route lack-request) "/bruh-moment")
+      (answer (caveman2::redirect url) (push url redirects))
+      (usufslc.web::with-authentication-or-sign-in ()
+        (error "Should not be called"))
+
+      (is (not (null redirects)))
+
+      (setf redirects nil)
+      (setf (gethash :user caveman2::*session*) t)
+
+      (let ((body-called nil))
+        (usufslc.web::with-authentication-or-sign-in ()
+          (setf body-called t))
+        (is (identity body-called))
+        (is (equal (gethash :unauth-redirect caveman2::*session*) "/bruh-moment"))
+        (is (not (null (gethash :error caveman2::*session*))))
+        (is (null redirects))))))
+
 (test render-caches-template-files
   :description "Renders a template file and caches the result"
   (clrhash usufslc.web::*template-registry*)
   (with-fake-config-mocks ()
     (let ((template-file #P"test.lsx"))
       (answer lsx:read-lsx-file (lambda (&key x)
-                                  (format nil "~a" x)))
+                                  (print x)))
       (loop for i from 1 to 3 do
         (is (equal (render template-file :env '(:x "test"))
                    "test")))

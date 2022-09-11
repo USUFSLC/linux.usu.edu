@@ -10,15 +10,32 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
+;;
+;; Helpers
+
 (defun root-env (&rest other-env)
   (let ((infomsg (gethash :info *session*))
         (errormsg (gethash :error *session*)))
+    ;; Reset info and error messages
     (setf (gethash :info *session*) nil
           (gethash :error *session*) nil)
+    ;; Return the environment with defaults which would be overridden by other-env (getf returns first occurence)
     (append other-env
-            `(:sidebar ,(sidebar-component)
+            `(:sidebar ,(render #P"components/sidebar.lsx" :env `(:user ,(gethash :user *session*))
+                                                           :render-lsx nil)
               :info ,infomsg
               :error ,errormsg))))
+
+(defmacro with-authentication-or-sign-in (&body body)
+  `(let ((user (gethash :user *session*)))
+     (if user
+         (progn
+           ,@body)
+         (progn
+           (setf (gethash :unauth-redirect *session*) (format-app-route
+                                                       (request-path-info *request*))
+                 (gethash :error *session*) "You need to login to do that")
+           (redirect "/login")))))
 
 ;;
 ;; Routing rules
@@ -78,19 +95,9 @@
   (clrhash *session*)
   (redirect "/"))
 
-(defmacro with-authentication-or-sign-in (&rest body)
-  `(let ((user (gethash :user *session*)))
-     (if user
-         (progn ,@body)
-         (progn
-           (setf (gethash :unauth-redirect *session*)
-                 (format-app-route (request-path-info *request*))
-                 (gethash :error *session*) "You need to login to do that")
-           (redirect "/login")))))
-
 @route GET "/behind-bars"
 (defun behind-bars ()
-  (with-authentication-or-sign-in 
+  (with-authentication-or-sign-in ()
     "Hello, world!"))
 
 ;;
