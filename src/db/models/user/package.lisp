@@ -10,4 +10,6 @@
                 :with-db)
   (:export :user
            :user-context
+           :user-context-role
+           :can
            :create-or-update-user-from-discord))

@@ -5,5 +5,6 @@
   (:import-from :usufslc.db
                 :with-db)
   (:export :context
+           :context-operation
            :context-role
            :context-role-operation))
