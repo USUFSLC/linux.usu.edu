@@ -22,9 +22,6 @@ services:
     volumes:
       - ./config:/app/config:ro
       - ./public:/app/public
-      - ./logs:/logs
-
-      - ~/quicklisp:/root/quicklisp
     networks:
       - usufslc
     environment:

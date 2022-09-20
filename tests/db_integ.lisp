@@ -58,22 +58,39 @@
                                  :discord-id "1123581321345589")))
         (is (equal user-id (mito:object-id user)))
         (mito:delete-dao user)))))
-;;
-;;(test user-with-role-in-context-can-perform-action
-;;  :description "Test that a user with a role in the context can perform an action"
-;;  (with-db ()
-;;    (let* ((fake-user (mito:create-dao 'user :name "Test User" :discord-tag "1234" :discord-id "12345"))
-;;           (fake-context (mito:create-dao 'context))
-;;           (fake-read-context-operation (mito:create-dao 'context-operation :context fake-context :operation "view"))
-;;           (fake-write-context-operation (mito:create-dao 'context-operation :context fake-context :operation "create"))
-;;           (fake-readonly-role (mito:create-dao 'context-role :context fake-context :name "readonly"))
-;;           (fake-readwrite-role (mito:create-dao 'context-role :context fake-context :name "readwrite")))
-;;      (mito:create-dao 'context-role-operation :context-role fake-readonly-role :context-operation fake-read-context-operation)
-;;
-;;      (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-write-context-operation)
-;;      (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-read-context-operation)
-    
-      
-      
 
+(test user-with-role-in-context-can-perform-action
+  :description "Test that a user with a role in the context can perform an action"
+  (let ((fake-user)
+        (fake-context)
+        (fake-read-context-operation)
+        (fake-write-context-operation)
+        (fake-readwrite-role)
+        (fake-readonly-role)
+        (fake-user-context)
+        (added-read-context-to-readonly) 
+        (added-read-context-to-readwrite)
+        (added-write-context-to-readwrite)
+        (added-user-to-read-context))
+    
+    (with-db ()
+      (setf fake-user (mito:create-dao 'user :name "Test User" :discord-tag "1234" :discord-id "1245"))
+      (setf fake-context (mito:create-dao 'context))
+      (setf fake-read-context-operation (mito:create-dao 'context-operation :context fake-context :operation "view"))
+      (setf fake-write-context-operation (mito:create-dao 'context-operation :context fake-context :operation "create"))
+      (setf fake-readonly-role (mito:create-dao 'context-role :context fake-context :name "readonly"))
+      (setf fake-readwrite-role (mito:create-dao 'context-role :context fake-context :name "readwrite"))
+      (setf fake-user-context (mito:create-dao 'user-context :user fake-user :context fake-context))
+      (setf added-read-context-to-readonly (mito:create-dao 'context-role-operation :context-role fake-readonly-role :context-operation fake-read-context-operation))
+      (setf added-read-context-to-readwrite (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-read-context-operation))
+      (setf added-write-context-to-readwrite (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-write-context-operation))
+      (setf added-user-to-read-context (mito:create-dao 'user-context-role :user-context fake-user-context :context-role fake-readonly-role)))
+
+    (is (can fake-user "view" fake-context))
+    (is (null (can fake-user "create" fake-context)))
+
+    (with-db ()
+      (mapcar #'mito:delete-dao
+              `(,fake-user ,fake-user-context ,fake-context ,fake-read-context-operation ,fake-write-context-operation ,fake-readonly-role ,fake-readwrite-role ,added-read-context-to-readonly ,added-read-context-to-readwrite ,added-write-context-to-readwrite))
+      )))
 
