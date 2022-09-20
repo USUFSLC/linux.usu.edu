@@ -1,0 +1,16 @@
+.env
+.git/
+*.markdown
+make_user_page.sh
+
+docker-compose.yml
+Dockerfile
+
+public/
+
+front/node_modules
+front/dist
+
+config/
+
+logs/

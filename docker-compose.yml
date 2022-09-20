@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  db:
+    image: 'postgres:14'
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - usufslc
+    env_file:
+      - .env
+
+  prod:
+    depends_on:
+      - "db"
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/app/config:ro
+      - ./public:/app/public
+      - ./logs:/logs
+
+      - ~/quicklisp:/root/quicklisp
+    networks:
+      - usufslc
+    environment:
+      - APP_ENV=production
+
+volumes:
+  pgdata:
+
+networks:
+  usufslc:
+    driver: bridge
