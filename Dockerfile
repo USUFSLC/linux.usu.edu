@@ -29,5 +29,3 @@ CMD sbcl --load "usufslc.asd" \
          --eval "(ql:quickload 'usufslc)" \
          --eval "(usufslc:start)" \
          --eval "(bt:join-thread (find-if (lambda (th)(search \"hunchentoot\" (bt:thread-name th)))(bt:all-threads)))"
-
-
