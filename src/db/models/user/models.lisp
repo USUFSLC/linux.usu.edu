@@ -4,6 +4,9 @@
   (defclass user ()
     ((name :col-type (:varchar 128)
            :accessor user-name)
+     (is-admin :col-type (or (:varchar 8) :null) ;; "yes" or null
+               :accessor user-is-admin
+               :default nil)
      (discord-tag :col-type (:varchar 8)
                   :accessor user-discord-tag)
      (discord-id :col-type (:varchar 128)

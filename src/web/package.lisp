@@ -20,6 +20,7 @@
   (:import-from :drakma
                 :http-request)
   (:import-from :usufslc.db.user
+                :can
                 :create-or-update-user-from-discord)
   (:export :*web*
            :render

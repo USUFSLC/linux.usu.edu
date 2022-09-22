@@ -98,7 +98,10 @@
 @route GET "/behind-bars"
 (defun behind-bars ()
   (with-authentication-or-sign-in ()
-    "Hello, world!"))
+    (usufslc.db:with-db ()
+      (if (can (gethash :user *session*) "start-stream" (mito:find-dao 'usufslc.db.context:context :name "stream"))
+          "Hello, world!"
+          "Nossir"))))
 
 ;;
 ;; Error pages

@@ -1,8 +1,11 @@
 (in-package :usufslc.db.context)
 
 (with-db ()
-  (defclass context () ()
-    (:metaclass mito:dao-table-class))
+  (defclass context ()
+    ((name :col-type (:varchar 128)
+           :accessor context-name))
+    (:metaclass mito:dao-table-class)
+    (:unique-keys (name)))
 
   (defclass context-role ()
     ((context :col-type context
@@ -14,9 +17,9 @@
 
   (defclass context-operation ()
     ((operation :col-type (:varchar 128)
-                :accessor context-role-operation-operation)
+                :accessor context-operation-name)
      (context :col-type context
-              :accessor context-role-operation-context))
+              :accessor context-operation-context))
     (:metaclass mito:dao-table-class)
     (:unique-keys (operation context-id)))
 

@@ -47,7 +47,12 @@
 
                   (:module "db"
                    :components
-                   ((:module "models"
+                   ((:module "seeds"
+                     :depends-on ("models")
+                     :components
+                     ((:file "contexts" :depends-on ("package"))
+                      (:file "package")))
+                    (:module "models"
                      :depends-on ("db")
                      :components
                      ((:module "user"
