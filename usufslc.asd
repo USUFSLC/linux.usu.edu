@@ -65,6 +65,11 @@
                        :components
                        ((:file "extern" :depends-on ("models"))
                         (:file "models" :depends-on ("package"))
+                        (:file "package")))
+                      (:module "vidstream"
+                       :components
+                       ((:file "extern" :depends-on ("models"))
+                        (:file "models" :depends-on ("package"))
                         (:file "package")))))
                      (:file "db" :depends-on ("package"))
                      (:file "package"))

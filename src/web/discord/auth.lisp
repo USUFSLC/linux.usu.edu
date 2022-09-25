@@ -2,9 +2,12 @@
 
 (defun make-discord-redirect-url (usufslc-redirect-path
                                   &key
-                                    (discord-oauth-url (get-config :section :|discord| :property :|auth-url|))
-                                    (client-id (get-config :section :|discord| :property :|client-id|))
-                                    (scope (get-config :section :|discord| :property :|scope|)))
+                                    (discord-oauth-url
+                                     (get-config :section :|discord| :property :|auth-url|))
+                                    (client-id
+                                     (get-config :section :|discord| :property :|client-id|))
+                                    (scope
+                                     (get-config :section :|discord| :property :|scope|)))
   (render-uri
    (make-uri :defaults discord-oauth-url
              :query `(("client_id" . ,client-id)
@@ -13,7 +16,10 @@
                       ("scope" . ,scope)))))
 
 (defun retrieve-discord-token-oauth-response (oauth-code redirect-uri)
-  (with-exponential-retry (:validator (lambda (resp) (every (lambda (field) (cdr (assoc field resp))) '(:ACCESS--TOKEN :TOKEN--TYPE))))
+  (with-exponential-retry (:validator (lambda (resp)
+                                        (every (lambda (field)
+                                                 (cdr (assoc field resp)))
+                                               '(:ACCESS--TOKEN :TOKEN--TYPE))))
     (decode-json 
       (http-request (get-config :section :|discord| :property :|token-url|)
                     :method :post
@@ -32,7 +38,10 @@
     (format nil "~a ~a" token-type access-token)))
 
 (defun retrieve-discord-user-details (bearer-token)
-  (with-exponential-retry (:validator (lambda (resp) (every (lambda (field) (cdr (assoc field resp))) '(:ID :USERNAME :DISCRIMINATOR))))
+  (with-exponential-retry (:validator (lambda (resp)
+                                        (every (lambda (field)
+                                                 (cdr (assoc field resp)))
+                                               '(:ID :USERNAME :DISCRIMINATOR))))
     (decode-json
       (http-request (get-config :section :|discord| :property :|identity-url|)
                     :method :get

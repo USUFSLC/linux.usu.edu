@@ -22,7 +22,6 @@ services:
     volumes:
       - ./config:/app/config:ro
       - ./public:/app/public
-      - quicklisp:/root/quicklisp
     networks:
       - usufslc
     environment:
