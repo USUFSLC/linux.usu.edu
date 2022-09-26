@@ -7,6 +7,8 @@
   (:import-from :ppcre
                 :scan
                 :regex-replace)
+  (:import-from :lack.middleware.session.state.cookie
+                :make-cookie-state)
   (:import-from :usufslc.web
                 :*web*)
   (:import-from :usufslc.config
@@ -34,5 +36,5 @@
     (if error-log-path
         `(:backtrace
           :output ,(pathname error-log-path))))
-  :session
+  `(:session :state ,(make-cookie-state :httponly t :secure t :expires 3600))
   *web*)

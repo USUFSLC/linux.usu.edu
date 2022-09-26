@@ -4,6 +4,9 @@
   :license "MIT"
   :depends-on (:clack
                :lack
+               :lack-middleware-session
+               :lack-middleware-csrf
+
                :caveman2
 
                ;; utilities
