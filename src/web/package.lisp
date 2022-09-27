@@ -19,6 +19,8 @@
                 :decode-json)
   (:import-from :drakma
                 :http-request)
+  (:import-from :parse-number
+                :parse-number)
   (:import-from :usufslc.db.user
                 :can
                 :create-or-update-user-from-discord)

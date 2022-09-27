@@ -95,15 +95,32 @@
   (clrhash *session*)
   (redirect "/"))
 
-@route GET "/behind-bars"
-(defun behind-bars ()
-  (with-authentication-or-sign-in ()
-    (usufslc.db:with-db ()
-      (if (can (gethash :user *session*) "start-stream" (mito:find-dao 'usufslc.db.context:context :name "stream"))
-          "Hello, world!"
-          "Nossir"))))
+@route POST "/stream"
+(defun create-stream (&key |name| |description|)
+  (usufslc.db:with-db ()
+    (with-authentication-or-sign-in ()
+      (let ((context (mito:find-dao 'usufslc.db.context:context :name "stream"))
+            (token (format nil "~X" (crypto:random-bits 128))))
+        (if (can (gethash :user *session*) "start-stream" context)
+            (progn
+              (mito:save-dao (make-instance 'usufslc.db.vidstream:vidstream
+                                    :name |name|
+                                    :description |description|
+                                    :token token))
+              token)
+            (progn
+              (throw-code 403)))))))
 
-
+@route GET "/stream/authenticate"
+(defun authenticate-stream-token (&key |token|)
+  (usufslc.db:with-db ()
+    (let* ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :token |token|))
+           (expiration-time-threshold (parse-number (get-config :section :|stream| :property :|token-expiration|)))
+           (stream-expiration (slot-value stream 'mito.dao.mixin::created-at)))
+      
+      (if (local-time:timestamp> (local-time:now) (local-time:timestamp+ stream-expiration expiration-time-threshold :sec))
+          (throw-code 403)
+          "OK"))))
 
 ;;
 ;; Error pages
@@ -112,4 +129,4 @@
           (defmethod on-exception ((app <web>) (code (eql error-code)))
             (declare (ignore app))
             (render-with-root (pathname (format nil "_errors/~a.lsx" error-code)))))
-        '(404 401 400 500))
+        '(404 403 401 400 500))

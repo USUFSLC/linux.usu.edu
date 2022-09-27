@@ -8,4 +8,5 @@
                   :accessor stream-description)
      (token :col-type (:varchar 128)
             :accessor stream-token))
-    (:metaclass mito:dao-table-class)))
+    (:metaclass mito:dao-table-class)
+    (:unique-keys (token))))
