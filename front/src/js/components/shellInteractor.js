@@ -26,13 +26,12 @@ initialHomeFiles.map((x) => {
   const f = window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usufslcinfo/${x.name}`);
   f.fileContents = x.content;
 });
+const magicTextToHtml = (input) => $('<span>').text(input).html();
 
 let state = {
   historyIndex: window.shell.history.length,
   command: ""
 };
-
-const magicTextToHtml = (input) => $('<span>').text(input).html();
 
 $("#shell-input").on("submit", function (e) {
   e.preventDefault();
@@ -74,7 +73,9 @@ $("#shell-input").on("keyup", (e) => {
     $("#shell-command").val(window.shell.history[state.historyIndex] || state.command);
   } else {
     state.command = $("#shell-command").val();
+    $("#shell-input")[0].scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
   }
 });
 
 $("#prompt").html(window.shell.buildPrompt());
+

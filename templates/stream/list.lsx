@@ -1,0 +1,5 @@
+(lambda (&key
+         (streams nil))
+  (if streams
+    (mapcar (lambda (stream) <div>{(usufslc.db.vidstream::vidstream-name stream)}</div>) streams)
+    <h2>Seems pretty empty in here...</h2>))

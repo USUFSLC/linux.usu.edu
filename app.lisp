@@ -36,5 +36,5 @@
     (if error-log-path
         `(:backtrace
           :output ,(pathname error-log-path))))
-  `(:session :state ,(make-cookie-state :httponly t :secure t :expires 3600))
+  `(:session :state ,(make-cookie-state :httponly t :secure t :expires (* 60 60 6)))
   *web*)

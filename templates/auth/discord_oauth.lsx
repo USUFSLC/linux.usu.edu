@@ -6,5 +6,4 @@
     <p>Oh, so you want to Log In, huh?</p>
     <a href={redirect-url}>You can do that here</a>
   </div>
-
 )

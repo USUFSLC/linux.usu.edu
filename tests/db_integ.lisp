@@ -62,17 +62,17 @@
 (test user-with-role-in-context-can-perform-action
   :description "Test that a user with a role in the context can perform an action"
   (with-db ()
-  (let ((fake-user)
+    (let ((fake-user)
         (fake-context)
         (fake-read-context-operation)
         (fake-write-context-operation)
-        (fake-readwrite-role)
-        (fake-readonly-role)
-        (fake-user-context)
-        (added-read-context-to-readonly) 
-        (added-read-context-to-readwrite)
-        (added-write-context-to-readwrite)
-        (added-user-to-read-context))
+          (fake-readwrite-role)
+          (fake-readonly-role)
+          (fake-user-context)
+          (added-read-context-to-readonly) 
+          (added-read-context-to-readwrite)
+          (added-write-context-to-readwrite)
+          (added-user-to-read-context))
       (setf fake-user (mito:create-dao 'user :name "Test User" :discord-tag "1234" :discord-id "1245" :is-admin nil))
       (setf fake-context (mito:create-dao 'context
                                           :name "fake-context"))
@@ -84,18 +84,18 @@
       (setf added-read-context-to-readonly (mito:create-dao 'context-role-operation :context-role fake-readonly-role :context-operation fake-read-context-operation))
       (setf added-read-context-to-readwrite (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-read-context-operation))
       (setf added-write-context-to-readwrite (mito:create-dao 'context-role-operation :context-role fake-readwrite-role :context-operation fake-write-context-operation))
-    (setf added-user-to-read-context (mito:create-dao 'user-context-role :user-context fake-user-context :context-role fake-readonly-role))
+      (setf added-user-to-read-context (mito:create-dao 'user-context-role :user-context fake-user-context :context-role fake-readonly-role))
 
-    ;; With the correct roles can do the right stuff
-    (is (can fake-user "view" fake-context))
-    (is (null (can fake-user "create" fake-context)))
+      ;; With the correct roles can do the right stuff
+      (is (can fake-user "view" fake-context))
+      (is (null (can fake-user "create" fake-context)))
 
-    ;; When is admin can do all the stuffs
-    (setf (usufslc.db.user::user-is-admin fake-user) "yes")
-    (mito:save-dao fake-user)
-    (is (can fake-user "view" fake-context))
-    (is (can fake-user "create" fake-context))
+      ;; When is admin can do all the stuffs
+      (setf (usufslc.db.user::user-is-admin fake-user) "yes")
+      (mito:save-dao fake-user)
+      (is (can fake-user "view" fake-context))
+      (is (can fake-user "create" fake-context))
 
-    ;; Remove all the stuffs
-    (mapcar #'mito:delete-dao
-            `(,fake-user ,fake-user-context ,fake-context ,fake-read-context-operation ,fake-write-context-operation ,fake-readonly-role ,fake-readwrite-role ,added-read-context-to-readonly ,added-read-context-to-readwrite ,added-write-context-to-readwrite ,added-user-to-read-context)))))
+      ;; Remove all the stuffs
+      (mapcar #'mito:delete-dao
+              `(,fake-user ,fake-user-context ,fake-context ,fake-read-context-operation ,fake-write-context-operation ,fake-readonly-role ,fake-readwrite-role ,added-read-context-to-readonly ,added-read-context-to-readwrite ,added-write-context-to-readwrite ,added-user-to-read-context)))))

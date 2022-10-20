@@ -1,0 +1,7 @@
+(lambda ()
+  <form action="/stream" method="POST">
+    <input name="name" type="text">
+    <textarea name="description"></textarea>
+    <input type="submit">
+  </form>
+)

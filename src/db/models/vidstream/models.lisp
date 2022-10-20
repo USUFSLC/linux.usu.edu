@@ -3,10 +3,13 @@
 (with-db ()
   (defclass vidstream ()
     ((name :col-type (:varchar 128)
-           :accessor stream-name)
+           :accessor vidstream-name)
      (description :col-type :text
-                  :accessor stream-description)
+                  :accessor vidstream-description)
+     (streaming :col-type (or (:varchar 8) :null) ;; "yes" or null
+                :accessor vidstream-streaming
+                :default nil)
      (token :col-type (:varchar 128)
-            :accessor stream-token))
+            :accessor vidstream-token))
     (:metaclass mito:dao-table-class)
     (:unique-keys (token))))

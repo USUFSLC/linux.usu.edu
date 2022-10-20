@@ -36,6 +36,9 @@
                ;; JSON
                :cl-json)
 
+               ;; Cron jobs
+               ;;:cl-schedule)
+
   :components ((:module "src"
                 :components
                 ((:module "web"
@@ -106,7 +109,7 @@
   :components ((:module "tests"
                 :components
                 ((:file "db_integ" :depends-on ("suite"))
-
+                 (:file "streams" :depends-on ("suite"))
                  (:file "web" :depends-on ("suite"))
                  (:file "discord" :depends-on ("suite"))
                  (:file "config" :depends-on ("suite"))

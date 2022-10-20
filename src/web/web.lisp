@@ -27,7 +27,7 @@
               :error ,errormsg))))
 
 (defmacro with-authentication-or-sign-in (&body body)
-  `(let ((user (gethash :user *session*)))
+  `(let ((user (mito:find-dao 'user :id (mito:object-id (gethash :user *session*)))))
      (if user
          (progn
            ,@body)
@@ -37,8 +37,12 @@
                  (gethash :error *session*) "You need to login to do that")
            (redirect "/login")))))
 
+
 ;;
 ;; Routing rules
+
+;; Static pages
+
 @route GET "/"
 (defun show-home ()
   (let* ((user (gethash :user *session*))
@@ -63,6 +67,8 @@
 (defun show-license ()
   (render-with-root #P"pages/license.lsx"
                     :root-env (root-env :page-title "License")))
+
+;; Auth
 
 @route GET "/oauth/discord" 
 (defun save-user-from-discord-and-redirect (&key |code|)
@@ -95,32 +101,55 @@
   (clrhash *session*)
   (redirect "/"))
 
+;; Streams
+
+@route GET "/stream/create"
+(defun admin-portal ()
+  (with-authentication-or-sign-in ()
+    (render-with-root #P"stream/form.lsx"
+                      :root-env (root-env
+                                 :page-title "Create a stream"))))
+
+@route GET "/streams"
+(defun render-streams ()
+  (usufslc.db:with-db ()
+    (let ((streams (mito:select-dao 'usufslc.db.vidstream:vidstream
+                     (sxql:where
+                      (:= :streaming "yes")))))
+      (render-with-root #P"stream/list.lsx"
+                        :root-env (root-env
+                                   :page-title "Streams")
+                        :env `(:streams ,streams)))))
+
 @route POST "/stream"
 (defun create-stream (&key |name| |description|)
-  (usufslc.db:with-db ()
-    (with-authentication-or-sign-in ()
-      (let ((context (mito:find-dao 'usufslc.db.context:context :name "stream"))
-            (token (format nil "~X" (crypto:random-bits 128))))
-        (if (can (gethash :user *session*) "start-stream" context)
-            (progn
-              (mito:save-dao (make-instance 'usufslc.db.vidstream:vidstream
-                                    :name |name|
-                                    :description |description|
-                                    :token token))
-              token)
-            (progn
-              (throw-code 403)))))))
+  (with-authentication-or-sign-in ()
+    (usufslc.db:with-db ()
+      (let ((context (mito:find-dao 'usufslc.db.context:context :name "stream")))
+        (if (can user "start-stream" context)
+            (usufslc.db.vidstream::vidstream-token
+             (usufslc.db.vidstream:create-stream |name| |description|))
+            (throw-code 403))))))
 
-@route GET "/stream/authenticate"
-(defun authenticate-stream-token (&key |token|)
+@route POST "/stream/start"
+(defun start-stream-via-token (&key |token|)
   (usufslc.db:with-db ()
-    (let* ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :token |token|))
-           (expiration-time-threshold (parse-number (get-config :section :|stream| :property :|token-expiration|)))
-           (stream-expiration (slot-value stream 'mito.dao.mixin::created-at)))
-      
-      (if (local-time:timestamp> (local-time:now) (local-time:timestamp+ stream-expiration expiration-time-threshold :sec))
-          (throw-code 403)
-          "OK"))))
+    (let ((stream (usufslc.db.vidstream:get-stream-unless-expired |token|)))
+      (if stream
+          (progn
+            (setf (usufslc.db.vidstream::vidstream-streaming stream) "yes")
+            (mito:save-dao stream)
+            "Started stream")                  
+          (throw-code 400)))))
+
+@route POST "/stream/stop"
+(defun end-stream (&key |token|)
+  (usufslc.db:with-db ()
+    (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :token |token|)))
+      (if stream
+          (usufslc.db.vidstream:rotate-token-and-set-streaming stream nil)))))
+
+;; 
 
 ;;
 ;; Error pages
