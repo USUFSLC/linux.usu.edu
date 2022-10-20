@@ -27,7 +27,10 @@
               :error ,errormsg))))
 
 (defmacro with-authentication-or-sign-in (&body body)
-  `(let ((user (mito:find-dao 'user :id (mito:object-id (gethash :user *session*)))))
+  `(let* ((user-session (gethash :user *session*))
+          (user (if user-session
+                    (mito:find-dao 'user :id
+                                   (mito:object-id user-session)))))
      (if user
          (progn
            ,@body)

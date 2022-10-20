@@ -42,15 +42,16 @@
 
 (test authentication-redirection
   :description "Redirection and redirection in session set when user is nil - body executed when user is not nil"
-  (with-fake-config-mocks () 
+  (with-fake-config-mocks ()
     (let ((caveman2::*session* (make-hash-table))
           (caveman2::*request* (make-instance 'lack.request:request))
           (redirects nil))
+      (answer mito:object-id t)
+      (answer mito:find-dao t)
       (answer (usufslc.web::format-app-route lack-request) "/bruh-moment")
       (answer (caveman2::redirect url) (push url redirects))
       (usufslc.web::with-authentication-or-sign-in ()
         (error "Should not be called"))
-
       (is (not (null redirects)))
 
       (setf redirects nil)

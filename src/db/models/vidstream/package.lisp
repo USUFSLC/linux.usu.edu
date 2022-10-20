@@ -4,8 +4,8 @@
         :mito)
   (:import-from :usufslc.db
                 :with-db)
-  (:import-from :cl-schedule
-                :schedule!)
+;;  (:import-from :cl-schedule
+;;                :schedule!)
   (:import-from :parse-number
                 :parse-number)
   (:import-from :usufslc.config
