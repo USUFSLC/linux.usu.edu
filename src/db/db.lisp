@@ -15,6 +15,8 @@
         :port (parse-number (get-config :section :|db| :property :|port|))))
 
 (defmacro with-db ((&key (connection-args *connection-args*)) &body body)
-  `(let ((mito:*connection* (connect-cached ,@connection-args))) 
-     (unwind-protect (progn ,@body)
-       (disconnect mito:*connection*))))
+  `(if (not mito:*connection*)
+    (let ((mito:*connection* (connect-cached ,@connection-args)))
+      (unwind-protect (progn ,@body)
+        (disconnect mito:*connection*)))
+    (progn ,@body)))

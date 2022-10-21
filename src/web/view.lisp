@@ -1,6 +1,6 @@
 (in-package :usufslc.web)
 
-;; A hash table containing template path => template function
+;; A simple key-value cache containing template path => template function
 (defparameter *template-registry* (make-hash-table :test 'equal))
 
 (defun render (template-path &key env (render-lsx t))
@@ -19,10 +19,10 @@
 (defun render-with-root (template-path &key root-env env)
   (render (get-config :section :|app-render| :property :|template-root|) 
           :env (append
-                            `(:content ,(render template-path
-                                                :env env
-                                                :render-lsx nil))
-                            root-env)))
+                `(:content ,(render template-path
+                                    :env env
+                                    :render-lsx nil))
+                root-env)))
 
 (defun format-app-route (path &key (usufslc-protocol (get-config :section :|app-route| :property :|protocol|))
                                 (usufslc-port (get-config :section :|app-route| :property :|port|))

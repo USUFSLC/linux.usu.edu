@@ -1,0 +1,36 @@
+(lambda
+  (&key
+    (stream-url "")
+    (stream-name "")
+    (stream-key ""))
+  <div>
+    <div>
+    <h3 class='green'>"{stream-name}" was successfully created, now what?</h3>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div>
+      <h4 class='purple'>Zoom Instructions</h4>
+      <ol>
+        <li>Start a Zoom meeting</li>
+        <li>Select "More" in the host controls</li>
+        <li>Choose "Live on Custom Live Stream Service"</li>
+        <li>Set stream url to "<span class='yellow'>{stream-url}</span>"</li>
+        <li>Set stream key to "<span class='yellow'>{stream-key}</span>"</li>
+      </ol>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div>
+      <h4 class='purple'>OBS Instructions</h4>
+      <ol>
+        <li>Select "Settings", "Stream"</li>
+        <li>"Service" should be "Custom"</li>
+        <li>Select "Use Stream Key" if it's prompted</li>
+        <li>Set "Server" to "<span class='yellow'>{stream-url}</span>"</li>
+        <li>Set stream key to "<span class='yellow'>{stream-key}</span>"</li>
+      </ol>
+    </div>
+  </div>)

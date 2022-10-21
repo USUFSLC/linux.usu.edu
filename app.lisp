@@ -37,4 +37,5 @@
         `(:backtrace
           :output ,(pathname error-log-path))))
   `(:session :state ,(make-cookie-state :httponly t :secure t :expires (* 60 60 6)))
+  `(:csrf)
   *web*)

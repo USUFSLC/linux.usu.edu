@@ -1,6 +1,11 @@
-(lambda ()
-  <form action="/stream" method="POST">
+(lambda
+  (&key
+    (csrf-token ""))
+  <form action="/stream" method="POST" autocomplete="on" style="display:flex;flex-direction:column">
+    <input type="hidden" name="_csrf_token" value={csrf-token}>
+    <label>Name</label>
     <input name="name" type="text">
+    <label>Description</label>
     <textarea name="description"></textarea>
     <input type="submit">
   </form>

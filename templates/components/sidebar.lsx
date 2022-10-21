@@ -1,5 +1,6 @@
 (lambda
   (&key
+    (can-stream nil)
     (user nil))
   <div>
     <a id="theme-switcher"><img id="theme-icon" src="/images/sun.svg" alt="Theme picker"></a>
@@ -8,11 +9,28 @@
       {
         (if user
             <div>
-              <p>Signed in as {(usufslc.db.user::user-name user)}</p>
-              <a href="/logout">Logout</a>
+              <h3>Hello, {(usufslc.db.user::user-name user)}</h3>       
+              <li><a href="/logout">Logout</a></li>
             </div>
-            <a href="/login">Login</a>)
+            <div>
+              <h3>User</h3>
+              <li><a href="/login">Login</a></li>
+            </div>)
       }
     </ul>
     <hr>
+    <div>
+      <h3>Streams</h3>
+      <ul>
+      {
+        (if can-stream
+            <li>
+              <a href="/stream/create">Create Stream</a>
+            </li>)        
+      }
+      <li>
+        <a href="/streams">Current Streams</a>
+      </li>
+      </ul>
+    </div>
   </div>)

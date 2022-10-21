@@ -2,7 +2,7 @@
   <div class="terminal-container">
     <div id="terminal-history">
       <p>> Welcome, {user-name}!</p>
-      <p>> Don't know what to type here? Try "help" or "cat usufslcinfo/*".</p>
+      <p>> <strong>Don't know what to type here? Try "cat usufslcinfo/*".</strong> or "help".</p>
     </div>
     <div class="terminal-input">
       <form class="terminal-entry" id="shell-input" autocomplete="off">

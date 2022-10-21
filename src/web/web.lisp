@@ -13,6 +13,13 @@
 ;;
 ;; Helpers
 
+(defmacro with-updated-user-model-from-session (&body body)
+  `(let* ((user-session (gethash :user *session*))
+          (user (if user-session
+                    (mito:find-dao 'usufslc.db.user::user :id
+                                   (mito:object-id user-session)))))
+     ,@body))
+
 (defun root-env (&rest other-env)
   (let ((infomsg (gethash :info *session*))
         (errormsg (gethash :error *session*)))
@@ -21,16 +28,17 @@
           (gethash :error *session*) nil)
     ;; Return the environment with defaults which would be overridden by other-env (getf returns first occurence)
     (append other-env
-            `(:sidebar ,(render #P"components/sidebar.lsx" :env `(:user ,(gethash :user *session*))
-                                                           :render-lsx nil)
+            `(:sidebar ,(usufslc.db:with-db ()
+                          (with-updated-user-model-from-session ()
+                            (render #P"components/sidebar.lsx"
+                                    :env (list :user user
+                                               :can-stream (and user (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")))
+                                    :render-lsx nil)))
               :info ,infomsg
               :error ,errormsg))))
 
 (defmacro with-authentication-or-sign-in (&body body)
-  `(let* ((user-session (gethash :user *session*))
-          (user (if user-session
-                    (mito:find-dao 'user :id
-                                   (mito:object-id user-session)))))
+  `(with-updated-user-model-from-session ()
      (if user
          (progn
            ,@body)
@@ -107,11 +115,14 @@
 ;; Streams
 
 @route GET "/stream/create"
-(defun admin-portal ()
-  (with-authentication-or-sign-in ()
-    (render-with-root #P"stream/form.lsx"
-                      :root-env (root-env
-                                 :page-title "Create a stream"))))
+(defun create-stream ()
+  (usufslc.db:with-db ()
+    (with-authentication-or-sign-in ()
+       (if (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")
+           (render-with-root #P"stream/form.lsx"
+                             :env `(:csrf-token ,(lack.middleware.csrf:csrf-token *session*))
+                             :root-env (root-env
+                                        :page-title "New Stream"))))))
 
 @route GET "/streams"
 (defun render-streams ()
@@ -125,20 +136,37 @@
                         :env `(:streams ,streams)))))
 
 @route POST "/stream"
-(defun create-stream (&key |name| |description|)
-  (with-authentication-or-sign-in ()
-    (usufslc.db:with-db ()
-      (let ((context (mito:find-dao 'usufslc.db.context:context :name "stream")))
-        (if (can user "start-stream" context)
-            (usufslc.db.vidstream::vidstream-token
-             (usufslc.db.vidstream:create-stream |name| |description|))
-            (throw-code 403))))))
+(defun add-stream (&key |name| |description|)
+  (usufslc.db:with-db ()
+    (with-authentication-or-sign-in ()
+       (if (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")
+           (let ((vidstream (usufslc.db.vidstream:create-stream |name| |description|)))
+             (render-with-root #P"stream/instructions.lsx"
+                               :root-env (root-env
+                                          :page-title "Streaming Instructions")
+                               :env `(:stream-url
+                                      ,(format nil "rtmp://~a/~a"
+                                               (usufslc.config:get-config :section :|app-route| :property :|host|)
+                                               (usufslc.config:get-config :section :|stream| :property :|rtmp-route|))
+                                      :stream-name
+                                      ,(usufslc.db.vidstream::vidstream-name vidstream)
+                                      :stream-key
+                                      ,(format nil "~a?token=~a"
+                                              (mito:object-id vidstream)
+                                              (usufslc.db.vidstream::vidstream-token vidstream)))))
+
+           (throw-code 403)))))
 
 @route POST "/stream/start"
-(defun start-stream-via-token (&key |token|)
+(defun start-stream-via-token (&key |token| |name|)
+  ;; |name| is the id of the stream, which should be posted from nginx's on_publish event, as it's given in the stream key
+  ;; to verify authenticity of the streaming id the client is streaming to
+
+  ;; TODO: + utilize the nginx-rtmp-host config value to verify the *request* came from nginx
+  ;;       + figure out a way to get around the csrf token for this request
   (usufslc.db:with-db ()
     (let ((stream (usufslc.db.vidstream:get-stream-unless-expired |token|)))
-      (if stream
+      (if (and stream (= (parse-integer |name|) (mito:object-id stream)))
           (progn
             (setf (usufslc.db.vidstream::vidstream-streaming stream) "yes")
             (mito:save-dao stream)
@@ -160,5 +188,7 @@
 (mapcar (lambda (error-code)
           (defmethod on-exception ((app <web>) (code (eql error-code)))
             (declare (ignore app))
-            (render-with-root (pathname (format nil "_errors/~a.lsx" error-code)))))
+            (render-with-root (pathname (format nil "_errors/~a.lsx" error-code))
+                              :root-env (root-env
+                                         :page-title "Error"))))
         '(404 403 401 400 500))

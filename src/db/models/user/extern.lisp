@@ -24,3 +24,7 @@
         (where (:and (:= :context_operation.operation operation)
                      (:= :user_context.context_id (object-id context))
                      (:= :user_context.user_id (object-id user)))))))
+
+(defun can-in-context-with-name (user operation context-name)
+  (let ((context (mito:find-dao 'usufslc.db.context:context :name context-name)))
+    (and context (can user operation context))))
