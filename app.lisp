@@ -9,6 +9,8 @@
                 :regex-replace)
   (:import-from :lack.middleware.session.state.cookie
                 :make-cookie-state)
+  (:import-from :lack.middleware.csrf
+                :*lack-middleware-csrf*)
   (:import-from :usufslc.web
                 :*web*)
   (:import-from :usufslc.config
@@ -29,6 +31,10 @@
               *static-paths*)
     ,@body))
 
+(defparameter *csrf-ignored-paths*
+  '("/stream/start"
+    "/stream/stop"))
+
 (with-static-handlers ()
   (if (get-config :section :|app-log| :property :|access-log|)
       :accesslog)
@@ -37,5 +43,18 @@
         `(:backtrace
           :output ,(pathname error-log-path))))
   `(:session :state ,(make-cookie-state :httponly t :secure t :expires (* 60 60 6)))
-  `(:csrf)
+  (lambda (app) ;; Remove any trailing slashes and ignore CSRF if in *csrf-ignored-paths*
+    (lambda (env)
+      (let* ((path (getf env :path-info))
+             (path-no-trailing-forward (if (and (cl-ppcre:scan "^/.+$" path)
+                                                (eq '#\/ (char path (1- (length path)))))
+                                           (subseq path 0 (1- (length path)))
+                                           path)))             
+
+        ;; Then check if we need to apply CSRF
+        (if (member path *csrf-ignored-paths* :test #'equal)
+            (funcall app env)
+            (funcall
+             (funcall *lack-middleware-csrf* app)
+             env)))))
   *web*)

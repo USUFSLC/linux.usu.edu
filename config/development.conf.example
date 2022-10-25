@@ -1,6 +1,6 @@
 # This is a comment
-[discord]
-  :auth-url https://discord.com/api/oauth2/authorize # And so is this
+[discord] # And so is this
+  :auth-url https://discord.com/api/oauth2/authorize
   :token-url https://discord.com/api/oauth2/token
   :identity-url https://discord.com/api/users/@me
   :code-validation-regex ^\w{30}$
@@ -18,7 +18,7 @@
   :name usufslc
   :user postgres
   :password postgres
-  :host localhost
+  :host 127.0.0.1
   :port 5432
 
   :auto-migrate t
@@ -28,6 +28,10 @@
   :address 0.0.0.0 
   :port 8080
   :debug t
+
+[stream]
+  :token-expiration 300 # seconds
+  :rtmp-route live # nginx root rtmp route
 
 [app-route]
   :protocol http
@@ -39,6 +43,6 @@
   :template-root root.lsx
 
 [app-log]
-  :access-log t
-  :sql-info t
-  :error-log /tmp/error.log # This could be nil for production
+  :access-log t # This could be nil for production
+  :sql-info t # This could be nil for production
+  :error-log /tmp/error.log # Better to use a different route for prod probs

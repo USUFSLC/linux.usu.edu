@@ -152,8 +152,8 @@
                                       ,(usufslc.db.vidstream::vidstream-name vidstream)
                                       :stream-key
                                       ,(format nil "~a?token=~a"
-                                              (mito:object-id vidstream)
-                                              (usufslc.db.vidstream::vidstream-token vidstream)))))
+                                               (mito:object-id vidstream)
+                                               (usufslc.db.vidstream::vidstream-token vidstream)))))
 
            (throw-code 403)))))
 
@@ -161,9 +161,6 @@
 (defun start-stream-via-token (&key |token| |name|)
   ;; |name| is the id of the stream, which should be posted from nginx's on_publish event, as it's given in the stream key
   ;; to verify authenticity of the streaming id the client is streaming to
-
-  ;; TODO: + utilize the nginx-rtmp-host config value to verify the *request* came from nginx
-  ;;       + figure out a way to get around the csrf token for this request
   (usufslc.db:with-db ()
     (let ((stream (usufslc.db.vidstream:get-stream-unless-expired |token|)))
       (if (and stream (= (parse-integer |name|) (mito:object-id stream)))
