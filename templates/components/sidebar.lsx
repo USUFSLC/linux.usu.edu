@@ -13,7 +13,7 @@
               <li><a href="/logout">Logout</a></li>
             </div>
             <div>
-              <h3>User</h3>
+              <h3>Profile</h3>
               <li><a href="/login">Login</a></li>
             </div>)
       }

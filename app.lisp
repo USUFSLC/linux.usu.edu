@@ -43,14 +43,14 @@
         `(:backtrace
           :output ,(pathname error-log-path))))
   `(:session :state ,(make-cookie-state :httponly t :secure t :expires (* 60 60 6)))
-  (lambda (app) ;; Remove any trailing slashes and ignore CSRF if in *csrf-ignored-paths*
+  (lambda (app) ;; Custom Middleware - Remove any trailing slashes and ignore CSRF if in *csrf-ignored-paths*
     (lambda (env)
       (let* ((path (getf env :path-info))
              (path-no-trailing-forward (if (and (cl-ppcre:scan "^/.+$" path)
                                                 (eq '#\/ (char path (1- (length path)))))
                                            (subseq path 0 (1- (length path)))
-                                           path)))             
-
+                                           path)))
+        (setf (getf env :path-info) path-no-trailing-forward)
         ;; Then check if we need to apply CSRF
         (if (member path *csrf-ignored-paths* :test #'equal)
             (funcall app env)
