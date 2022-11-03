@@ -14,18 +14,21 @@ Every Wednesday at 6:30 PM in room ESLC 053.
 `},
    {name: "get_involved.txt", content: `Get Involved!
 =============
-We communicate and send announcements over Discord (https://discord.com/R6fEGUJan6), but you can also shoot an email over to usufslc@gmail.com.
+We communicate and send announcements over <a href="https://discord.com/R6fEGUJan6">Discord</a>, but you can also shoot an email over to usufslc@gmail.com.
 `},
 ];
+
 window.shell.setEnv("USER", userName);
 window.shell.setEnv("HOME", `/home/${userName}`);
 window.shell.fs.insertNewNodeAt(window.shell.getEnv("HOME"));
-window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usufslcinfo`);
+window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usu-fslc-info`);
 window.shell.setEnv("PWD", window.shell.getEnv("HOME"));
+
 initialHomeFiles.map((x) => {
-  const f = window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usufslcinfo/${x.name}`);
+  const f = window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usu-fslc-info/${x.name}`);
   f.fileContents = x.content;
 });
+
 const magicTextToHtml = (input) => $('<span>').text(input).html();
 
 let state = {
@@ -61,21 +64,17 @@ const goInHistoryOnKeyCode = (which, state, history) => {
     historyIndex += 1;
     break;
   }
-  return {
-    ...state,
-    historyIndex: Math.min(history.length, Math.max(0, historyIndex))
-  };
+  return Math.min(history.length, Math.max(0, historyIndex))
 };
 
-$("#shell-input").on("keyup", (e) => {
-  if (e.which === 38 || e.which === 40) {
-    state = goInHistoryOnKeyCode(e.which, state, window.shell.history);
+$("#shell-input").on("keyup", function (e) {
+    if (e.which === 38 || e.which === 40) {
+    state.historyIndex = goInHistoryOnKeyCode(e.which, state, window.shell.history);
     $("#shell-command").val(window.shell.history[state.historyIndex] || state.command);
   } else {
     state.command = $("#shell-command").val();
-    $("#shell-input")[0].scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+    $(this)[0].scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
   }
 });
 
 $("#prompt").html(window.shell.buildPrompt());
-

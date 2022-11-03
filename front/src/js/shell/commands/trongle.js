@@ -31,10 +31,12 @@ class Trongle {
 
   loop(timestamp) {
     const elapsedTime = timestamp - this.lastRender;
-    this.update(elapsedTime);
-    this.draw();
+    if (elapsedTime > (30 / 1000)) { // 30 FPS for performance reasons
+      this.update(elapsedTime);
+      this.draw();
 
-    this.lastRender = timestamp;
+      this.lastRender = timestamp;
+    }
     requestAnimationFrame(this.loop.bind(this));
   }
 }
