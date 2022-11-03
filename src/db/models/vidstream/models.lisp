@@ -6,7 +6,7 @@
            :accessor vidstream-name)
      (description :col-type :text
                   :accessor vidstream-description)
-     (streaming :col-type (or (:varchar 8) :null) ;; "yes" or null
+     (streaming :col-type (or :boolean :null)
                 :accessor vidstream-streaming
                 :default nil)
      (token :col-type (:varchar 128)

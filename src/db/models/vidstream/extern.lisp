@@ -12,7 +12,7 @@
                   :token (create-stream-token))))
 
 (defun rotate-token-and-set-streaming (stream &optional (streaming t))
-  (setf (vidstream-streaming stream) (if streaming "yes")
+  (setf (vidstream-streaming stream) streaming
         (vidstream-token stream) (create-stream-token))
   (mito:save-dao stream))
 

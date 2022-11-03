@@ -129,7 +129,7 @@
   (usufslc.db:with-db ()
     (let ((streams (mito:select-dao 'usufslc.db.vidstream:vidstream
                      (sxql:where
-                      (:= :streaming "yes")))))
+                      (:= :streaming t)))))
       (render-with-root #P"stream/list.lsx"
                         :root-env (root-env
                                    :page-title "Streams")
@@ -163,11 +163,13 @@
   ;; to verify authenticity of the streaming id the client is streaming to
   (usufslc.db:with-db ()
     (let ((stream (usufslc.db.vidstream:get-stream-unless-expired |token|)))
-      (if (and stream (= (parse-integer |name|) (mito:object-id stream)))
+      (if (and stream
+               (= (parse-integer |name|) (mito:object-id stream)))
           (progn
-            (setf (usufslc.db.vidstream::vidstream-streaming stream) "yes")
+            (setf (usufslc.db.vidstream::vidstream-streaming stream) t)
             (mito:save-dao stream)
-            "Started stream")                  
+            
+            "Started stream")
           (throw-code 400)))))
 
 @route POST "/stream/stop"

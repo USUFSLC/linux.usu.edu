@@ -91,7 +91,7 @@
       (is (null (can fake-user "create" fake-context)))
 
       ;; When is admin can do all the stuffs
-      (setf (usufslc.db.user::user-is-admin fake-user) "yes")
+      (setf (usufslc.db.user::user-is-admin fake-user) t)
       (mito:save-dao fake-user)
       (is (can fake-user "view" fake-context))
       (is (can fake-user "create" fake-context))
