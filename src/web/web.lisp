@@ -128,8 +128,7 @@
 (defun render-streams ()
   (usufslc.db:with-db ()
     (let ((streams (mito:select-dao 'usufslc.db.vidstream:vidstream
-                     (sxql:where
-                      (:= :streaming t)))))
+                     (sxql:where :streaming))))
       (render-with-root #P"stream/list.lsx"
                         :root-env (root-env
                                    :page-title "Streams")
@@ -167,8 +166,7 @@
                (= (parse-integer |name|) (mito:object-id stream)))
           (progn
             (setf (usufslc.db.vidstream::vidstream-streaming stream) t)
-            (mito:save-dao stream)
-            
+            (mito:save-dao stream)            
             "Started stream")
           (throw-code 400)))))
 
