@@ -28,8 +28,8 @@ export const ed = (env, fs, ...args) => {
       // File is a directory
       return {
         streams: {
-          stderr: error
-        }
+          stderr: error,
+        },
       };
     }
     // Node does not yet exist - attempt to create it
@@ -37,8 +37,8 @@ export const ed = (env, fs, ...args) => {
     if (node.error) {
       return {
         streams: {
-          stderr: node.error
-        }
+          stderr: node.error,
+        },
       };
     }
 
@@ -48,19 +48,23 @@ export const ed = (env, fs, ...args) => {
   if (typeof node.fileContents === "function") {
     return {
       streams: {
-        stderr: `${path} is a binary`
-      }
+        stderr: `${path} is a binary`,
+      },
     };
   }
 
-  edWindow(node.name, node.fileContents, (fileContents) => node.fileContents = fileContents);
+  edWindow(
+    node.name,
+    node.fileContents,
+    (fileContents) => (node.fileContents = fileContents)
+  );
 
   $("#modal").show();
   $("#file-contents").focus();
 
   return {
     streams: {
-      stdout: `Now editing ${path}`
-    }
+      stdout: `Now editing ${path}`,
+    },
   };
 };

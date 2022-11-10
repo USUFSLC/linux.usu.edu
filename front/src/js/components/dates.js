@@ -1,4 +1,4 @@
 $(".date").each(function () {
-  const date = new Date($(this).html());  
+  const date = new Date($(this).html());
   $(this).html(date.toLocaleString());
 });

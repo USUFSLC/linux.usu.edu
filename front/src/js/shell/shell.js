@@ -9,7 +9,7 @@ export class Shell {
       HOSTNAME: "localhost",
       PWD: "/",
       PATH: "",
-      ...env
+      ...env,
     };
     this.streams = {
       stdout: "",
@@ -18,10 +18,9 @@ export class Shell {
   }
 
   static parseCommand(command) {
-    return (command.trim()
-            .match(/(["'])(?:\\\1|.)*?\1|[^ "]+/g) || [])
-      .map(arg => arg.replace(/^["']|["']$/g, ""))
-      .filter(arg => arg !== "");
+    return (command.trim().match(/(["'])(?:\\\1|.)*?\1|[^ "]+/g) || [])
+      .map((arg) => arg.replace(/^["']|["']$/g, ""))
+      .filter((arg) => arg !== "");
   }
 
   getEnv(name) {
@@ -34,9 +33,9 @@ export class Shell {
 
   buildPrompt() {
     return this.env.PS1.replaceAll(/\$\{DATE\}/g, new Date().toLocaleString())
-                       .replaceAll(/<(\w+)>/g, (_, name) => `<span class="${name}">`)
-                       .replaceAll(/<\/(\w+)>/g, "</span>")
-                       .replaceAll(/\$\{(\w+)\}/g, (match, name) => this.env[name] || match);
+      .replaceAll(/<(\w+)>/g, (_, name) => `<span class="${name}">`)
+      .replaceAll(/<\/(\w+)>/g, "</span>")
+      .replaceAll(/\$\{(\w+)\}/g, (match, name) => this.env[name] || match);
   }
 
   execute(name, ...args) {
@@ -55,26 +54,29 @@ export class Shell {
     if (binaryStatus.error) {
       return {
         streams: {
-          stderr: `${name}: command not found`
-        }
+          stderr: `${name}: command not found`,
+        },
       };
     }
 
-    if (binaryStatus.type === "file" && typeof binaryStatus.node.fileContents === "function") {
+    if (
+      binaryStatus.type === "file" &&
+      typeof binaryStatus.node.fileContents === "function"
+    ) {
       try {
         return binaryStatus.node.fileContents(this.env, this.fs, ...args);
       } catch (e) {
         return {
           streams: {
-            stderr: e.message
-          }
+            stderr: e.message,
+          },
         };
       }
     }
     return {
       streams: {
-        stderr: `${name} is not executable`
-      }
+        stderr: `${name} is not executable`,
+      },
     };
   }
 
@@ -86,22 +88,30 @@ export class Shell {
       this.history.push(command);
 
       const withEnvVars = command
-            .replaceAll(/(\w+)=("([^"]+)"|[^ ]+)/g, (match, name, value, inQuotes) => {
-              // Set environment variables from assignment
-              this.env[name] = inQuotes || value;
-              return "";
-            })
-            .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
+        .replaceAll(
+          /(\w+)=("([^"]+)"|[^ ]+)/g,
+          (match, name, value, inQuotes) => {
+            // Set environment variables from assignment
+            this.env[name] = inQuotes || value;
+            return "";
+          }
+        )
+        .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
       const withUserHome = withEnvVars.replaceAll(/\~/g, this.env.HOME);
-      const withWildCard = withUserHome.replaceAll(/([/\w-_]+)?\*/g, (match, path) => {
-        path = this.fs.absolutePath(this.env.PWD, path || this.env.PWD);
-        const { node, error } = this.fs.pathStatus(path);
-        if (error) {
-          return "";
+      const withWildCard = withUserHome.replaceAll(
+        /([/\w-_]+)?\*/g,
+        (match, path) => {
+          path = this.fs.absolutePath(this.env.PWD, path || this.env.PWD);
+          const { node, error } = this.fs.pathStatus(path);
+          if (error) {
+            return "";
+          }
+          const resp = Object.keys(node.children)
+            .map((childName) => this.fs.absolutePath(path, childName))
+            .join(" ");
+          return resp;
         }
-        const resp = Object.keys(node.children).map((childName) => this.fs.absolutePath(path, childName)).join(" ");
-        return resp;
-      });
+      );
 
       const [name, ...args] = Shell.parseCommand(withWildCard);
 
@@ -109,11 +119,11 @@ export class Shell {
         const result = this.execute(name, ...args);
         this.env = {
           ...this.env,
-          ...result.env
+          ...result.env,
         };
         this.streams = {
           ...this.streams,
-          ...result.streams
+          ...result.streams,
         };
       }
     }

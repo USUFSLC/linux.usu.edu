@@ -5,15 +5,15 @@ export const touch = (env, fs, ...args) => {
   if (newChild.error) {
     return {
       streams: {
-        stderr: newChild.error
-      }
+        stderr: newChild.error,
+      },
     };
   }
   newChild.fileContents = ""; // initialize with empty contents
 
   return {
     streams: {
-      stdout: `New file: ${newChild.getFullPath()} created`
-    }
+      stdout: `New file: ${newChild.getFullPath()} created`,
+    },
   };
 };

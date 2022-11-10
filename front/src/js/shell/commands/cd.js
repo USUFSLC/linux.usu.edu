@@ -5,14 +5,14 @@ export const cd = (env, fs, ...args) => {
   if (PWD.error) {
     return {
       streams: {
-        stderr: PWD.error
-      }
+        stderr: PWD.error,
+      },
     };
   }
 
   return {
     env: {
-      PWD: PWD.node.getFullPath()
-    }
+      PWD: PWD.node.getFullPath(),
+    },
   };
-}
+};

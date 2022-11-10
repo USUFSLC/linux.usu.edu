@@ -1,8 +1,7 @@
 export const help = (env, fs, ...args) => {
   return {
     streams: {
-      stdout:
-`
+      stdout: `
 Commands
 ========
 * help - this help
@@ -34,7 +33,7 @@ Environment
 * HOME - the home directory
 * PATH - the path to search for executables
 * HOSTNAME - the hostname
-`
-    }
+`,
+    },
   };
 };

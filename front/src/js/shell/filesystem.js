@@ -58,10 +58,10 @@ export class FileSystem {
     }
   }
 
-  getNode(path, fsNode=this.root) {
+  getNode(path, fsNode = this.root) {
     if (!fsNode) {
       return null;
-    }   
+    }
 
     if (!path) {
       return fsNode;
@@ -76,7 +76,10 @@ export class FileSystem {
       if (path.startsWith("/")) {
         return this.getNode(path.slice(1), fsNode);
       }
-      const [curr, rest] = [path.slice(0, slashIndex), path.slice(slashIndex + 1)];
+      const [curr, rest] = [
+        path.slice(0, slashIndex),
+        path.slice(slashIndex + 1),
+      ];
       return this.getNode(rest, fsNode.children[curr]);
     }
 
@@ -86,11 +89,11 @@ export class FileSystem {
   insertNewNodeAt(absPath) {
     if (this.getNode(absPath)) {
       return {
-        error: `Something already exists at ${absPath}`
+        error: `Something already exists at ${absPath}`,
       };
     }
 
-    const path = absPath.split("/").filter(x => x);
+    const path = absPath.split("/").filter((x) => x);
     const newDir = path.pop();
     const parentNodeStatus = this.pathStatus(`/${path.join("/")}`, "directory");
 
@@ -104,14 +107,14 @@ export class FileSystem {
     return newChild;
   }
 
-  pathStatus(path, type, fsNode=this.root) {
+  pathStatus(path, type, fsNode = this.root) {
     const node = this.getNode(path, fsNode);
     if (!node) {
       if (type) {
         return { error: `No such ${type}: ${path}` };
       }
       return { error: `${path} does not exist` };
-    } 
+    }
     const result = {
       type: node.fileContents !== null ? "file" : "directory",
       path: node.getFullPath(),

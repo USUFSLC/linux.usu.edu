@@ -5,14 +5,14 @@ export const mkdir = (env, fs, ...args) => {
   if (newChild.error) {
     return {
       streams: {
-        stderr: newChild.error
-      }
+        stderr: newChild.error,
+      },
     };
   }
 
   return {
     streams: {
-      stdout: `${newChild.getFullPath()} created`
-    }
+      stdout: `${newChild.getFullPath()} created`,
+    },
   };
 };

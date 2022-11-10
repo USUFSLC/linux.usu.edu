@@ -20,9 +20,9 @@ import { rm } from "./commands/rm";
 import { help } from "./commands/help";
 
 const FILES = {
-  "home" : { },
-  "usr" : {
-    "bin" : {
+  home: {},
+  usr: {
+    bin: {
       cd, // Traditionally cd and echo are shell-specific commands, but whatever
       echo,
       ls,
@@ -32,15 +32,15 @@ const FILES = {
       ed,
       tree,
       rm,
-      help
+      help,
     },
-    "local" : {
-      "bin" : {
+    local: {
+      bin: {
         trongle,
-        clear
-      }
-    }
-  }
+        clear,
+      },
+    },
+  },
 };
 
 const fs = new FileSystem(FILES);

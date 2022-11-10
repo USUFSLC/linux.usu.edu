@@ -1,4 +1,4 @@
-@import url('./colors.css');
+@import url("./colors.css");
 
 #sidebar {
   width: 250px;
@@ -6,11 +6,11 @@
   height: 100%;
   top: 0;
   left: -260px;
-  transition: left 0.20s ease;
+  transition: left 0.2s ease;
   border-radius: 0px 8px 0px 8px;
   border-right: 3px solid var(--green);
   background: var(--bg);
-  z-index:9001; /* It's over 9000 */
+  z-index: 9001; /* It's over 9000 */
 }
 
 #sidebar.active {
@@ -31,10 +31,10 @@
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  -webkit-transition: .5s ease-in-out;
-  -moz-transition: .5s ease-in-out;
-  -o-transition: .5s ease-in-out;
-  transition: .5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
   cursor: pointer;
 }
 
@@ -50,10 +50,10 @@
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  -webkit-transition: .25s ease-in-out;
-  -moz-transition: .25s ease-in-out;
-  -o-transition: .25s ease-in-out;
-  transition: .25s ease-in-out;
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 
 #sidebar-toggle span {

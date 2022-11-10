@@ -6,15 +6,15 @@ export const cat = (env, fs, ...args) => {
     if (nodeStatus.error) {
       return {
         streams: {
-          stderr: nodeStatus.error
-        }
+          stderr: nodeStatus.error,
+        },
       };
     }
     result += nodeStatus.node.fileContents + "\n";
   }
   return {
     streams: {
-      stdout: result
-    }
+      stdout: result,
+    },
   };
 };

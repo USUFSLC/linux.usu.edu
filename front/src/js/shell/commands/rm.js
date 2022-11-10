@@ -4,8 +4,8 @@ export const rm = (env, fs, ...args) => {
     if (error) {
       return {
         streams: {
-          stderr: error
-        }
+          stderr: error,
+        },
       };
     }
 
@@ -14,7 +14,7 @@ export const rm = (env, fs, ...args) => {
 
   return {
     streams: {
-      stdout: `Recursively removed ${args.join(", ")}`
-    }
+      stdout: `Recursively removed ${args.join(", ")}`,
+    },
   };
 };
