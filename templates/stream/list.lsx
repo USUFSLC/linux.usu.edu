@@ -6,7 +6,7 @@
   <div class="stream-container">
       <div style="text-align:center; margin-bottom: 12px;">
         {(if archived
-          (loop for i from min-year to current-year
+          (loop for i from (or min-year current-year) to current-year
                  collect (funcall (lambda (i) ;; it is necessary to create a closure over i, or it will just end up as current-year
                                <a href={(format nil "/streams?archived=true&year=~a" i)}>{i}</a>)
                              i))
