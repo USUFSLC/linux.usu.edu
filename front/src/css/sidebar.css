@@ -10,7 +10,9 @@
   border-radius: 0px 8px 0px 8px;
   border-right: 3px solid var(--green);
   background: var(--bg);
+  z-index:9001; /* It's over 9000 */
 }
+
 #sidebar.active {
   left: 0px;
 }
@@ -97,4 +99,10 @@
   height: 2rem;
   overflow: hidden;
   cursor: pointer;
+}
+
+.sidebar-entry {
+  border-top: 1px solid var(--yellow);
+  margin-top: 12px;
+  padding-top: 12px;
 }

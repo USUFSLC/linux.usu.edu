@@ -1,21 +1,17 @@
 @import url("./colors.css");
 
-/* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-
+  display: none;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
   z-index: 1;
   border: 3px solid var(--red);
   border-radius: 1rem;
   padding: 20px;
   padding-bottom: 10px;
   background-color: var(--bg);
-
   width: 80vw;
   min-height: 40vh;
 }
@@ -24,7 +20,6 @@
   width: 100%;
 }
 
-/* Modal Content */
 .modal-content {
   height: 100%;
   background-color: var(--bg);

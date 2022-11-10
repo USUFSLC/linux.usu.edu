@@ -20,7 +20,6 @@
                 :*application-root*))
 (in-package :usufslc.app)
 
-;; Path-expressions is an a-list with (regular-expression-matching-path . path-to-directory) pairs.
 (defmacro with-static-handlers (() &body body)
   `(builder
     ,@(mapcar (lambda (path-expression)
@@ -32,8 +31,10 @@
     ,@body))
 
 (defparameter *csrf-ignored-paths*
-  '("/stream/start"
-    "/stream/stop"))
+  '("/stream/done_recording_nginx"
+    "/stream/start_by_token_nginx"
+    "/stream/is_streaming_nginx"
+    "/stream/end_by_token_nginx"))
 
 (with-static-handlers ()
   (if (get-config :section :|app-log| :property :|access-log|)
@@ -43,7 +44,7 @@
         `(:backtrace
           :output ,(pathname error-log-path))))
   `(:session :state ,(make-cookie-state :httponly t :secure t :expires (* 60 60 6)))
-  (lambda (app) ;; Custom Middleware - Remove any trailing slashes and ignore CSRF if in *csrf-ignored-paths*
+  (lambda (app)
     (lambda (env)
       (let* ((path (getf env :path-info))
              (path-no-trailing-forward (if (and (cl-ppcre:scan "^/.+$" path)
@@ -51,7 +52,6 @@
                                            (subseq path 0 (1- (length path)))
                                            path)))
         (setf (getf env :path-info) path-no-trailing-forward)
-        ;; Then check if we need to apply CSRF
         (if (member path *csrf-ignored-paths* :test #'equal)
             (funcall app env)
             (funcall

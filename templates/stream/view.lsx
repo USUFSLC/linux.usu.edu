@@ -1,0 +1,35 @@
+(lambda
+  (&key
+    stream
+    csrf-token
+    user
+    (stream-src ""))
+  <div>
+    {(when (and user
+                stream)
+        (let ((context (usufslc.db.vidstream::vidstream-context stream))
+              (streaming (usufslc.db.vidstream::vidstream-streaming stream)))
+          <div>
+            {(when (and streaming
+                       (usufslc.db.user::can user "stop" context))
+               <form style="display: inline" method="POST" action={(format nil "/stream/stop/~a" (mito:object-id stream))}>
+                 <input type="hidden" name="_csrf_token" value={csrf-token}>
+                 <button type="submit">Stop Stream</button>
+               </form>)}
+           </div>))}
+         
+    <div style="text-align: center" class="livestream-video">
+      <video
+        id="stream"
+        class="vjs-16-9"
+        controls
+        loop="false"
+        preload="auto"
+        style="width: 100%"
+        data-stream={stream-src}
+        autoplay
+        muted
+      ></video>
+    </div>
+  </div>
+)

@@ -1,35 +1,14 @@
 const userName = $("#user-name").val();
-const initialHomeFiles = [
-   {name: "what.txt", content: `What
-====
-Utah State University Free Software and Linux Club.
-`},
-   {name: "who.txt", content: `Who
-===
-Anybody who wants to learn about free software, Linux, computers, and hang out with cool people!.
-`},
-   {name: "when.txt", content: `When
-====
-Every Wednesday at 6:30 PM in room ESLC 053.
-`},
-   {name: "get_involved.txt", content: `Get Involved!
-=============
-We communicate and send announcements over <a href="https://discord.com/R6fEGUJan6">Discord</a>, but you can also shoot an email over to usufslc@gmail.com.
-`},
-];
+const magicTextToHtml = (input) => $('<span>').text(input).html();
 
 window.shell.setEnv("USER", userName);
 window.shell.setEnv("HOME", `/home/${userName}`);
 window.shell.fs.insertNewNodeAt(window.shell.getEnv("HOME"));
-window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usu-fslc-info`);
 window.shell.setEnv("PWD", window.shell.getEnv("HOME"));
-
-initialHomeFiles.map((x) => {
-  const f = window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/usu-fslc-info/${x.name}`);
-  f.fileContents = x.content;
-});
-
-const magicTextToHtml = (input) => $('<span>').text(input).html();
+const readme = window.shell.fs.insertNewNodeAt(`${window.shell.getEnv("HOME")}/README`);
+readme.fileContents = `
+Hello, ${userName}! I don't have an easter egg to give you, so have this bunny instead.
+🐰`
 
 let state = {
   historyIndex: window.shell.history.length,
@@ -68,7 +47,7 @@ const goInHistoryOnKeyCode = (which, state, history) => {
 };
 
 $("#shell-input").on("keyup", function (e) {
-    if (e.which === 38 || e.which === 40) {
+  if (e.which === 38 || e.which === 40) {
     state.historyIndex = goInHistoryOnKeyCode(e.which, state, window.shell.history);
     $("#shell-command").val(window.shell.history[state.historyIndex] || state.command);
   } else {

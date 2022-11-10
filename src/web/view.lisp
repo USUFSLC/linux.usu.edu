@@ -16,7 +16,7 @@
           (render-object object nil)
           object))))
 
-(defun render-with-root (template-path &key root-env env)
+(defun render-with-root (template-path &key root-env env)  
   (render (get-config :section :|app-render| :property :|template-root|) 
           :env (append
                 `(:content ,(render template-path

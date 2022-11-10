@@ -17,7 +17,7 @@
 (in-suite vidstreams-suite)
     
 (test stream-becomes-expired-after-config-time
-  :description "Video streams eventually will fail to authenticate"
+  :description "Video streams eventually will fail to authenticate after expiration"
   (let ((stream (make-instance 'vidstream :name "Testing stream"
                                           :description "A description for at testing stream"
                                           :token "testToken"

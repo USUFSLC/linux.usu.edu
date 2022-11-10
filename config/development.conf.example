@@ -1,12 +1,15 @@
-# This is a comment
-[discord] # And so is this
+[club]
+  :meetings Every Wednesday at 6:30PM MST
+  :place Eccles Science Building (ESLC), room 053
+
+[discord]
   :auth-url https://discord.com/api/oauth2/authorize
   :token-url https://discord.com/api/oauth2/token
   :identity-url https://discord.com/api/users/@me
   :code-validation-regex ^\w{30}$
   :scope identify
-  :client-id <CLIENT_ID_HERE>
-  :secret <CLIENT_SECRET_HERE>
+  :client-id <client_id_here>
+  :secret <client_secret_here>
 
 [retry]
   :max-retries 3
@@ -16,7 +19,7 @@
 
 [db]
   :name usufslc
-  :user postgres
+  :username postgres
   :password postgres
   :host 127.0.0.1
   :port 5432
@@ -25,24 +28,27 @@
   :driver postgres
 
 [app]
-  :address 0.0.0.0 
-  :port 8080
+  :address 0.0.0.0
+  :port 5000
   :debug t
 
 [stream]
-  :token-expiration 300 # seconds
-  :rtmp-route live # nginx root rtmp route
+  :token-expiration 300
+  :rtmp-route live
+  :hls-route hls
+  :record-archive-route vod
+  :record-archive-format mp4
 
 [app-route]
   :protocol http
   :host localhost
-  :port 8080
+  :port 5000
 
 [app-render]
   :template-directory templates/
   :template-root root.lsx
 
 [app-log]
-  :access-log t # This could be nil for production
-  :sql-info t # This could be nil for production
-  :error-log /tmp/error.log # Better to use a different route for prod probs
+  :access-log t
+  :sql-info t
+  :error-log /tmp/error.log

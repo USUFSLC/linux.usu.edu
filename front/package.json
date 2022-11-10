@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "hls.js": "^1.2.5-0.canary.8680",
     "jquery": "^3.6.0",
     "package-lock.json": "^1.0.0"
   },

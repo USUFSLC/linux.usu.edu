@@ -2,6 +2,7 @@
 @import url('./sidebar.css');
 @import url('./terminal.css');
 @import url('./modal.css');
+@import url('./stream.css');
 
 @font-face {
   font-family: 'DM Mono';
@@ -118,4 +119,9 @@ input[type=submit]:hover,
 button:hover,
 .alert:hover {
   background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
+}
+
+.avatar {
+    border-radius: 50%;
+    height: 52px;
 }

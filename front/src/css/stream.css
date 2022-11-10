@@ -1,0 +1,42 @@
+@import url("./colors.css");
+
+.stream-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.stream-card {
+    display: inline-block;
+    
+    border-radius: 4px;
+    border: 1px solid var(--green);
+
+    padding: 18px;
+    width: 70vw;
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 12px;
+
+    text-decoration: none;
+}
+
+.stream-card:hover {
+   background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
+}
+
+.stream-header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+
+    justify-content: space-between;
+}
+
+.stream-footer {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    margin-top: 16px;
+}

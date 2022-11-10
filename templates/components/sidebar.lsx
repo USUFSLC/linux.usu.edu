@@ -1,11 +1,11 @@
 (lambda
   (&key
-    (can-stream nil)
-    (user nil))
+    can-stream
+    user)
   <div>
     <a id="theme-switcher"><img id="theme-icon" src="/images/sun.svg" alt="Theme picker"></a>
-    <hr>
-    <ul>
+
+    <ul class="sidebar-entry">
       {
         (if user
             <div>
@@ -18,19 +18,21 @@
             </div>)
       }
     </ul>
-    <hr>
-    <div>
+
+    <div class="sidebar-entry">
       <h3>Streams</h3>
       <ul>
-      {
-        (if can-stream
-            <li>
-              <a href="/stream/create">Create Stream</a>
-            </li>)        
-      }
-      <li>
-        <a href="/streams">Current Streams</a>
-      </li>
+        {(when can-stream
+              <li>
+                <a href="/stream/create">Create Stream</a>
+              </li>
+          )}
+        <li>
+          <a href="/streams">Current Streams</a>        
+        </li>
+        <li>
+          <a href="/streams?archived=true">Archived Streams</a>
+        </li>
       </ul>
     </div>
   </div>)

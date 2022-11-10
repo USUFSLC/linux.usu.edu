@@ -1,25 +1,24 @@
 (lambda
   (&key
+    page-title
+    info
+    error
+    sidebar
+    content
     (title "USU FSLC")
-    (motd "welcome to our small corner of the internet")
-    (page-title nil)
-    (info nil)
-    (error nil)
-
-    (sidebar nil)
-    (content nil))
+    (motd "keepin' it 'free' since 2000"))
 
   <html>
     <head>
       <title>{title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="UTF-8">
       <link rel="stylesheet" href="/css/style.css" />
       <script src="/js/util/setThemeBeforeRender.js" />
 
       <script src="/js/main.js" defer />
     </head>
     <body>
-      <noscript>You should have JavaScript enabled, man!</noscript>
       <div id="modal" class="modal"> </div>
 
       <div id="sidebar">
@@ -46,13 +45,14 @@
               <h2 class="primary">{page-title}</h2>
             </div>
           )}
-
-          {(if info
-               <div class="alert info">{info}</div>
-           )}
-          {(if error
-               <div class="alert warn">{error}</div>
-           )}
+          <div id="alerts">
+            {(if info
+                 <div class="alert info"><a href="javascript:void(0)">X</a> {info}</div>
+             )}
+            {(if error
+                 <div class="alert warn"><a href="javascript:void(0)">X</a> {error}</div>
+             )}
+          </div>
 
           {content}
         </div>

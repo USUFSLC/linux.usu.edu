@@ -7,6 +7,8 @@
      (is-admin :col-type (or :boolean :null)
                :accessor user-is-admin
                :default nil)
+     (discord-avatar  :col-type (:varchar 128)
+                      :accessor user-discord-avatar)
      (discord-tag :col-type (:varchar 8)
                   :accessor user-discord-tag)
      (discord-id :col-type (:varchar 128)

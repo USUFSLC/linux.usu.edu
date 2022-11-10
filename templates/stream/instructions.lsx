@@ -31,6 +31,7 @@
         <li>Select "Use Stream Key" if it's prompted</li>
         <li>Set "Server" to "<span class='yellow'>{stream-url}</span>"</li>
         <li>Set stream key to "<span class='yellow'>{stream-key}</span>"</li>
+        <li>Change your keyframe interval to 1 under Output > Set "Output Mode" to Advanced > Keyframe Interfval > 1s </li>
       </ol>
     </div>
   </div>)

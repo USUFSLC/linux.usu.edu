@@ -1,6 +1,6 @@
 # usufslc
 
-Documentation is still TODO - still missing config, unit testing, production building, etc.
+Documentation is still TODO
 
 
 ## Usage

@@ -1,16 +1,19 @@
 (in-package :usufslc.db.user)
 
 (defun create-or-update-user-from-discord (discord-user-details)
+  (format t "~a" discord-user-details)
   (let ((name (cdr (assoc :USERNAME discord-user-details)))
         (discord-tag (cdr (assoc :DISCRIMINATOR discord-user-details)))
-        (discord-id (cdr (assoc :ID discord-user-details))))
+        (discord-id (cdr (assoc :ID discord-user-details)))
+        (avatar (cdr (assoc :AVATAR discord-user-details))))
     (if (and name discord-tag discord-id)
         (with-db ()
           (let ((user (or (mito:find-dao 'user :discord-id discord-id)
                           (make-instance 'user))))
             (setf (user-name user) name
                   (user-discord-id user) discord-id
-                  (user-discord-tag user) discord-tag)
+                  (user-discord-tag user) discord-tag
+                  (user-discord-avatar user) (format nil "https://cdn.discordapp.com/avatars/~a/~a.jpg?size=256" discord-id avatar))
             (mito:save-dao user)
             user)))))
 

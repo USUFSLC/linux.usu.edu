@@ -23,6 +23,7 @@
            (user 
              (mito:create-dao 'user
                               :discord-id discord-id
+                              :discord-avatar "12345"
                               :name "Test User"
                               :discord-tag "1234")))
       (is (eq 'unique-violation
@@ -37,10 +38,12 @@
   (let ((fake-discord-user-oauth-response
           '((:username . "e")
             (:discriminator . "2718")
+            (:avatar "2357")
             (:id . "1123581321345589")))
         (fake-discord-user-oauth-response-updated
           '((:username . "pi")
             (:discriminator . "3142")
+            (:avatar "7532")
             (:id . "1123581321345589")))
         (user-id 0))
     (create-or-update-user-from-discord fake-discord-user-oauth-response)
@@ -73,7 +76,11 @@
           (added-read-context-to-readwrite)
           (added-write-context-to-readwrite)
           (added-user-to-read-context))
-      (setf fake-user (mito:create-dao 'user :name "Test User" :discord-tag "1234" :discord-id "1245" :is-admin nil))
+      (setf fake-user (mito:create-dao 'user :name "Test User"
+                                             :discord-avatar "7152"
+                                             :discord-tag "1234"
+                                             :discord-id "1245"
+                                             :is-admin nil))
       (setf fake-context (mito:create-dao 'context
                                           :name "fake-context"))
       (setf fake-read-context-operation (mito:create-dao 'context-operation :context fake-context :operation "view"))

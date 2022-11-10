@@ -1,8 +1,41 @@
 (lambda (&key
-         (streams nil))
-  (if streams
-    (mapcar
-      (lambda (stream)
-        <div>{(usufslc.db.vidstream::vidstream-name stream)}</div>)
-      streams)
-    <h2>Seems pretty empty in here...</h2>))
+         archived
+         min-year
+         streams
+         (current-year (local-time:with-decoded-timestamp (:year y) (local-time:now) y)))
+  <div class="stream-container">
+      <div style="text-align:center; margin-bottom: 12px;">
+        {(if archived
+          (loop for i from min-year to current-year
+                 collect (funcall (lambda (i) ;; it is necessary to create a closure over i, or it will just end up as current-year
+                               <a href={(format nil "/streams?archived=true&year=~a" i)}>{i}</a>)
+                             i))
+          <a href="/streams?archived=true">Archive</a>)}
+      </div>
+    {(if streams
+      (mapcar
+        (lambda (stream)
+          (let ((user-created (usufslc.db.vidstream::vidstream-created-by stream)))
+            <a href={(format nil "/stream/~a" (mito:object-id stream))} class="stream-card">
+              <div class="stream-header">
+                <h2>{(usufslc.db.vidstream::vidstream-name stream)}</h2>
+                {(when user-created
+                  <img class="avatar" src={(usufslc.db.user::user-discord-avatar user-created)}>)}
+              </div>
+              <div style="margin-top:12px">
+                <p>{(usufslc.db.vidstream::vidstream-description stream)}</p>
+              </div>              
+              <div class="stream-footer">
+                <p class="date">{(slot-value stream 'mito.dao.mixin::created-at)}</p>
+                <p>{(concatenate 'string (usufslc.db.user::user-name user-created) "#" (usufslc.db.user::user-discord-tag user-created))}</p>
+              </div>
+            </a>))
+        streams)
+      <div>
+        <h2>Seems pretty empty in here...</h2>
+        {(unless archived
+          <p>maybe you want to see our <a href="/streams?archived=true">Archived Streams</a>?</p>)}
+      </div>
+    )}
+  </div>
+)

@@ -23,16 +23,15 @@
 (defun root-env (&rest other-env)
   (let ((infomsg (gethash :info *session*))
         (errormsg (gethash :error *session*)))
-    ;; Reset info and error messages
     (setf (gethash :info *session*) nil
           (gethash :error *session*) nil)
-    ;; Return the environment with defaults which would be overridden by other-env (getf returns first occurence)
     (append other-env
             `(:sidebar ,(usufslc.db:with-db ()
                           (with-updated-user-model-from-session ()
                             (render #P"components/sidebar.lsx"
                                     :env (list :user user
-                                               :can-stream (and user (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")))
+                                               :can-stream (and user
+                                                                (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")))
                                     :render-lsx nil)))
               :info ,infomsg
               :error ,errormsg))))
@@ -56,13 +55,16 @@
 
 @route GET "/"
 (defun show-home ()
-  (let* ((user (gethash :user *session*))
-         (user-name (if user
-                        (usufslc.db.user::user-name user)
-                        "guest")))
-    (render-with-root #P"pages/home.lsx"
-                      :root-env (root-env)
-                      :env `(:user-name ,user-name))))
+  (usufslc.db:with-db () 
+    (with-updated-user-model-from-session ()
+      (let ((user-name (if user
+                           (usufslc.db.user::user-name user)
+                           "guest")))
+        (render-with-root #P"pages/home.lsx"
+                          :root-env (root-env)
+                          :env `(:user-name ,user-name
+                                 :meeting-times ,(get-config :section :|club| :property :|meetings|)
+                                 :meeting-place ,(get-config :section :|club| :property :|place|)))))))
 
 @route GET "/conduct"
 (defun show-conduct ()
@@ -125,21 +127,33 @@
                                         :page-title "New Stream"))))))
 
 @route GET "/streams"
-(defun render-streams ()
+(defun render-streams (&key |archived| |year|)
   (usufslc.db:with-db ()
     (let ((streams (mito:select-dao 'usufslc.db.vidstream:vidstream
-                     (sxql:where :streaming))))
+                     (if |archived|
+                         (sxql:where (:and :recorded
+                                           (:not :streaming)))
+                         (sxql:where :streaming))
+                      (sxql:where (:= (:date_part "year" :created_at)
+                                      (or |year| (local-time:with-decoded-timestamp (:year y) (local-time:now) y))))
+                     (sxql:order-by (:desc :created-at))
+                     (mito:includes 'usufslc.db.user::user)))
+          (min-year (cadr (assoc :min
+                                 (mito:retrieve-by-sql (sxql:select ((:min (:date_part "year" :created_at)))
+                                                         (sxql:from :vidstream)))))))
       (render-with-root #P"stream/list.lsx"
                         :root-env (root-env
-                                   :page-title "Streams")
-                        :env `(:streams ,streams)))))
+                                   :page-title (if |archived| "The Archive" "Streams"))
+                        :env `(:streams ,streams
+                               :archived ,|archived|
+                               :min-year ,(when min-year (floor min-year)))))))
 
 @route POST "/stream"
 (defun add-stream (&key |name| |description|)
   (usufslc.db:with-db ()
     (with-authentication-or-sign-in ()
        (if (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")
-           (let ((vidstream (usufslc.db.vidstream:create-stream |name| |description|)))
+           (let ((vidstream (usufslc.db.vidstream:create-stream-with-streamer-context |name| |description| user)))
              (render-with-root #P"stream/instructions.lsx"
                                :root-env (root-env
                                           :page-title "Streaming Instructions")
@@ -156,28 +170,89 @@
 
            (throw-code 403)))))
 
-@route POST "/stream/start"
+@route GET "/stream/:id"
+(defun view-stream (&key id)
+  (usufslc.db:with-db ()
+    (with-updated-user-model-from-session ()
+      (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :id id)))
+        (if stream
+            (let* ((stream-archived (and (not (usufslc.db.vidstream::vidstream-streaming stream))
+                                         (usufslc.db.vidstream::vidstream-recorded stream)))
+                   (stream-src
+                     (if stream-archived
+                         (format nil "/~a/~a.~a"
+                                 (get-config :section :|stream| :property :|record-archive-route|)
+                                 (mito:object-id stream)
+                                 (get-config :section :|stream| :property :|record-archive-format|))
+                         (format nil "/~a/~a.m3u8"
+                                 (get-config :section :|stream| :property :|hls-route|)
+                                 (mito:object-id stream)))))            
+              (render-with-root #P"stream/view.lsx"
+                                :env `(:stream-src ,stream-src
+                                       :stream ,stream
+                                       :user ,user
+                                       :csrf-token ,(lack.middleware.csrf:csrf-token *session*))
+                                :root-env (root-env
+                                           :page-title (usufslc.db.vidstream::vidstream-name stream))))
+            (throw-code 404))))))
+
+@route POST "/stream/stop/:id"
+(defun user-end-stream (&key id)
+  (usufslc.db:with-db ()
+    (with-authentication-or-sign-in ()
+      (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :id id)))
+        (when (and stream
+                   (can user "stop" (usufslc.db.vidstream::vidstream-context stream)))
+          (usufslc.db.vidstream:rotate-token-and-set-streaming stream nil)
+          (redirect "/streams"))))))
+
+;; NGINX streaming directives
+
+;; Throw 400 if the stream is not streaming
+@route POST "/stream/is_streaming_nginx"
+(defun stream-is-streaming (&key |name|)
+  (usufslc.db:with-db ()
+    (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :id |name|)))
+      (if (and stream
+               (usufslc.db.vidstream::vidstream-streaming stream))
+          "Success"
+          (throw-code 400)))))
+
+@route POST "/stream/start_by_token_nginx"
 (defun start-stream-via-token (&key |token| |name|)
-  ;; |name| is the id of the stream, which should be posted from nginx's on_publish event, as it's given in the stream key
-  ;; to verify authenticity of the streaming id the client is streaming to
   (usufslc.db:with-db ()
     (let ((stream (usufslc.db.vidstream:get-stream-unless-expired |token|)))
       (if (and stream
                (= (parse-integer |name|) (mito:object-id stream)))
           (progn
             (setf (usufslc.db.vidstream::vidstream-streaming stream) t)
-            (mito:save-dao stream)            
+            (mito:save-dao stream)
             "Started stream")
           (throw-code 400)))))
 
-@route POST "/stream/stop"
-(defun end-stream (&key |token|)
-  (usufslc.db:with-db ()
-    (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :token |token|)))
-      (if stream
-          (usufslc.db.vidstream:rotate-token-and-set-streaming stream nil)))))
+;; prevent a race condition where nginx might send done_recording while
+;; still setting the stream to have ended, causing the recorded field
+;; to end up as false when it should be true
+(defparameter *update-stream-end-lock* (bt:make-lock))
 
-;; 
+@route POST "/stream/end_by_token_nginx"
+(defun end-stream (&key |token|)
+  (bt:with-lock-held (*update-stream-end-lock*)
+    (usufslc.db:with-db ()
+      (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :token |token|)))
+        (when stream
+          (usufslc.db.vidstream:rotate-token-and-set-streaming stream nil))))))
+
+@route POST "/stream/done_recording_nginx"
+(defun set-recorded (&key |name|)
+  (bt:with-lock-held (*update-stream-end-lock*)
+    (usufslc.db:with-db ()
+      (let ((stream (mito:find-dao 'usufslc.db.vidstream:vidstream :id |name|)))
+        (when stream
+          (format t "~a" (usufslc.db.vidstream::vidstream-streaming stream))
+          (setf (usufslc.db.vidstream::vidstream-recorded stream) t)
+          (mito:save-dao stream)
+          "Saved recording status")))))
 
 ;;
 ;; Error pages

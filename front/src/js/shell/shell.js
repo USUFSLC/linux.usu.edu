@@ -93,7 +93,7 @@ export class Shell {
             })
             .replaceAll(/\$(\w+)/g, (match, name) => this.env[name] || match); // Replace values
       const withUserHome = withEnvVars.replaceAll(/\~/g, this.env.HOME);
-      const withWildCard = withUserHome.replaceAll(/([/\w]+)?\*/g, (match, path) => {
+      const withWildCard = withUserHome.replaceAll(/([/\w-_]+)?\*/g, (match, path) => {
         path = this.fs.absolutePath(this.env.PWD, path || this.env.PWD);
         const { node, error } = this.fs.pathStatus(path);
         if (error) {

@@ -34,10 +34,10 @@
                :drakma
                
                ;; JSON
-               :cl-json)
+               :cl-json
 
-               ;; Cron jobs
-               ;;:cl-schedule)
+               ;; Threading and locks
+               :bt-semaphore)
 
   :components ((:module "src"
                 :components
