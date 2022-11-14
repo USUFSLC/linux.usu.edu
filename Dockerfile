@@ -6,7 +6,6 @@ COPY ./front /frontend
 RUN npm install
 RUN node build.js
 
-# Then start the application
 FROM alpine:latest as APPLICATION
 
 RUN apk add postgresql-client sbcl

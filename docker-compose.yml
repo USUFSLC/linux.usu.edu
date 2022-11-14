@@ -3,9 +3,7 @@ version: '3'
 services:
 
   db:
-    image: 'postgres:14'
-    ports:
-      - "5432:5432"
+    image: "postgres:14"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -17,19 +15,31 @@ services:
     depends_on:
       - "db"
     build: .
-    ports:
-      - "8080:8080"
+    expose:
+      - 5000
     volumes:
       - ./config:/app/config:ro
-      - ./public:/app/public
+      - ./public:/app/public:ro
     networks:
       - usufslc
     environment:
       - APP_ENV=production
 
+  nginx:
+    depends_on:
+      - "prod"
+    build: ./nginx
+    ports:
+      - "8080:80"
+      - "1935:1935"
+    volumes:
+      - /tmp/hls:/var/stream/hls:rw
+      - /tmp/recordings:/var/stream/recordings:rw
+    networks:
+      - usufslc
+
 volumes:
   pgdata:
-  quicklisp:
 
 networks:
   usufslc:
