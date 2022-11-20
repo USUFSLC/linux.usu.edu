@@ -38,13 +38,21 @@
                  (gethash :error *session*) "You need to login to do that")
            (redirect "/login")))))
 
-(defmacro when-session-user-can (operation context-name &body body)
+(defmacro when-session-user-can (operation-context-pairs &body body)
   `(usufslc.db:with-db ()
      (with-authentication-or-sign-in ()
-       (if (usufslc.db.user::can-in-context-with-name user ,operation ,context-name)
+       (if (some
+            (lambda (pair)
+              (let ((operation (first pair))
+                    (context (second pair)))
+                (cond
+                  ((eq (type-of context) 'usufslc.db.context:context)
+                   (usufslc.db.user::can user operation context))
+                  ((stringp context)
+                   (usufslc.db.user::can-in-context-with-name user operation context)))))
+            ,operation-context-pairs)
            (progn ,@body)
            (throw-code 403)))))
-
 
 ;; Error pages
 (mapcar (lambda (error-code)

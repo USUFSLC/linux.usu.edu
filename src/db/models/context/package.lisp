@@ -8,4 +8,6 @@
            :context-operation
            :context-role
            :context-role-operation
+           :*crud-operations*
+           :create-role-in-context
            :create-operations-around-context))

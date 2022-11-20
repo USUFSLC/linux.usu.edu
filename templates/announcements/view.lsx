@@ -1,0 +1,4 @@
+(lambda (&key
+           announcement)
+   <h1>Viewing this announcement</h1>
+)

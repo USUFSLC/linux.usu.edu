@@ -1,4 +1,6 @@
-(lambda (&key announcements)
+(lambda (&key
+           viewing-my-announcements
+           announcements)
   <div class="announcement-list">
   {(if announcements
       (mapcar
@@ -25,6 +27,7 @@
         announcements)
       <div>
         <h2>Seems pretty empty in here...</h2>
+        {(unless viewing-my-announcements <p>Did you mean to view your <a href="/announcements/mine">own announcements</a>?</p>)}
       </div>
     )}
   </div>

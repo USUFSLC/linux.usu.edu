@@ -6,16 +6,7 @@
   (format nil "~X" (crypto:random-bits len)))
 
 (defun create-streamer-role-in-context (context)
-  (let ((streamer-role (mito:create-dao 'usufslc.db.context:context-role
-                                        :context context
-                                        :name "streamer"))
-        (streamer-operations (create-operations-around-context context *streamer-operations*)))
-    (mapcar (lambda (streamer-operation)
-              (mito:create-dao 'usufslc.db.context:context-role-operation
-                               :context-role streamer-role
-                               :context-operation streamer-operation))
-            streamer-operations)
-    streamer-role))
+  (usufslc.db.context:create-role-in-context context "streamer" *streamer-operations*))
 
 (defun create-stream-with-streamer-context (name description user)
   (let* ((stream (mito:create-dao 'vidstream
