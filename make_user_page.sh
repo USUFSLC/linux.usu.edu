@@ -3,6 +3,8 @@
 if [ -z "$1" ]
   then
     echo "Usage: ./make_user_page.sh <username>"
+
+    exit 1
 fi
 
 
