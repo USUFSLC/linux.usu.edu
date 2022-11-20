@@ -2,7 +2,11 @@
          archived
          min-year
          streams
-         (current-year (local-time:with-decoded-timestamp (:year y) (local-time:now) y)))
+         (current-year
+           (local-time:with-decoded-timestamp
+             (:year y)
+             (local-time:now)
+             y)))
   <div class="stream-container">
       <div style="text-align:center; margin-bottom: 12px;">
         {(if archived

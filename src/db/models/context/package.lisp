@@ -7,4 +7,5 @@
   (:export :context
            :context-operation
            :context-role
-           :context-role-operation))
+           :context-role-operation
+           :create-operations-around-context))

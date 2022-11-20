@@ -9,11 +9,7 @@
   (let ((streamer-role (mito:create-dao 'usufslc.db.context:context-role
                                         :context context
                                         :name "streamer"))
-        (streamer-operations (mapcar (lambda (operation-name)
-                                       (mito:create-dao 'usufslc.db.context:context-operation
-                                                        :operation operation-name
-                                                        :context context))
-                                     *streamer-operations*)))
+        (streamer-operations (create-operations-around-context context *streamer-operations*)))
     (mapcar (lambda (streamer-operation)
               (mito:create-dao 'usufslc.db.context:context-role-operation
                                :context-role streamer-role

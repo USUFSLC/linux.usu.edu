@@ -3,6 +3,7 @@
 @import url("./terminal.css");
 @import url("./modal.css");
 @import url("./stream.css");
+@import url("./announcement.css");
 
 @font-face {
   font-family: "DM Mono";

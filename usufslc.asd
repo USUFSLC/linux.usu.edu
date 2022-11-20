@@ -47,7 +47,8 @@
                     :components
                     ((:file "auth")
                      (:file "pages")
-                     (:file "streams"))
+                     (:file "streams")
+                     (:file "announcements"))
                     :depends-on ("web" "discord"))
                    (:file "web" :depends-on ("discord" "view"))
                    (:file "view" :depends-on ("package"))
@@ -69,6 +70,12 @@
                      :depends-on ("db")
                      :components
                      ((:module "user"
+                       :depends-on ("context")
+                       :components
+                       ((:file "extern" :depends-on ("models"))
+                        (:file "models" :depends-on ("package"))
+                        (:file "package")))
+                      (:module "announcement"
                        :depends-on ("context")
                        :components
                        ((:file "extern" :depends-on ("models"))
