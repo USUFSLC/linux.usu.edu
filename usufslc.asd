@@ -43,7 +43,13 @@
                 :components
                 ((:module "web"
                   :components 
-                  ((:file "web" :depends-on ("discord" "view"))
+                  ((:module "controllers"
+                    :components
+                    ((:file "auth")
+                     (:file "pages")
+                     (:file "streams"))
+                    :depends-on ("web" "discord"))
+                   (:file "web" :depends-on ("discord" "view"))
                    (:file "view" :depends-on ("package"))
                    (:file "package" :depends-on ("discord"))
                    (:module "discord"
