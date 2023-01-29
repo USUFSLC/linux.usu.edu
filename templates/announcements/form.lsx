@@ -1,0 +1,18 @@
+(lambda
+  (&key
+    announcement
+    (redirect "/announcements")
+    (action "/announcement")
+    (method "POST")
+    (csrf-token ""))
+  <form data-redirect={redirect} action={action} method={method} autocomplete="on" style="display:flex;flex-direction:column;gap:12px;" class="jquery-form">
+    <input type="hidden" name="_csrf_token" value={csrf-token}>
+    <label>Name</label>
+    <input name="name" type="text" value={(when announcement (usufslc.db.announcement::announcement-name announcement))} required>
+    <label>Announcement Date & Time</label>
+    <input name="scheduled" type="datetime-local" required>
+    <label>Content</label>
+    <textarea name="content" required>{(when announcement (usufslc.db.announcement::announcement-content announcement))}</textarea>
+    <input type="submit">
+  </form>
+)

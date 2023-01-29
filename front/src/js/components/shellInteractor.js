@@ -1,5 +1,4 @@
 const userName = $("#user-name").val();
-const magicTextToHtml = (input) => $("<span>").text(input).html();
 
 window.shell.setEnv("USER", userName);
 window.shell.setEnv("HOME", `/home/${userName}`);

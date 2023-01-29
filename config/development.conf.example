@@ -11,6 +11,9 @@
   :client-id <client_id_here>
   :secret <client_secret_here>
 
+  :announcement-webhook-url https://discord.com/api/webhooks/<webhook_id_here>/<webhook_token_here>
+  :virtual-meeting-webhook-url https://discord.com/api/webhooks/<webhook_id_here>/<webhook_token_here>
+
 [retry]
   :max-retries 3
   :period-ms 500

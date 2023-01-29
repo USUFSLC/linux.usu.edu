@@ -3,6 +3,7 @@
 @import url("./terminal.css");
 @import url("./modal.css");
 @import url("./stream.css");
+@import url("./announcement.css");
 
 @font-face {
   font-family: "DM Mono";
@@ -136,4 +137,15 @@ button:hover,
 .avatar {
   border-radius: 50%;
   height: 52px;
+}
+
+pre code {
+  display: block;
+  background: none;
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  max-width: 100%;
+  min-width: 100px;
+  padding: 0;
 }

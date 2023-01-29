@@ -1,5 +1,7 @@
 (lambda
   (&key
+    can-announce
+    has-announcements
     can-stream
     user)
   <div>
@@ -35,4 +37,18 @@
         </li>
       </ul>
     </div>
+    {(when (or has-announcements can-announce)
+      <div class="sidebar-entry">
+        <h3>Announcements</h3>
+        <ul>
+          <li>
+            <a href="/announcements">All Announcements</a>
+          </li>
+          {(when can-announce
+              <li>
+                <a href="/announcement/create">Create Announcement</a>
+              </li>
+          )}
+        </ul>
+      </div>)}
   </div>)

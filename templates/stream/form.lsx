@@ -1,12 +1,15 @@
 (lambda
   (&key
+    (redirect "/streams")
+    (action "/stream")
+    (method "POST")
     (csrf-token ""))
-  <form action="/stream" method="POST" autocomplete="on" style="display:flex;flex-direction:column">
+  <form data-redirect={redirect} action={action} method={method} autocomplete="on" style="display:flex;flex-direction:column" class="jquery-form">
     <input type="hidden" name="_csrf_token" value={csrf-token}>
     <label>Name</label>
-    <input name="name" type="text">
+    <input name="name" type="text" required>
     <label>Description</label>
-    <textarea name="description"></textarea>
+    <textarea name="description" required></textarea>
     <input type="submit">
   </form>
 )

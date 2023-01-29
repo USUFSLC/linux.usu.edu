@@ -3,13 +3,11 @@
 
 @route GET "/stream/create"
 (defun create-stream ()
-  (usufslc.db:with-db ()
-    (with-authentication-or-sign-in ()
-       (if (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")
-           (render-with-root #P"stream/form.lsx"
-                             :env `(:csrf-token ,(lack.middleware.csrf:csrf-token *session*))
-                             :root-env (root-env
-                                        :page-title "New Stream"))))))
+  (when-session-user-can '(("start-stream" "stream"))
+    (render-with-root #P"stream/form.lsx"
+                      :env `(:csrf-token ,(lack.middleware.csrf:csrf-token *session*))
+                      :root-env (root-env
+                                 :page-title "New Stream"))))
 
 @route GET "/streams"
 (defun render-streams (&key |archived| |year|)
@@ -35,26 +33,22 @@
 
 @route POST "/stream"
 (defun add-stream (&key |name| |description|)
-  (usufslc.db:with-db ()
-    (with-authentication-or-sign-in ()
-       (if (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")
-           (let ((vidstream (usufslc.db.vidstream:create-stream-with-streamer-context |name| |description| user)))
-             (render-with-root #P"stream/instructions.lsx"
-                               :root-env (root-env
-                                          :page-title "Streaming Instructions")
-                               :env `(:stream-url
-                                      ,(format nil "rtmp://~a/~a"
-                                               (usufslc.config:get-config :section :|app-route| :property :|host|)
-                                               (usufslc.config:get-config :section :|stream| :property :|rtmp-route|))
-                                      :stream-name
-                                      ,(usufslc.db.vidstream::vidstream-name vidstream)
-                                      :stream-key
-                                      ,(format nil "~a?token=~a"
-                                               (mito:object-id vidstream)
-                                               (usufslc.db.vidstream::vidstream-token vidstream)))))
-
-           (throw-code 403)))))
-
+  (when-session-user-can '(("start-stream" "stream"))
+    (let ((vidstream (usufslc.db.vidstream:create-stream-with-streamer-context |name| |description| user)))
+      (render-with-root #P"stream/instructions.lsx"
+                        :root-env (root-env
+                                   :page-title "Streaming Instructions")
+                        :env `(:stream-url
+                               ,(format nil "rtmp://~a/~a"
+                                        (usufslc.config:get-config :section :|app-route| :property :|host|)
+                                        (usufslc.config:get-config :section :|stream| :property :|rtmp-route|))
+                               :stream-name
+                               ,(usufslc.db.vidstream::vidstream-name vidstream)
+                               :stream-key
+                               ,(format nil "~a?token=~a"
+                                        (mito:object-id vidstream)
+                                        (usufslc.db.vidstream::vidstream-token vidstream)))))))
+  
 @route GET "/stream/:id"
 (defun view-stream (&key id)
   (usufslc.db:with-db ()

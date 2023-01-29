@@ -1,0 +1,26 @@
+(lambda (&key
+           can-edit
+           can-delete
+           csrf-token
+           announcement)
+   <div>
+     <div>
+        {(when can-edit
+           <a href={(format nil "/announcement/~a/edit" (mito:object-id announcement))}>Edit</a>)}
+        {(when can-delete
+           <a href="javascript:void(0)"
+              class="delete-button"
+              data-csrf={csrf-token}
+              data-redirect="/announcements"
+              data-action={(format nil "/announcement/~a" (mito:object-id announcement))}>
+            Delete
+          </a>
+        )}
+     </div>
+     <br>
+     <h1>{(usufslc.db.announcement::announcement-name announcement)}</h1>
+     <p>Scheduled for <span class="green date">{(usufslc.db.announcement::announcement-scheduled announcement)}</span></p>
+     <hr><br>
+     <pre><code>{(usufslc.db.announcement::announcement-content announcement)}</code></pre>
+   </div>
+)

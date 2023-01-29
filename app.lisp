@@ -37,12 +37,15 @@
     "/stream/end_by_token_nginx"))
 
 (with-static-handlers ()
-  (if (get-config :section :|app-log| :property :|access-log|)
-      :accesslog)
+  (when (get-config :section :|app-log| :property :|access-log|)
+    :accesslog)
+  (when (prod-p)
+    `(:backtrace
+      :result-on-error (500 (:content-type "text/plain") ("Internal Server Error"))))
   (let ((error-log-path (get-config :section :|app-log| :property :|error-log|)))
-    (if error-log-path
-        `(:backtrace
-          :output ,(pathname error-log-path))))
+    (when error-log-path
+      `(:backtrace
+        :output ,(pathname error-log-path))))
   `(:session :state ,(make-cookie-state :httponly t :secure t :expires (* 60 60 6)))
   (lambda (app)
     (lambda (env)

@@ -1,0 +1,35 @@
+(lambda (&key
+           viewing-my-announcements
+           announcements)
+  <div class="announcement-list">
+  {(if announcements
+      (mapcar
+        (lambda (announcement)
+          (let ((user-created (usufslc.db.announcement::announcement-created-by announcement)))
+            <a href={(format nil "/announcement/~a" (mito:object-id announcement))} class="announcement-card">
+              <div class="announcement-header">
+                <h2>{(usufslc.db.announcement::announcement-name announcement)}</h2>
+                {(when user-created
+                  <img class="avatar" src={(usufslc.db.user::user-discord-avatar user-created)}>)}
+              </div>
+              <div style="margin-top:12px">
+                <p>{(let* ((content (usufslc.db.announcement::announcement-content announcement))
+                           (truncated (subseq content 0 (min (length content) 100))))
+                      (if (equal truncated content)
+                          content
+                          (format nil "~a..." truncated)))}</p>
+              </div>
+              <div class="announcement-footer">
+                <p>Scheduled for: <span class="date">{(usufslc.db.announcement::announcement-scheduled announcement)}</span></p>
+                <p>{(concatenate 'string (usufslc.db.user::user-name user-created) "#" (usufslc.db.user::user-discord-tag user-created))}</p>
+              </div>
+            </a>))
+        announcements)
+      <div>
+        <h2>Seems pretty empty in here...</h2>
+        {(unless viewing-my-announcements <p>Did you mean to view your <a href="/announcements/mine">own announcements</a>?</p>)}
+      </div>
+    )}
+  </div>
+)
+  

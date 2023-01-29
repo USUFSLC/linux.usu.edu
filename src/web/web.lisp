@@ -22,7 +22,9 @@
                             (render #P"components/sidebar.lsx"
                                     :env (list :user user
                                                :can-stream (and user
-                                                                (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")))
+                                                                (usufslc.db.user::can-in-context-with-name user "start-stream" "stream"))
+                                               :can-announce (and user
+                                                                  (usufslc.db.user::can-in-context-with-name user "announce" "announcement")))
                                     :render-lsx nil)))
               :info ,infomsg
               :error ,errormsg))))
@@ -38,6 +40,21 @@
                  (gethash :error *session*) "You need to login to do that")
            (redirect "/login")))))
 
+(defmacro when-session-user-can (operation-context-pairs &body body)
+  `(usufslc.db:with-db ()
+     (with-authentication-or-sign-in ()
+       (if (some
+            (lambda (pair)
+              (let ((operation (car pair))
+                    (context (cdar pair)))
+                (cond
+                  ((eq (type-of context) 'usufslc.db.context:context)
+                   (usufslc.db.user::can user operation context))
+                  ((stringp context)
+                   (usufslc.db.user::can-in-context-with-name user operation context)))))
+            ,operation-context-pairs)
+           (progn ,@body)
+           (throw-code 403)))))
 
 ;; Error pages
 (mapcar (lambda (error-code)
