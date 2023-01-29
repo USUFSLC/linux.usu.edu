@@ -15,8 +15,6 @@
       <meta charset="UTF-8">
       <link rel="stylesheet" href="/css/style.css" />
       <script src="/js/util/setThemeBeforeRender.js" />
-
-      <script src="/js/main.js" defer />
     </head>
     <body>
       <div id="modal" class="modal"> </div>
@@ -62,6 +60,8 @@
           <a href="/credits">Credits</a>
         </div>
       </div>
+
+      <script src="/js/main.js" defer />
     </body>
   </html>
 )
