@@ -1,0 +1,17 @@
+(lambda
+  (&key
+    (csrf-token "")
+    (hcaptcha-sitekey ""))
+  <div>
+    <form action="/comments" method="POST" autocomplete="on" style="display:flex;flex-direction:column">
+      <input type="hidden" name="_csrf_token" value={csrf-token}>
+      <label>Comment / Concern</label>
+      <textarea name="comment" rows="5"></textarea>
+      <div style="margin-top: 1rem">
+        <div class="h-captcha" data-sitekey={hcaptcha-sitekey}></div>
+      </div>
+      <input type="submit">
+    </form>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+  </div>
+)

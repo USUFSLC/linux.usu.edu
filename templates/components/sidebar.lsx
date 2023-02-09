@@ -35,4 +35,13 @@
         </li>
       </ul>
     </div>
+
+    <div class="sidebar-entry">
+      <h3>Feedback</h3>
+      <ul>
+        <li>
+          <a href="/comments">Comment Box</a>
+        </li>
+      </ul>
+    </div>
   </div>)

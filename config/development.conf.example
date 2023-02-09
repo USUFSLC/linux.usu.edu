@@ -11,6 +11,8 @@
   :client-id <client_id_here>
   :secret <client_secret_here>
 
+  :comment-box-webhook <webhook>
+
 [retry]
   :max-retries 3
   :period-ms 500
@@ -52,3 +54,8 @@
   :access-log t
   :sql-info t
   :error-log /tmp/error.log
+
+
+[hcaptcha]
+  :sitekey 
+  :secret-key 
