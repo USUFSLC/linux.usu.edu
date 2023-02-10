@@ -105,13 +105,13 @@ export const runTests = () => {
   it("returns the correctly formatted absolute directory", () => {
     const fs = new FileSystem(testFs);
     assert(fs.absolutePath("/", "a/b/c") === "/a/b/c", "/ + a/b/c ");
-    assert(fs.absolutePath("/home/logan", "/a/b/c") === "/a/b/c", "/ + a/b/c ");
+    assert(fs.absolutePath("/home/lizzy", "/a/b/c") === "/a/b/c", "/ + a/b/c ");
     assert(
-      fs.absolutePath("/home/logan/", "/a/b/c") === "/a/b/c",
+      fs.absolutePath("/home/lizzy/", "/a/b/c") === "/a/b/c",
       "/ + a/b/c "
     );
     assert(
-      fs.absolutePath("/home/logan", "a/b/c") === "/home/logan/a/b/c",
+      fs.absolutePath("/home/lizzy", "a/b/c") === "/home/lizzy/a/b/c",
       "/ + a/b/c "
     );
   });
