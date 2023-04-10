@@ -1,6 +1,7 @@
 (lambda
     (&key user-name meeting-times meeting-place)
   <div class="terminal-container">
+    <noscript><p>Plz allow javascript :)</p></noscript>
     <div id="terminal-history">
       <pre>
 ::::::::::::::::::
@@ -21,7 +22,7 @@ The Free Software and Linux Club at Utah State University
 ::::::::::::::::::
 <span class="blue">get_involved.txt</span>
 ::::::::::::::::::
-We communicate and send announcements over <a href="https://discord.com/R6fEGUJan6">Discord</a>, but you can also shoot an email over to <span class="green">usufslc at gmail dot com</span>.
+We communicate and send announcements over <a href="https://discord.gg/PvgG6N2hsU">Discord</a>, but you can also shoot an email over to <span class="green">usufslc at gmail dot com</span>.
 
 You may also <a href="/comments">send club leadership a comment or concern anonymously</a>.
       </pre>
@@ -36,6 +37,5 @@ You may also <a href="/comments">send club leadership a comment or concern anony
         <input type="text" id="shell-command">
       </form> 
     </div>
-    <noscript>You should probably have JavaScript enabled, man!</noscript>
   </div>
 )

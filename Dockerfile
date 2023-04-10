@@ -24,7 +24,4 @@ RUN set -x; \
   echo '#-quicklisp (load #P"/root/quicklisp/setup.lisp")' > /root/.sbclrc && \
   rm /root/quicklisp.lisp
  
-CMD sbcl --load "usufslc.asd" \
-         --eval "(ql:quickload 'usufslc)" \
-         --eval "(usufslc:start)" \
-         --eval "(bt:join-thread (find-if (lambda (th)(search \"hunchentoot\" (bt:thread-name th)))(bt:all-threads)))"
+CMD sbcl --load run.lisp
