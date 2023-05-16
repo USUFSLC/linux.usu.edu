@@ -5,12 +5,35 @@ window.shell.setEnv("USER", userName);
 window.shell.setEnv("HOME", `/home/${userName}`);
 window.shell.fs.insertNewNodeAt(window.shell.getEnv("HOME"));
 window.shell.setEnv("PWD", window.shell.getEnv("HOME"));
+
 const readme = window.shell.fs.insertNewNodeAt(
   `${window.shell.getEnv("HOME")}/README`
 );
 readme.fileContents = `
 Hello, ${userName}! I don't have an easter egg to give you, so have this bunny instead.
 🐰`;
+
+const projects = window.shell.fs.insertNewNodeAt(
+  `${window.shell.getEnv("HOME")}/PROJECTS`
+);
+projects.fileContents = `
+## FOSS projects running on FSLC hardware:
+
++ usuprintcl @ https://print.linux.usu.edu
+  a printer job submission app developed after scuffles with USU IT
+
++ cheSSH @ https://chessh.linux.usu.edu
+  a game of chess over ssh built to explore distributed elixir on multiple
+  nodes
+
++ trongleposting @ https://trongleposting.linux.usu.edu
+  realtime websocket app built to show off during a presentation on docker, 
+  that now gets to live forever
+
++ linux.usu.edu @ https://linux.usu.edu
+  a common lisp webapp with a custom JS "shell" from scratch (something something
+  recursion)
+`;
 
 let state = {
   historyIndex: window.shell.history.length,

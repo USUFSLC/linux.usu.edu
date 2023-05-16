@@ -55,6 +55,8 @@
           {content}
         </div>
         <div class="footer">
+          <a href="https://github.com/USUFSLC">GitHub</a>
+          <a href="https://print.linux.usu.edu">Print</a>
           <a href="/conduct">Code of Conduct</a>
           <a href="/license">License</a>
           <a href="/credits">Credits</a>
