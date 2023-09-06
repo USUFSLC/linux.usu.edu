@@ -22,7 +22,6 @@
                               :method :post
                               :parameters `(("response" . ,|h-captcha-response|)
                                             ("secret" . ,hcaptcha-secret))
-                              :additional-headers '(("Content-Type" . "application/x-www-form-urlencoded"))
                               :want-stream t))))
         (progn (http-request comment-webhook
                              :method :post

@@ -1,8 +1,8 @@
 (lambda
     (&key user-name meeting-times meeting-place)
   <div class="terminal-container">
-    <noscript><p>Plz allow javascript :)</p></noscript>
     <div id="terminal-history">
+      <noscript><h1>Yeah, we need js :)</h1></noscript>
       <pre>
 ::::::::::::::::::
 <span class="blue">what.txt</span>
