@@ -4,37 +4,31 @@
     <div id="terminal-history">
       <noscript><h1>Yeah, we need js :)</h1></noscript>
       <pre>
-::::::::::::::::::
+<span class="yellow">===================================</span>
+
 <span class="blue">what.txt</span>
-::::::::::::::::::
-The <a href="https://github.com/USUFSLC" target="_blank">Free Software and Linux Club at Utah State University</a>
-
-::::::::::::::::::
+  \--> The <a href="https://github.com/USUFSLC" target="_blank">Free Software and Linux Club, at Utah State University</a>
 <span class="blue">when.txt</span>
-::::::::::::::::::
-<span class="yellow">{meeting-times}</span>
-
-::::::::::::::::::
+  \--> <span class="yellow">{meeting-times}</span>
 <span class="blue">where.txt</span>
-::::::::::::::::::
-<span class="yellow">{meeting-place}</span>
-
-::::::::::::::::::
+  \--> <span class="yellow">{meeting-place}</span>
 <span class="blue">get_involved.txt</span>
-::::::::::::::::::
-We communicate and send announcements over <a href="https://discord.gg/PvgG6N2hsU">Discord</a>, but you can also shoot an email over to <span class="green">usufslc at gmail dot com</span>.
+  \--> + We communicate and send announcements over <a href="https://discord.gg/PvgG6N2hsU">Discord</a>.
+       + You can shoot an email over to <span class="green">usufslc at gmail dot com</span>!
+       + Or <a href="/comments">send club leadership a comment or concern anonymously</a>.
 
-You may also <a href="/comments">send club leadership a comment or concern anonymously</a>.
-      </pre>
-      <p>> Welcome, <span class="green">{user-name}</span>, to the <span class="purple">Free Software and Linux Club</span> at <span class="blue">Utah State!</span></p>
-      <p>> Don't know what to type here? Try <strong class="green">help</strong>.</p>
+<span class="yellow">===================================</span>
+
+</pre>
+      <p>| > Welcome, <span class="green">{user-name}</span>, to the <span class="purple">Free Software and Linux Club</span> at <span class="blue">Utah State!</span></p>
+      <p>| > Don't know what to type here? Try <strong class="green">help</strong>.</p>
       <br>
     </div>
     <div class="terminal-input">
       <form class="terminal-entry" id="shell-input" autocomplete="off">
         <input type="hidden" id="user-name" value={user-name}>
         <span id="prompt"></span>
-        <input type="text" id="shell-command">
+        <input type="text" id="shell-command" value="help" autofocus>
       </form> 
     </div>
   </div>

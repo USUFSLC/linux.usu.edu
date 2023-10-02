@@ -1,9 +1,9 @@
 (in-package :usufslc.db)
 (setf mito:*auto-migration-mode* (or (not (null
-                                           (get-config :section :|db| :property :|auto-migrate|)))
+                                            (get-config :section :|db| :property :|auto-migrate|)))
                                      (dev-p))
       mito:*mito-logger-stream* (or (not (null
-                                          (get-config :section :|app-log| :property :|sql-info|)))
+                                           (get-config :section :|app-log| :property :|sql-info|)))
                                     (dev-p)))
 
 (defparameter *connection-args*
@@ -16,7 +16,8 @@
 
 (defmacro with-db ((&key (connection-args *connection-args*)) &body body)
   `(if (not mito:*connection*)
-    (let ((mito:*connection* (connect-cached ,@connection-args)))
-      (unwind-protect (progn ,@body)
-        (disconnect mito:*connection*)))
-    (progn ,@body)))
+     (let ((mito:*connection* (connect-cached ,@connection-args)))
+       (unwind-protect (progn ,@body)
+         (disconnect mito:*connection*)))
+     (progn ,@body)))
+

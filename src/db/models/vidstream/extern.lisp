@@ -25,7 +25,7 @@
   (let* ((stream (mito:create-dao 'vidstream
                                   :name name
                                   :description description
-		                              :streaming nil
+                                  :streaming nil
                                   :recorded nil
                                   :created-by user
                                   :token (create-stream-token)))
@@ -50,12 +50,14 @@
 
 (defun get-stream-unless-expired (token)
   (let ((stream (mito:find-dao 'vidstream :token token))
-        (expiration-time-threshold (parse-number (get-config :section :|stream| :property :|token-expiration|))))
+        (expiration-time-threshold (parse-number
+                                     (get-config :section :|stream| :property :|token-expiration|))))
     (if stream
-        (unless (local-time:timestamp>
-                 (local-time:now)
-                 (local-time:timestamp+
+      (unless (local-time:timestamp>
+                (local-time:now)
+                (local-time:timestamp+
                   (slot-value stream 'mito.dao.mixin::created-at)
                   expiration-time-threshold
                   :sec))
-          stream))))
+        stream))))
+

@@ -7,7 +7,7 @@
     <form action="/comments" method="POST" autocomplete="off" style="display:flex;flex-direction:column">
       <input type="hidden" name="_csrf_token" value={csrf-token}>
       <label>Comment / Concern</label>
-      <textarea name="comment" rows="5"></textarea>
+      <textarea name="comment" rows="5" autofocus></textarea>
       <div style="margin-top: 1rem">
         <div class="h-captcha" data-sitekey={hcaptcha-sitekey}></div>
       </div>

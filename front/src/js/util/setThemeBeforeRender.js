@@ -2,5 +2,5 @@
 // (ugly white background)
 document.documentElement.setAttribute(
   "data-theme",
-  localStorage.getItem("theme") || "light"
+  localStorage.getItem("theme"),
 );

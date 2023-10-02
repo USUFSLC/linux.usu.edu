@@ -12,7 +12,7 @@ const setTheme = (theme) => {
 };
 
 $("#theme-switcher").on("click", (_) =>
-  setTheme(flipFlopTheme($(document.documentElement).attr("data-theme")))
+  setTheme(flipFlopTheme($(document.documentElement).attr("data-theme"))),
 );
 
-setTheme(localStorage.getItem("theme"));
+setTheme(localStorage.getItem("theme") ?? "light");
