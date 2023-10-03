@@ -1,0 +1,8 @@
+(lambda ()
+  <div>
+    <div id="calendar"></div>
+    <script>
+      {"const x = setTimeout(function() { if (window.renderCalendar) { window.renderCalendar(); clearTimeout(x); } }, 100)"}
+    </script>
+  </div>
+  )

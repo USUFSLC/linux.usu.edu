@@ -62,7 +62,6 @@
           <a href="/credits">Credits</a>
         </div>
       </div>
-
       <script src="/js/main.js" defer />
     </body>
   </html>

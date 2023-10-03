@@ -21,6 +21,18 @@
     </ul>
 
     <div class="sidebar-entry">
+      <h3>Events</h3>
+      {(when can-create-event
+        <li>
+          <a href="/event/create">Create Event</a>
+        </li>
+	)}
+	<li>
+        <a href="/events">Calendar</a>
+      </li>
+    </div>
+
+    <div class="sidebar-entry">
       <h3>Streams</h3>
       <ul>
         {(when can-stream
@@ -45,12 +57,4 @@
         </li>
       </ul>
     </div>
-    {(when can-create-event
-      <div class="sidebar-entry">
-        <h3>Events</h3>
-        <li>
-          <a href="/event/create">Create Event</a>
-        </li>
-      </div>
-    )}
   </div>)

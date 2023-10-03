@@ -3,6 +3,7 @@ window.jQuery = window.$;
 window.flatpickr = require("flatpickr");
 
 window.SimpleCalendar = require("../../node_modules/simple-calendar/dist/jquery.simple-calendar.min.js");
+window.renderCalendar = require("./components/calendar").renderCalendar;
 
 window.shell = require("./shell/main").shell;
 

@@ -28,3 +28,8 @@
 (defun show-license ()
   (render-with-root #P"pages/license.lsx"
                     :root-env (root-env :page-title "License")))
+
+@route GET "/events"
+(defun show-events ()
+  (render-with-root #P"pages/events.lsx"
+                    :root-env (root-env :page-title "Events")))
