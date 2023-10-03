@@ -45,7 +45,7 @@
         </li>
       </ul>
     </div>
-    {(when can-stream
+    {(when can-create-event
       <div class="sidebar-entry">
         <h3>Events</h3>
         <li>

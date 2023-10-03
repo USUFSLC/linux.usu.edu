@@ -3,5 +3,5 @@
 (usufslc:start)
 (bt:join-thread
   (find-if (lambda (th)
-             (search "hunchentoot" (bt:thread-name th)))
+             (search "woo" (bt:thread-name th)))
            (bt:all-threads)))
