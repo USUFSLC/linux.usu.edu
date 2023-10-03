@@ -7,6 +7,8 @@
                               :lack-middleware-session
                               :lack-middleware-csrf
 
+                              :clack-handler-woo
+
                               :caveman2
 
                               ;; utilities

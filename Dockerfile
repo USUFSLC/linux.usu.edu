@@ -9,7 +9,7 @@ RUN node build.js
 FROM debian:bookworm as APPLICATION
 
 RUN apt-get -qq update
-RUN apt-get -y install postgresql-client sbcl libev-dev
+RUN apt-get -y install gcc postgresql-client sbcl libev-dev
 
 WORKDIR /app
 COPY . /app
