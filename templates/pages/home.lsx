@@ -28,7 +28,7 @@
       <form class="terminal-entry" id="shell-input" autocomplete="off">
         <input type="hidden" id="user-name" value={user-name}>
         <span id="prompt"></span>
-        <input type="text" id="shell-command" value="help" autofocus>
+        <input type="text" id="shell-command" placeholder="help" autofocus>
       </form> 
     </div>
   </div>

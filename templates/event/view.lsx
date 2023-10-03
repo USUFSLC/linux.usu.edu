@@ -1,0 +1,45 @@
+(lambda
+  (&key
+    user
+    event)
+  <div>
+    {(let* ((context (usufslc.db.event::event-context event))
+            (can-edit (if user (usufslc.db.user::can user "update" context))))
+       <div>
+         {(when can-edit
+	     <a href={(format nil "/event/~a/edit" (mito:object-id event))}>Edit</a>)}
+       </div>)}
+
+    {(let ((user-created (usufslc.db.event::event-created-by event)))
+      <div>
+        <div style="display:flex; flex-direction: row; align-items:center;">
+          <img class="avatar" src={(usufslc.db.user::user-discord-avatar user-created)}>
+	  <li>Created By: {(usufslc.db.user::user-name user-created)}</li>
+        </div>
+	<div>
+	<br>
+	<hr>
+	<br>
+	<ul>
+	  <li>Title: {(usufslc.db.event::event-name event)}</li>
+	  <li>Begins at: <span class="format-date">{(usufslc.db.event::event-start-at event)}</span></li>
+	  <li>Ends at: <span class="format-date">{(usufslc.db.event::event-end-at event)}</span></li>
+	</ul>
+	</div>
+      </div>
+      )}
+
+    <div>
+      <br>
+      <hr>
+      <br>
+      <p>Announcement:</p>
+      <pre style="margin-left: 1rem">{(usufslc.db.event::event-description event)}</pre>
+    </div>
+
+    <div>
+      <br><hr><br>
+      <p class="red">It's likely this event will be streamed right here on this site! Keep an eye on <a href="/streams">the streams tab</a>.</p>
+    </div>
+  </div>
+)

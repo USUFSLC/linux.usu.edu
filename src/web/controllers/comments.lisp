@@ -7,7 +7,7 @@
                     :env `(:csrf-token ,(lack.middleware.csrf:csrf-token *session*)
                                        :hcaptcha-sitekey ,(usufslc.config:get-config :section :|hcaptcha| :property :|sitekey|))
                     :root-env (root-env
-                                :page-title "Comment Submission")))
+                                :page-title "Let Us Know Something")))
 
 @route POST "/comments"
 (defun send-comment (&key |comment| |h-captcha-response|)

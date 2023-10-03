@@ -5,6 +5,7 @@ export const help = (env, fs, ...args) => {
 Commands
 ========
 * help - this help
+* cal - view the FSLC calendar
 * ls [directory]* - list all children of each directory
 * tree [directory]* - list all children of each directory recursively
 * cat [file]* - concatenate files and print on the standard output

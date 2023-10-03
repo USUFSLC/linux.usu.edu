@@ -27,7 +27,13 @@
               </div>              
               <div class="stream-footer">
                 <p class="date">{(slot-value stream 'mito.dao.mixin::created-at)}</p>
-                <p>{(concatenate 'string (usufslc.db.user::user-name user-created) "#" (usufslc.db.user::user-discord-tag user-created))}</p>
+                <p>{
+  		  (let ((tag (usufslc.db.user::user-discord-tag user-created)))
+  		    (format nil "~a~a" (usufslc.db.user::user-name user-created)
+  		    (if tag
+  		      (concatenate 'string "#" tag)
+  		      "")))
+		}</p>
               </div>
             </a>))
         streams)

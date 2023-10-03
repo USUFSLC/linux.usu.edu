@@ -38,8 +38,10 @@
   :token-expiration 300
   :rtmp-route live
   :hls-route hls
+  :hls-format m3u8
   :record-archive-route vod
   :record-archive-format mp4
+
 
 [app-route]
   :protocol http

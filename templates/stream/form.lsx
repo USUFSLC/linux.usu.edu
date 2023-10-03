@@ -8,5 +8,8 @@
     <label>Description</label>
     <textarea name="description"></textarea>
     <input type="submit">
-  </form>
-)
+
+    <input name="start_at" class="flatpickr">
+    <input name="end_at" class="flatpickr">
+    <input name="announce_at" class="flatpickr">
+  </form>)

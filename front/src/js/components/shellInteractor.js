@@ -7,14 +7,14 @@ window.shell.fs.insertNewNodeAt(window.shell.getEnv("HOME"));
 window.shell.setEnv("PWD", window.shell.getEnv("HOME"));
 
 const readme = window.shell.fs.insertNewNodeAt(
-  `${window.shell.getEnv("HOME")}/README`
+  `${window.shell.getEnv("HOME")}/README`,
 );
 readme.fileContents = `
 Hello, ${userName}! I don't have an easter egg to give you, so have this bunny instead.
 🐰`;
 
 const projects = window.shell.fs.insertNewNodeAt(
-  `${window.shell.getEnv("HOME")}/PROJECTS`
+  `${window.shell.getEnv("HOME")}/PROJECTS`,
 );
 projects.fileContents = `
 ## FOSS projects running on FSLC hardware:
@@ -49,12 +49,14 @@ $("#shell-input").on("submit", function (e) {
   state.historyIndex = window.shell.history.length;
 
   $("#terminal-history").append(`<div class="terminal-entry">
-                                  <p>${oldPrompt} <span class="green">${magicTextToHtml(command)}</span></p>
+                                  <p>${oldPrompt} <span class="green">${magicTextToHtml(
+                                    command,
+                                  )}</span></p>
                                   <pre class="red">${magicTextToHtml(
-                                    result.streams.stderr
+                                    result.streams.stderr,
                                   )}</pre>
                                   <pre>${magicTextToHtml(
-                                    result.streams.stdout
+                                    result.streams.stdout,
                                   )}</pre>
                                 </div>`);
 
@@ -80,10 +82,10 @@ $("#shell-input").on("keyup", function (e) {
     state.historyIndex = goInHistoryOnKeyCode(
       e.which,
       state,
-      window.shell.history
+      window.shell.history,
     );
     $("#shell-command").val(
-      window.shell.history[state.historyIndex] || state.command
+      window.shell.history[state.historyIndex] || state.command,
     );
   } else {
     state.command = $("#shell-command").val();

@@ -6,6 +6,7 @@
 import { FileSystem } from "./filesystem";
 import { Shell } from "./shell";
 
+import { cal } from "./commands/cal";
 import { cd } from "./commands/cd";
 import { ls } from "./commands/ls";
 import { echo } from "./commands/echo";
@@ -24,6 +25,7 @@ const FILES = {
   usr: {
     bin: {
       cd, // Traditionally cd and echo are shell-specific commands, but whatever
+      cal,
       echo,
       ls,
       mkdir,

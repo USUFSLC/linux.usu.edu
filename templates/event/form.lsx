@@ -1,0 +1,31 @@
+(lambda
+    (&key
+     (csrf-token "")
+     (event nil))
+  <div>
+    <form action="/event" method="POST" autocomplete="off">
+      <input type="hidden" name="_csrf_token" value={csrf-token}>
+      <input type="hidden" name="id" value={(when event (mito:object-id event))}>
+      <label>Name *</label>
+      <br>      
+      <input name="name"  type="text" required value={(when event (usufslc.db.event::event-name event))}>
+      <br>      <br>
+      <label>Body *</label>
+      <br>
+      <textarea name="description" placeholder="hey @everyone..." rows="6" cols="50" required>{(when event (usufslc.db.event::event-description event))}</textarea>
+      <br>      <br>
+      <label>Start At *</label>
+      <br>      
+      <input name="starts-at" type="text" class="flatpickr" value={(when event (usufslc.db.event::event-start-at event))}>
+      <br>      <br>
+      <label>End At *</label>
+      <br>      
+      <input name="ends-at" type="text" class="flatpickr" value={(when event (usufslc.db.event::event-end-at event))}>
+      <br>      <br>
+      <label>Announce At</label>
+      <br>      
+      <input name="announce-at" type="text" class="flatpickr" value={(when event (usufslc.db.event::event-announce-at event))}>
+      <br>      <br>
+      <input type="submit">
+    </form>
+  </div>)

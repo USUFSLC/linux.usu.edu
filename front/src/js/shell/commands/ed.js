@@ -18,6 +18,18 @@ const edWindow = (fileName, fileContents, saveCallback) => {
     saveCallback($("#file-contents").val());
     $("#modal").hide();
   });
+
+  $("#modal").show();
+  // hacky as hell, but idgaf :))
+  setTimeout(
+    () =>
+      $("#modal")[0].scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      }),
+    100,
+  );
 };
 
 export const ed = (env, fs, ...args) => {
@@ -56,11 +68,8 @@ export const ed = (env, fs, ...args) => {
   edWindow(
     node.name,
     node.fileContents,
-    (fileContents) => (node.fileContents = fileContents)
+    (fileContents) => (node.fileContents = fileContents),
   );
-
-  $("#modal").show();
-  $("#file-contents").focus();
 
   return {
     streams: {

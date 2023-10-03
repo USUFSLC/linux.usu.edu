@@ -1,6 +1,6 @@
 (lambda ()
   <div>
-    <p>Lizzy Hunt (@simponic) - Development</p>
-    <p>Andrew Knoblach (@aeromus) - Logo Design</p>
+    <p>Elizabeth (Lizzy) Hunt | @<a href="https://github.com/simponic">simponic</a> | Development</p>
+    <p>Andrew Knoblach | @aeromus | Logo Design</p>
   </div>
 )

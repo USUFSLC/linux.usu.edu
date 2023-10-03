@@ -6,4 +6,3 @@
   (let ((min (getf range :min))
         (max (getf range :max)))
     (+ min (random (1+ (- max min))))))
-

@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "flatpickr": "^4.6.13",
     "hls.js": "^1.2.5-0.canary.8680",
     "jquery": "^3.6.0",
-    "package-lock.json": "^1.0.0"
+    "package-lock.json": "^1.0.0",
+    "simple-calendar": "github:brospars/simple-calendar"
   },
   "devDependencies": {
     "esbuild": "^0.14.49",
