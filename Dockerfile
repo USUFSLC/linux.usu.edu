@@ -1,4 +1,4 @@
-FROM node:lts-alpine as FRONTEND_BUILD
+FROM node:18 as FRONTEND_BUILD
 
 WORKDIR /frontend
 COPY ./front /frontend
@@ -6,9 +6,10 @@ COPY ./front /frontend
 RUN npm install
 RUN node build.js
 
-FROM alpine:latest as APPLICATION
+FROM debian:bookworm as APPLICATION
 
-RUN apk add postgresql-client sbcl
+RUN apt-get -qq update
+RUN apt-get -y install postgresql-client sbcl libev-dev
 
 WORKDIR /app
 COPY . /app
