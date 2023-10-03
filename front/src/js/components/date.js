@@ -9,17 +9,26 @@ $(document).ready(() => {
   });
 });
 
+const timeZoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+
 $(document).ready(() => {
   $(".flatpickr").each(function () {
     const val = $(this).val();
-
     flatpickr(this, {
-      defaultDate: val,
+      defaultDate: new Date(val), // new Date(new Date(val).getTime() + timeZoneOffset),
       altInput: true,
-      altFormat: "F j, Y H:i",
+      altFormat: "M j, Y h:i:S K",
+      dateFormat: "Z",
       enableTime: true,
-      dateFormat: "Y-m-d H:i",
       time_24hr: true,
     });
+  });
+});
+
+// fix timezone issues
+$("form").on("submit", () => {
+  $(".flatpickr").each(function () {
+    const val = new Date($(this).val()); //new Date($(this).val()).getTime() - timeZoneOffset);
+    $(this).val(val.toISOString());
   });
 });

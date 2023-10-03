@@ -29,7 +29,7 @@
       (cl-json:encode-json-to-string
         (mapcar #'encode-event events)))))
 
-@route GET "/event/new"
+@route GET "/event/create"
 (defun create-new-event (&key id)
   (usufslc.db:with-db
     ()
@@ -42,19 +42,22 @@
                                       :page-title "Create Event"))
         (throw-code 403)))))
 
-
-@route GET "/event/:id"
-(defun view-event (&key id)
+@route GET "/event/:id/delete"
+(defun delete-event (&key id)
   (usufslc.db:with-db
     ()
-    (with-updated-user-model-from-session
+    (with-authentication-or-sign-in
       ()
       (let ((event (mito:find-dao 'usufslc.db.event:event :id id)))
-        (render-with-root #P"event/view.lsx"
-                          :env `(:event ,event
-                                        :user ,user)
-                          :root-env (root-env
-                                      :page-title (usufslc.db.event::event-name event)))))))
+        (if event
+          (if (usufslc.db.user::can user "destrooy" (usufslc.db.event::event-context event))
+
+            (progn
+              (mito:delete-dao event)
+              (setf (gethash :info *session*) "deleted event")
+              (redirect "/"))
+            (throw-code 403))
+          (throw-code 404))))))
 
 @route GET "/event/:id/edit"
 (defun update-event-form (&key id)
@@ -73,6 +76,21 @@
                                           :page-title "Update Event"))
             (throw-code 403))
           (throw-code 404))))))
+
+@route GET "/event/:id"
+(defun view-event (&key id)
+  (usufslc.db:with-db
+    ()
+    (with-updated-user-model-from-session
+      ()
+      (let ((event (mito:find-dao 'usufslc.db.event:event :id id)))
+        (if event
+          (render-with-root #P"event/view.lsx"
+                            :env `(:event ,event
+                                          :user ,user)
+                            :root-env (root-env
+                                        :page-title (usufslc.db.event::event-name event)))
+          (throw-code 400))))))
 
 
 @route POST "/event"

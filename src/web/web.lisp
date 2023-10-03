@@ -24,6 +24,8 @@
                     ()
                     (render #P"components/sidebar.lsx"
                             :env (list :user user
+                                       :can-create-event (and user
+                                                              (usufslc.db.user::can-in-context-with-name user "create" "events"))
                                        :can-stream (and user
                                                         (usufslc.db.user::can-in-context-with-name user "start-stream" "stream")))
                             :render-lsx nil)))

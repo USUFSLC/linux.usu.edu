@@ -11,6 +11,9 @@
                   (restart-server ()
                                   :report "Restart the server"
                                   (stop))))
+
+  (usufslc.scheduled:start-jobs)
+
   (setf *handler*
         (apply #'clackup *appfile-path*
                (append

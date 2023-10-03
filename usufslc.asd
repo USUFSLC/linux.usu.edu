@@ -36,6 +36,9 @@
                               ;; JSON
                               :cl-json
 
+                              ;; scheduling
+                              :clerk
+
                               ;; Threading and locks
                               :bt-semaphore)
 
@@ -58,8 +61,12 @@
                                                           :components
                                                           ((:file "auth" :depends-on ("package"))
                                                            (:file "package"))))
-                                                :depends-on ("config" "db" "utils"))
-
+                                                :depends-on ("config" "db" "utils" "scheduled"))
+                                       (:module "scheduled"
+                                                :depends-on ("db")
+                                                :components
+                                                ((:file "jobs" :depends-on ("package"))
+                                                 (:file "package")))
                                        (:module "db"
                                                 :components
                                                 ((:module "seeds"

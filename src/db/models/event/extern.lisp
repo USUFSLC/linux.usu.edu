@@ -5,9 +5,10 @@
 (defun get-unannounced-events ()
   (let ((now (local-time:now)))
     (with-db ()
-             (mito:select-dao 'usufslc.db.event:event :announce t
-                              (sxql:where (:= nil :announced-at))
-                              (sxql:where (:<= :announce-at now))))))
+             (mito:select-dao 'usufslc.db.event:event
+                              (sxql:where (:and
+                                            (:is-null :announced-at)
+                                            (:<= :announce-at now)))))))
 
 (defun create-creator-role-in-context (context)
   (let ((creator-role (mito:create-dao 'usufslc.db.context:context-role

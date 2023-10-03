@@ -8,13 +8,13 @@
                          :accessor event-description)
             (event-context :col-type (or usufslc.db.context:context :null)
                            :accessor event-context)
-            (announce-at :col-type (or :timestamp :null)
+            (announce-at :col-type (or :timestamptz :null)
                          :accessor event-announce-at)
-            (start-at :col-type :timestamp
+            (start-at :col-type :timestamptz
                       :accessor event-start-at)
-            (end-at :col-type :timestamp
+            (end-at :col-type :timestamptz
                     :accessor event-end-at)
-            (announced-at :col-type (or :timestamp :null)
+            (announced-at :col-type (or :timestamptz :null)
                           :accessor event-announced-at)
             (created-by :col-type usufslc.db.user:user
                         :accessor event-created-by))

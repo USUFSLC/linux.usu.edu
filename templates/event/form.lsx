@@ -3,6 +3,7 @@
      (csrf-token "")
      (event nil))
   <div>
+
     <form action="/event" method="POST" autocomplete="off">
       <input type="hidden" name="_csrf_token" value={csrf-token}>
       <input type="hidden" name="id" value={(when event (mito:object-id event))}>
@@ -23,9 +24,21 @@
       <input name="ends-at" type="text" class="flatpickr" value={(when event (usufslc.db.event::event-end-at event))}>
       <br>      <br>
       <label>Announce At</label>
+      <ul>
+        <li>changing the announcement time does not allow for an event to be "double-announced"</li>
+	<li>leave this field blank for no announcement</li>
+      </ul>
       <br>      
       <input name="announce-at" type="text" class="flatpickr" value={(when event (usufslc.db.event::event-announce-at event))}>
       <br>      <br>
       <input type="submit">
     </form>
+
+
+    <div>
+      <hr>
+      <br>
+      {(when event
+	<a href={(format nil "/event/~a/delete" (mito:object-id event))}>Delete</a>)}
+    </div>
   </div>)
