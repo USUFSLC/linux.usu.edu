@@ -54,6 +54,7 @@
                                                            (:file "pages")
                                                            (:file "comments")
                                                            (:file "event")
+                                                           (:file "health")
                                                            (:file "streams"))
                                                           :depends-on ("web" "discord"))
                                                  (:file "web" :depends-on ("discord" "view"))
