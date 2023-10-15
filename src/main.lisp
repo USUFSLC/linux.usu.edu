@@ -24,7 +24,8 @@
                  args))))
 
 (defun stop ()
-  (prog1
+  (when *handler*
     (clack:stop *handler*)
-    (setf *handler* nil)))
+    (setf *handler* nil)
+    (usufslc.scheduled:stop-jobs)))
 

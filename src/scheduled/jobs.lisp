@@ -22,3 +22,7 @@
 (defun start-jobs ()
   (format t "beginning scheduled jobs...")
   (clerk:start))
+
+(defun stop-jobs ()
+  (format t "stopping scheduled jobs...")
+  (clerk:stop))
