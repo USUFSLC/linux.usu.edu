@@ -11,6 +11,7 @@ import { cd } from "./commands/cd";
 import { ls } from "./commands/ls";
 import { echo } from "./commands/echo";
 import { trongle } from "./commands/trongle";
+import { tronglesay } from "./commands/tronglesay";
 import { mkdir } from "./commands/mkdir";
 import { touch } from "./commands/touch";
 import { cat } from "./commands/cat";
@@ -35,6 +36,7 @@ const FILES = {
       tree,
       rm,
       help,
+      tronglesay,
     },
     local: {
       bin: {

@@ -1,27 +1,26 @@
 const randUpTo = (max) => Math.random() * max;
+
 class Trongle {
-  constructor(element) {
+  constructor(element, MAX_VEL = 0.3) {
     this.element = element;
     this.x = Math.floor(randUpTo(window.innerWidth - element.clientWidth));
     this.y = Math.floor(randUpTo(window.innerHeight - element.clientHeight));
-    this.dx = (Math.random() * 2 - 1) * 0.3;
-    this.dy = (Math.random() * 2 - 1) * 0.3;
+    this.dx = (randUpTo(2) - 1) * MAX_VEL;
+    this.dy = (randUpTo(2) - 1) * MAX_VEL;
     this.width = element.clientWidth;
     this.height = element.clientHeight;
     this.lastRender = performance.now();
   }
 
-  update(elapsedTime) {
-    const dHeight = $(document).height();
-    const dWidth = $(document).width();
+  update(elapsedTime, maxHeight, maxWidth) {
     this.x += this.dx * elapsedTime;
     this.y += this.dy * elapsedTime;
 
-    this.dx *= this.x + this.width >= dWidth || this.x <= 0 ? -1 : 1;
-    this.dy *= this.y + this.height >= dHeight || this.y <= 0 ? -1 : 1;
+    this.dx *= this.x + this.width >= maxWidth || this.x <= 0 ? -1 : 1;
+    this.dy *= this.y + this.height >= maxHeight || this.y <= 0 ? -1 : 1;
 
-    this.x = Math.max(0, Math.min(this.x, dWidth - this.width));
-    this.y = Math.max(0, Math.min(this.y, dHeight - this.height));
+    this.x = Math.max(0, Math.min(this.x, maxWidth - this.width));
+    this.y = Math.max(0, Math.min(this.y, maxHeight - this.height));
   }
 
   draw() {
@@ -29,16 +28,15 @@ class Trongle {
     this.element.style.top = this.y + "px";
   }
 
-  loop(timestamp) {
+  loopStep(timestamp, maxHeight, maxWidth) {
     const elapsedTime = timestamp - this.lastRender;
     if (elapsedTime > 30 / 1000) {
       // 30 FPS for performance reasons
-      this.update(elapsedTime);
+      this.update(elapsedTime, maxHeight, maxWidth);
       this.draw();
 
       this.lastRender = timestamp;
     }
-    requestAnimationFrame(this.loop.bind(this));
   }
 }
 
@@ -65,7 +63,18 @@ const makeTrongles = (n, trongleSrcs, wrapperElement) => {
       return new Trongle(trongleImage);
     });
 
-  requestAnimationFrame((t) => trongles.map((trongle) => trongle.loop(t)));
+  const dHeight = $(document).height();
+  const dWidth = $(document).width();
+
+  const loop = (t) => {
+    const width = $(document).width();
+    const height = $(document).height();
+    for (const trongle of trongles) {
+      trongle.loopStep(t, width, height);
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
 };
 
 const TRONGLE_PATHS = [
