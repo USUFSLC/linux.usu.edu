@@ -17,6 +17,7 @@ Commands
 * rm [file]* - remove files or directories (no -rf required)
 * clear - clear the screen
 * trongle [min] [max] - generate a random number of trongles between min and max
+* tronglesay [words]* - tronglesay
 
 Other
 =====

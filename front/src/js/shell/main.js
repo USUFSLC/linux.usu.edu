@@ -50,7 +50,7 @@ const FILES = {
 const fs = new FileSystem(FILES);
 export const shell = new Shell(fs, {
   PS1: "<blue>${USER}</blue><orange>@</orange><bold><purple>${HOSTNAME}</purple></bold>:<yellow>${PWD}</yellow> <orange>$</orange>",
-  HOSTNAME: "usufslc.com",
+  HOSTNAME: "usufslc",
   PWD: "/home",
   PATH: "/usr/bin:/usr/local/bin",
 });
