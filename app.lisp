@@ -1,5 +1,3 @@
-(ql:quickload :usufslc)
-
 (defpackage usufslc.app
   (:use :cl)
   (:import-from :lack.builder

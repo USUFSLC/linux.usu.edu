@@ -15,3 +15,6 @@ ql bt-semaphore
 ql ironclad
 ql cl-dbi
 ql postmodern
+ql trivial-rfc-1123
+ql clack
+ql lack

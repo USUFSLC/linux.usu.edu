@@ -6,6 +6,8 @@
                               :lack
                               :lack-middleware-session
                               :lack-middleware-csrf
+                              :lack-middleware-accesslog
+                              :lack-app-directory
 
                               :clack-handler-woo
 
