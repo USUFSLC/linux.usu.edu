@@ -19,6 +19,7 @@
                               :local-time
 
                               ;; DB
+                              :cl-postgres
                               :mito
                               :sxql
                               :dbi

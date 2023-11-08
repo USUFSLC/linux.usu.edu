@@ -42,11 +42,19 @@
  (:class qlot/source/ql:source-ql
   :initargs (:%version :latest)
   :version "ql-2023-10-21"))
+("ironclad" .
+ (:class qlot/source/ql:source-ql
+  :initargs (:%version :latest)
+  :version "ql-2023-10-21"))
+("cl-dbi" .
+ (:class qlot/source/ql:source-ql
+  :initargs (:%version :latest)
+  :version "ql-2023-10-21"))
 ("cl-isaac" .
  (:class qlot/source/github:source-github
   :initargs (:repos "svetlyak40wt/cl-isaac" :ref nil :branch "fix-value-1-error" :tag nil)
   :version "github-77a51b88d7d0e78f7517d744fff4a3135727b3b6"))
-("ironclad" .
+("postmodern" .
  (:class qlot/source/ql:source-ql
   :initargs (:%version :latest)
   :version "ql-2023-10-21"))
