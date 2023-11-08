@@ -1,5 +1,5 @@
 (load "usufslc.asd")
-(ql:quickload 'usufslc)
+(asdf:load-system :usufslc)
 (usufslc:start)
 (bt:join-thread
   (find-if (lambda (th)

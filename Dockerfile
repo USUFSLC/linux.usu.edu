@@ -1,30 +1,18 @@
-FROM node:18 as FRONTEND_BUILD
-
-WORKDIR /frontend
-COPY ./front /frontend
-
-RUN npm install
-RUN node build.js
-
-FROM debian:bookworm as APPLICATION
-
-RUN apt-get -qq update
-RUN apt-get -y install gcc postgresql-client sbcl libev-dev
+FROM fukamachi/qlot:latest AS BUILDER
 
 WORKDIR /app
 COPY . /app
 
-COPY --from=FRONTEND_BUILD /frontend/dist ./front/dist
+RUN qlot install
+RUN qlot bundle
 
-ADD https://beta.quicklisp.org/quicklisp.lisp /root/quicklisp.lisp
+FROM alpine:3 as APPLICATION
 
-RUN set -x; \
-  sbcl --load /root/quicklisp.lisp \
-    --eval '(quicklisp-quickstart:install)' \
-    --quit && \
-  echo '#-quicklisp (load #P"/root/quicklisp/setup.lisp")' > /root/.sbclrc && \
-  rm /root/quicklisp.lisp
+RUN apk update
+RUN apk add libev build-base postgresql15-client sbcl
 
-RUN sbcl --load usufslc.asd --eval "(ql:quickload :usufslc)"
+WORKDIR /app
+COPY --from=BUILDER /app /app
 
-CMD sbcl --load run.lisp
+RUN sbcl --load .bundle-libs/bundle.lisp --load usufslc.asd --eval "(asdf:load-system :usufslc)"
+CMD sbcl --load .bundle-libs/bundle.lisp --load run.lisp

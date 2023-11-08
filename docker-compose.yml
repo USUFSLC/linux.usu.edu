@@ -28,7 +28,9 @@ services:
 
   nginx:
     restart: "always"
-    image: "alfg/nginx-rtmp:cuda"
+    build: 
+      dockerfile: ./nginx/Dockerfile
+      context: .
     depends_on:
       - "prod"
     ports:

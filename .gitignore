@@ -9,3 +9,6 @@
 .env
 
 logs
+
+.qlot
+.bundle-libs

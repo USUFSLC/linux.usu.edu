@@ -1,0 +1,15 @@
+ql trivial-mimes
+ql smart-buffer
+ql cl-ppcre
+ql mito
+ql sxql
+ql quri
+ql drakma
+ql cl-json
+ql clerk
+ql bt-semaphore
+ql ironclad
+
+# Until this PR will be merged:
+# https://github.com/thephoeron/cl-isaac/pull/13
+github cl-isaac svetlyak40wt/cl-isaac :branch fix-value-1-error

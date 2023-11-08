@@ -21,6 +21,7 @@ Current features include:
 
 You'll need:
 
+- [roswell](https://roswell.github.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [SBCL](http://www.sbcl.org/)
 - [Quicklisp](https://www.quicklisp.org/beta/)
@@ -49,7 +50,10 @@ If you want to add a new program to the "shell" presented on the home page, all 
 Finally, you can run the application (and auto-migrate the database schema if `:auto-migrate`'s set in the configuration) with:
 
 ```bash
-$ sbcl --load usufslc.asd
+$ ros install qlot
+$ ros exec qlot install
+$ ros run
+* (load "usufslc.asd")
 * (ql:quickload :usufslc)
 * (usufslc:start)
 ```
@@ -59,7 +63,8 @@ $ sbcl --load usufslc.asd
 With the database schema migrated, you can seed the database with some initial data by running:
 
 ```bash
-$ sbcl --load usufslc.asd
+$ ros run
+* (load "usufslc.asd")
 * (ql:quickload :usufslc)
 * (usufslc.db.seed::seed-streaming-context)
 ```
@@ -69,7 +74,8 @@ $ sbcl --load usufslc.asd
 Some unit and integration tests do have the property of existing. They can be run via:
 
 ```
-sbcl --load usufslc.asd
+$ ros run
+(load "usufslc.asd")
 (ql:quickload 'usufslc)
 (asdf:test-system 'usufslc)
 ```
