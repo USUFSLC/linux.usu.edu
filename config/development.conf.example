@@ -1,6 +1,6 @@
 [club]
-  :meetings Every Wednesday at 6:30PM MST
-  :place Eccles Science Building (ESLC), room 053
+  :meetings We meet weekly, every Wednesday at 6:15PM MST. 
+  :place Eccles Science Building (ESLC), room 053. Hacking nights in our lab rooms (ESLC 049 / 051).
 
 [discord]
   :auth-url https://discord.com/api/oauth2/authorize
@@ -8,10 +8,11 @@
   :identity-url https://discord.com/api/users/@me
   :code-validation-regex ^\w{30}$
   :scope identify
-  :client-id <client_id_here>
-  :secret <client_secret_here>
-
-  :comment-box-webhook <webhook>
+  :client-id
+  :secret
+  
+  :comment-box-webhook <WEBHOOK>
+  :announcement-bot-webhook <WEBHOOK>
 
 [retry]
   :max-retries 3
@@ -23,7 +24,7 @@
   :name usufslc
   :username postgres
   :password postgres
-  :host 127.0.0.1
+  :host db
   :port 5432
 
   :auto-migrate t
@@ -42,7 +43,6 @@
   :record-archive-route vod
   :record-archive-format mp4
 
-
 [app-route]
   :protocol http
   :host localhost
@@ -57,7 +57,6 @@
   :sql-info t
   :error-log /tmp/error.log
 
-
 [hcaptcha]
-  :sitekey 
-  :secret-key 
+  :sitekey
+  :secret-key

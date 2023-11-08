@@ -22,14 +22,16 @@
 
     <div class="sidebar-entry">
       <h3>Events</h3>
+      <ul>
       {(when can-create-event
         <li>
           <a href="/event/create">Create Event</a>
         </li>
 	)}
 	<li>
-        <a href="/events">Calendar</a>
-      </li>
+          <a href="/events">Calendar</a>
+        </li>
+      </ul>
     </div>
 
     <div class="sidebar-entry">
