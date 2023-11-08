@@ -21,7 +21,6 @@ services:
     volumes:
       - ./config:/app/config:ro
       - ./public:/app/public:ro
-      - quicklisp:/root/quicklisp:rw
     networks:
       - usufslc
     environment:
@@ -44,7 +43,6 @@ services:
 
 volumes:
   pgdata:
-  quicklisp:
 
 networks:
   usufslc:

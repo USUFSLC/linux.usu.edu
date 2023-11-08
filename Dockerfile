@@ -24,5 +24,7 @@ RUN set -x; \
     --quit && \
   echo '#-quicklisp (load #P"/root/quicklisp/setup.lisp")' > /root/.sbclrc && \
   rm /root/quicklisp.lisp
- 
+
+RUN sbcl --load usufslc.asd --eval "(ql:quickload :usufslc)"
+
 CMD sbcl --load run.lisp
