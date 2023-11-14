@@ -5,10 +5,10 @@
                                                          :property :|announcement-bot-webhook|)))
     (drakma:http-request announcement-webhook
                          :method :post
-                         :parameters `(("content" . ,(drakma:url-encode
-                                                       (usufslc.db.event::event-description event)
-                                                       :utf-8)))
-                         :additional-headers '(("Content-Type" . "application/x-www-form-urlencoded")))
+                         :content (cl-json:encode-json
+                                    `(("content" .
+                                       (usufslc.db.event::event-description event))))
+                         :additional-headers '(("Content-Type" . "application/json")))
     (setf (usufslc.db.event::event-announced-at event) (local-time:now))
     (mito:save-dao event)))
 
