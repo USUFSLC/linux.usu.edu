@@ -5,7 +5,7 @@
                                                          :property :|announcement-bot-webhook|)))
     (drakma:http-request announcement-webhook
                          :method :post
-                         :content (cl-json:encode-json
+                         :content (cl-json:encode-json-to-string
                                     `(("content" .
                                        ,(usufslc.db.event::event-description event))))
                          :additional-headers '(("Content-Type" . "application/json")))
