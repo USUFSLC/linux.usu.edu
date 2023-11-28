@@ -7,7 +7,7 @@
                          :method :post
                          :content (cl-json:encode-json
                                     `(("content" .
-                                       (usufslc.db.event::event-description event))))
+                                       ,(usufslc.db.event::event-description event))))
                          :additional-headers '(("Content-Type" . "application/json")))
     (setf (usufslc.db.event::event-announced-at event) (local-time:now))
     (mito:save-dao event)))
