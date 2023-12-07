@@ -93,6 +93,11 @@ const TRONGLE_PATHS = [
   "trongle.png",
   "tronglePat.gif",
   "tuxongle.png",
+  "legTrong2.png",
+  "sierpinksitrongle.png",
+  "trongnah.png",
+  "hexongle.png",
+  "trobius.png",
 ].map((x) => `/images/rongles/${x}`);
 
 export const trongle = (env, fs, ...args) => {
